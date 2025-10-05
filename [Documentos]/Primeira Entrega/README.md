@@ -6,7 +6,9 @@
 
 Relatório do Projeto Mobile
 
-![Aqua Point](https://i.imgur.com/wetJpXD.png)
+<p align="center">
+  <img src="https://i.imgur.com/wetJpXD.png" />
+</p>
 
 **Autores:**
 
@@ -145,13 +147,17 @@ O tópico seguinte apresenta todas as ferramentas utilizadas ao longo do desenvo
 
 As duas imagens abaixo representam o **Mapa de Gantt** do projeto **Aqua Point,** onde constam as respetivas fases e duração das mesmas.
 
-![](https://i.imgur.com/BFXroPh.png)
+<p align="center">
+  <img src="https://i.imgur.com/BFXroPh.png" />
+</p>
 
 Figura 11 - Fases do projeto
 
 Na figura seguinte, é apresentado o cronograma do projeto seguindo a planificação do Mapa de Gantt.
 
-![](https://i.imgur.com/HUWpDB6.png)
+<p align="center">
+  <img src="https://i.imgur.com/HUWpDB6.png" />
+</p>
 
 Figura 12 - Mapa de Gantt
 
@@ -343,7 +349,7 @@ O tópico a seguir apresenta alguns ecrãs que formam a estrutura da aplicação
 
 **Ecrã de Boas-Vindas**
 
-![](https://i.imgur.com/nFLMKWD.png)
+![](https://i.imgur.com/QKB7Gsv.png)
 
 **Ecrã de Registo**
 
