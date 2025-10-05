@@ -30,65 +30,21 @@ Evandro Gaspar
 
 ## Índice
 
-[Introdução 5](#_Toc210388509)
 
-[1\. Descrição do problema 6](#_Toc210388510)
-
-[2\. Descrição de objetivos 6](#_Toc210388511)
-
-[3\. Público-Alvo 6](#_Toc210388512)
-
-[4\. Caracterização das ferramentas 7](#_Toc210388513)
-
-[5\. Mapa de Gantt 10](#_Toc210388514)
-
-[6\. Aplicações Similares 11](#_Toc210388515)
-
-[6.1 Onde nos destacamos 11](#_Toc210388516)
-
-[7\. Aqua Point 12](#_Toc210388517)
-
-[7.1 Guiões de teste da aplicação 12](#_Toc210388518)
-
-[8\. Requisitos 15](#_Toc210388519)
-
-[8.1 Requisitos Funcionais 15](#_Toc210388520)
-
-[8.2 Requisitos Não Funcionais 16](#_Toc210388521)
-
-[8.3 Mockups e interfaces 17](#_Toc210388522)
-
-[Conclusão 21](#_Toc210388523)
-
-[Referências bibliográficas 22](#_Toc210388524)
-
-## Índice de figuras
-
-[Figura 1 - Visual Studio Code 7](#_Toc210335715)
-
-[Figura 2 - MAMP 7](#_Toc210335716)
-
-[Figura 3 - GitHub 7](#_Toc210335717)
-
-[Figura 4 - Java 8](#_Toc210335718)
-
-[Figura 5 - Android Studio 8](#_Toc210335719)
-
-[Figura 6 - Workbench 8](#_Toc210335720)
-
-[Figura 7 - MySQL 9](#_Toc210335721)
-
-[Figura 9 - Excel 9](#_Toc210335722)
-
-[Figura 10 - Figma 9](#_Toc210335723)
-
-[Figura 11 - Fases do projeto 10](#_Toc210335724)
-
-[Figura 12 - Mapa de Gantt 10](#_Toc210335725)
-
-[Figura 13 - AquaFinder 11](#_Toc210335726)
-
-[Figura 14 - H20 Quality 11](#_Toc210335727)
+1. [Introdução](#introdução)
+2. [Descrição do problema](#descrição-do-problema)
+3. [Descrição de objetivos](#descrição-de-objetivos)
+4. [Público-Alvo](#público-alvo)
+5. [Caracterização das ferramentas](#caracterização-das-ferramentas)
+6. [Mapa de Gantt](#mapa-de-gantt)
+7. [Aplicações Similares](#aplicações-similares)
+    1. [Onde nos destacamos](#onde-nos-destacamos)
+8. [Aqua Point](#aqua-point)
+    1. [Guiões de teste da aplicação](#guiões-de-teste-da-aplicação)
+9. [Requisitos funcionais](#requisitos-funcionais)
+10. [Mockups e interfaces](#mockups-e-interfaces)
+11. [Conclusão](#conclusão)
+12. [Referências bibliográficas](#referências-bibliográficas)
 
 ## Introdução
 
@@ -199,101 +155,99 @@ Nos tópicos seguintes, é apresentada a estrutura da _aplicação,_ desde a sua
 
 ### Guiões de teste da aplicação
 - **Caso de Utilização 1**
-```
-Objetivo: 
-Permitir que o utilizador encontre rapidamente o bebedouro mais próximo.
 
-Condições:
-O utilizador tem a app instalada e está com GPS ativo.
-Existe ligação à internet.
+    **Objetivo**: 
+    Permitir que o utilizador encontre rapidamente o bebedouro mais próximo.
 
-Passo-a-passo:
-- O utilizador abre a aplicação.
-- A aplicação pede permissão para aceder à localização do dispositivo.
-- O utilizador aceita o pedido de permissão.
-- A app mostra no mapa a localização do utilizador.
-- A app procura bebedouros próximos e exibe os respetivos ícones no mapa.
-- O utilizador toca no ícone de um bebedouro.
-- A app mostra detalhes (localização, distância e opiniões de outros utilizadores).
-- O utilizador clica em "Obter Direções".
-- A app abre o trajeto no mapa.
-```
+    **Condições**:
+    O utilizador tem a app instalada e está com GPS ativo.
+    Existe ligação à internet.
+
+    **Passo-a-passo**:
+    - O utilizador abre a aplicação.
+    - A aplicação pede permissão para aceder à localização do dispositivo.
+    - O utilizador aceita o pedido de permissão.
+    - A app mostra no mapa a localização do utilizador.
+    - A app procura bebedouros próximos e exibe os respetivos ícones no mapa.
+    - O utilizador toca no ícone de um bebedouro.
+    - A app mostra detalhes (localização, distância e opiniões de outros utilizadores).
+    - O utilizador clica em "Obter Direções".
+    - A app abre o trajeto no mapa.
+
 
 - **Caso de Utilização 2**
-```
-Objetivo: 
-Permitir que o utilizador partilhe a sua opinião relativamente a um bebedouro
 
-Condições:
+    **Objetivo**: 
+    Permitir que o utilizador partilhe a sua opinião relativamente a um bebedouro
 
-O utilizador tem a app instalada e está com GPS ativo.
-Existe ligação à internet.
+    **Condições**:
+    O utilizador tem a app instalada e está com GPS ativo.
+    Existe ligação à internet.
 
-Passo-a-passo:
-- O utilizador abre a aplicação.
-- A app mostra no mapa a localização do utilizador.
-- A app procura bebedouros próximos e exibe os respetivos ícones no mapa.
-- O utilizador toca no ícone de um bebedouro.
-- A app mostra detalhes (localização, distância e opiniões de outros utilizadores).
-- O utilizador clica em "Dar opinião".
-- É dada a possibilidade ao utilizador de avaliar mediante o número de estrelas ( 1 a 5 ), adicionar um comentário e ainda marcar o bebedouro como avariado.
-- A aplicação guarda a opinião do utilizador, recalculando a média de avaliação do bebedouro.
-- O utilizador vê a sua opinião refletida na aplicação em tempo real.
-```
+    **Passo-a-passo**:
+    - O utilizador abre a aplicação.
+    - A app mostra no mapa a localização do utilizador.
+    - A app procura bebedouros próximos e exibe os respetivos ícones no mapa.
+    - O utilizador toca no ícone de um bebedouro.
+    - A app mostra detalhes (localização, distância e opiniões de outros utilizadores).
+    - O utilizador clica em "Dar opinião".
+    - É dada a possibilidade ao utilizador de avaliar mediante o número de estrelas ( 1 a 5 ), adicionar um comentário e ainda marcar o bebedouro como avariado.
+    - A aplicação guarda a opinião do utilizador, recalculando a média de avaliação do bebedouro.
+    - O utilizador vê a sua opinião refletida na aplicação em tempo real.
+
 
 - **Caso de Utilização 3**
-```
-Objetivo: 
-Permitir que os utilizadores ajudem a manter a base de dados atualizada.
 
-Condições:
-O utilizador tem a app instalada e está com GPS ativo.
-Existe ligação à internet.
-O utilizador tem de ter histórico de avaliações / utilização da app antes de adicionar novos bebedouros.
+    **Objetivo**: 
+    Permitir que os utilizadores ajudem a manter a base de dados atualizada.
 
-Passo-a-passo:
-- O utilizador vai até ao bebedouro.
-- Abre a aplicação.
-- A app procura bebedouros próximos e exibe os respetivos ícones no mapa.
-- O utilizador toca na funcionalidade de "Adicionar Bebedouro".
-- Um novo menu aparece com objetivo de pedir informações ao utilizador sobre o novo bebedouro.
-- Utilizador clica no botão de "Submeter".
-- O bebedouro é adicionado ao mapa com base na localização atual do utilizador.
-- O utilizador vê as suas ações refletidas em tempo real.
-```
+    **Condições**:
+    O utilizador tem a app instalada e está com GPS ativo.
+    Existe ligação à internet.
+    O utilizador tem de ter histórico de avaliações / utilização da app antes de adicionar novos bebedouros.
+
+    **Passo-a-passo**:
+    - O utilizador vai até ao bebedouro.
+    - Abre a aplicação.
+    - A app procura bebedouros próximos e exibe os respetivos ícones no mapa.
+    - O utilizador toca na funcionalidade de "Adicionar Bebedouro".
+    - Um novo menu aparece com objetivo de pedir informações ao utilizador sobre o novo bebedouro.
+    - Utilizador clica no botão de "Submeter".
+    - O bebedouro é adicionado ao mapa com base na localização atual do utilizador.
+    - O utilizador vê as suas ações refletidas em tempo real.
+
 - **Caso de Utilização 4**
-```
-Objetivo: 
-Fazer registo na aplicação.
 
-Condições:
-O utilizador tem a app instalada.
-Existe ligação à internet.
+    **Objetivo**: 
+    Fazer registo na aplicação.
 
-Passo-a-passo:
-- O utilizador deve abrir a aplicação.
-- Clicar no ícone de perfil.
-- Clicar no botão de "Registar".
-- Preencher os campos com as suas informações.
-```
+    **Condições**:
+    O utilizador tem a app instalada.
+    Existe ligação à internet.
+
+    **Passo-a-passo**:
+    - O utilizador deve abrir a aplicação.
+    - Clicar no ícone de perfil.
+    - Clicar no botão de "Registar".
+    - Preencher os campos com as suas informações.
+
 - **Caso de Utilização 5**
-```
-Objetivo: 
-Fazer login na aplicação.
 
-Condições:
-O utilizador tem a app instalada.
-O utilizador deve ter uma conta registada na aplicação.
-Existe ligação à internet.
+    **Objetivo**: 
+    Fazer login na aplicação.
 
-Passo-a-passo:
-- O utilizador deve abrir a aplicação.
-- Clicar no ícone de perfil.
-- Clicar no botão de "Login".
-- Preencher os campos com as suas informações.
-- Requisitos
-  - Requisitos Funcionais
-```
+    **Condições**:
+    O utilizador tem a app instalada.
+    O utilizador deve ter uma conta registada na aplicação.
+    Existe ligação à internet.
+
+    **Passo-a-passo**:
+    - O utilizador deve abrir a aplicação.
+    - Clicar no ícone de perfil.
+    - Clicar no botão de "Login".
+    - Preencher os campos com as suas informações.
+    - Requisitos
+    - Requisitos Funcionais
 
 ## Requisitos funcionais:
 Com base nos objetivos do sistema, foram definidos os seguintes requisitos funcionais:
@@ -361,7 +315,7 @@ O tópico a seguir apresenta alguns ecrãs que formam a estrutura da aplicação
 
 **Ecrã de Boas-Vindas**
 
-![](https://i.imgur.com/QKB7Gsv.png)
+![](https://i.imgur.com/XW6QXqX.png)
 
 **Ecrã de Registo**
 
