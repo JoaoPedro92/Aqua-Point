@@ -151,7 +151,9 @@ As duas imagens abaixo representam o **Mapa de Gantt** do projeto **Aqua Point,*
   <img src="https://i.imgur.com/BFXroPh.png" />
 </p>
 
-Figura 11 - Fases do projeto
+<p align="center">
+  Figura 11 - Fases do projeto
+</p>
 
 Na figura seguinte, é apresentado o cronograma do projeto seguindo a planificação do Mapa de Gantt.
 
@@ -159,21 +161,31 @@ Na figura seguinte, é apresentado o cronograma do projeto seguindo a planifica�
   <img src="https://i.imgur.com/HUWpDB6.png" />
 </p>
 
-Figura 12 - Mapa de Gantt
+<p align="center">
+  Figura 12 - Mapa de Gantt
+</p>
 
 ## Aplicações Similares
 
 **AquaFinder**: Uma aplicação colaborativa que mostra um mapa com pontos onde é possível encher a garrafa, muitas vezes incluindo bebedouros públicos e pontos de água em cidades de todo o mundo.
 
-![](https://i.imgur.com/06iy6Nh.png)
+<p align="center">
+  <img src="https://i.imgur.com/06iy6Nh.png" />
+</p>
 
-Figura 13 - AquaFinder
+<p align="center">
+  Figura 13 - AquaFinder
+</p>
 
 **H20 QUALITY**: Desenvolvida pela EPAL (Empresa Portuguesa das Águas Livres, SA), esta aplicação é específica para encontrar bebedouros da EPAL em Lisboa e permite consultar a qualidade da água.
 
-![](https://i.imgur.com/otllvuD.png)
+<p align="center">
+  <img src="https://i.imgur.com/otllvuD.png" />
+</p>
 
-Figura 14 - H20 Quality
+<p align="center">
+  Figura 14 - H20 Quality
+</p>
 
 ### Onde nos destacamos
 
