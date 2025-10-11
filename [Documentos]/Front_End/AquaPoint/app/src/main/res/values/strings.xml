@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">AquaPoint</string>
+    <string name="log_in">LOG IN</string>
+    <string name="register">REGISTAR</string>
+    <string name="register_low">Registar</string>
+    <string name="login_low">Login</string>
+    <string name="submit">SUBMETER</string>
+    <string name="mail_example">iade@exemplo.com</string>
+    <string name="password_input">********</string>
+    <string name="go_back">Return</string>
+</resources>
