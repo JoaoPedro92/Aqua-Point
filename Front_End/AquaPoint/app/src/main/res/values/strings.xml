@@ -8,4 +8,8 @@
     <string name="mail_example">iade@exemplo.com</string>
     <string name="password_input">********</string>
     <string name="go_back">Return</string>
+    <string name="your_name">O seu nome</string>
+    <string name="personal_area">Área pessoal</string>
+    <string name="current_password">Password atual</string>
+    <string name="new_password_area">Nova password</string>
 </resources>

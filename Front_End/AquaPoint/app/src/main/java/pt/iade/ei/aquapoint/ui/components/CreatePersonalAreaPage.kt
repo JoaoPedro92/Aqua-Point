@@ -46,14 +46,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.IconButton
 
 @Composable
-fun CreateRegisterPage() {
+fun CreatePersonalArea() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(35.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -66,20 +66,39 @@ fun CreateRegisterPage() {
             )
         }
 
-        Spacer(modifier = Modifier.height(80.dp))
+        Spacer(modifier = Modifier.height(25.dp))
 
         Text(
-            text = stringResource(R.string.register_low),
+            text = stringResource(R.string.personal_area),
             fontFamily = ComfortaaFont,
             fontWeight = FontWeight.Bold,
-            fontSize = 36.sp,
+            fontSize = 32.sp,
             color = Color.Black,
             modifier = Modifier
                 .align(Alignment.Start)
                 .padding(top = 16.dp, bottom = 32.dp)
         )
 
-        Spacer(modifier = Modifier.height(50.dp))
+        Image(
+            painter = painterResource(R.drawable.user_image),
+            contentDescription = "Logo",
+            modifier = Modifier
+                .height(140.dp)
+                .width(150.dp)
+        )
+
+        Spacer(modifier = Modifier.height(25.dp))
+
+        Text(
+            text = stringResource(R.string.your_name),
+            fontFamily = ComfortaaFont,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+            color = Color.Black,
+            modifier = Modifier
+                .align(Alignment.Start)
+                .padding(top = 16.dp, bottom = 1.dp)
+        )
 
         OutlinedTextField(
             value = "",
@@ -93,26 +112,20 @@ fun CreateRegisterPage() {
             ),
             label = { Text(stringResource(R.string.your_name)) },
             modifier = Modifier
-                .fillMaxWidth(0.95f)
-                .padding(vertical = 8.dp),
+                .fillMaxWidth(1f)
+                .padding(vertical = 2.dp),
             singleLine = true
         )
 
-        OutlinedTextField(
-            value = "",
-            shape = RoundedCornerShape(16.dp),
-            onValueChange = {  },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = AquaGreen,
-                unfocusedBorderColor = AquaGreen,
-                focusedLabelColor = AquaGreen,
-                unfocusedLabelColor = AquaGreen,
-            ),
-            label = { Text(stringResource(R.string.mail_example)) },
+        Text(
+            text = stringResource(R.string.current_password),
+            fontFamily = ComfortaaFont,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+            color = Color.Black,
             modifier = Modifier
-                .fillMaxWidth(0.95f)
-                .padding(vertical = 8.dp),
-            singleLine = true
+                .align(Alignment.Start)
+                .padding(top = 16.dp, bottom = 1.dp)
         )
 
         OutlinedTextField(
@@ -127,13 +140,40 @@ fun CreateRegisterPage() {
             ),
             label = { Text(stringResource(R.string.password_input)) },
             modifier = Modifier
-                .fillMaxWidth(0.95f)
-                .padding(vertical = 8.dp),
-            singleLine = true,
-            visualTransformation = PasswordVisualTransformation()
+                .fillMaxWidth(1f)
+                .padding(vertical = 2.dp),
+            singleLine = true
         )
 
-        Spacer(modifier = Modifier.height(64.dp))
+        Text(
+            text = stringResource(R.string.new_password_area),
+            fontFamily = ComfortaaFont,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+            color = Color.Black,
+            modifier = Modifier
+                .align(Alignment.Start)
+                .padding(top = 16.dp, bottom = 1.dp)
+        )
+
+        OutlinedTextField(
+            value = "",
+            shape = RoundedCornerShape(16.dp),
+            onValueChange = {  },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = AquaGreen,
+                unfocusedBorderColor = AquaGreen,
+                focusedLabelColor = AquaGreen,
+                unfocusedLabelColor = AquaGreen,
+            ),
+            label = { Text(stringResource(R.string.password_input)) },
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .padding(vertical = 2.dp),
+            singleLine = true
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
 
         Button(
             onClick = {  },
@@ -142,7 +182,7 @@ fun CreateRegisterPage() {
                 containerColor = AquaGreen
             ),
             modifier = Modifier
-                .fillMaxWidth(0.95f)
+                .fillMaxWidth(1f)
                 .height(50.dp)
         ) {
             Text(
@@ -153,14 +193,18 @@ fun CreateRegisterPage() {
                 color = Color.White
             )
         }
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        CreateNavBarPage()
     }
 }
 
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewRegisterPage() {
+fun PreviewPersonalAreaPage() {
     AquaPointTheme {
-        CreateRegisterPage()
+        CreatePersonalArea()
     }
 }
