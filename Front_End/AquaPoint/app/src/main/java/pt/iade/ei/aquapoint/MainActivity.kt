@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import pt.iade.ei.aquapoint.ui.theme.AquaPointTheme
 import pt.iade.ei.aquapoint.ui.components.CreateHomePage
+import pt.iade.ei.aquapoint.ui.components.CreateLoginPage
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,9 +35,8 @@ fun MainActivityPreview() {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            Text("StandX")
-
             CreateHomePage()
+
         }
     }
 }
