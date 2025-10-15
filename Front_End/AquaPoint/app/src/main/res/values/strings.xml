@@ -12,4 +12,7 @@
     <string name="personal_area">Área pessoal</string>
     <string name="current_password">Password atual</string>
     <string name="new_password_area">Nova password</string>
+    <string name="distance">Distância</string>
+    <string name="search">Procurar</string>
+    <string name="evaluation">Avaliação</string>
 </resources>
