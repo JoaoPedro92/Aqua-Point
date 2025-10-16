@@ -15,4 +15,9 @@
     <string name="distance">Distância</string>
     <string name="search">Procurar</string>
     <string name="evaluation">Avaliação</string>
+    <string name="add_point_name">Nome do bebedouro</string>
+    <string name="aqua_point_type">Tipo de bebedouro</string>
+    <string name="aqua_point_type_person">PESSOAS</string>
+    <string name="aqua_point_type_animal">ANIMAIS</string>
+    <string name="aqua_point_type_both">AMBOS</string>
 </resources>
