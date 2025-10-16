@@ -58,7 +58,7 @@ import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
 
 @Preview(showBackground = true )
 @Composable
-fun PreviewSearchPage(){
+fun PreviewFavoritesPage(){
     AquaPointTheme {
         val places = listOf(
             Place("Posto 1 - Santa Maria", "15min -3.8km", 4, R.drawable.aqua_point_logo),
@@ -80,7 +80,7 @@ fun PreviewSearchPage(){
             )
             {
                 items(places) { place ->
-                    CreatePointCard(place, false)
+                    CreatePointCard(place, true)
                 }
             }
             CreateNavBarPage()
