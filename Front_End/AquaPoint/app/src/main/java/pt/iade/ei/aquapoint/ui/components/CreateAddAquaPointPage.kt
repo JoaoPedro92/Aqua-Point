@@ -41,6 +41,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.IconButton
@@ -66,7 +67,150 @@ fun CreateAddAquaPointPage() {
             )
         }
 
+        Spacer(modifier = Modifier.height(30.dp))
+
+        Image(
+            painter = painterResource(R.drawable.add_new_point),
+            contentDescription = "Logo",
+            modifier = Modifier
+                .height(150.dp)
+                .width(200.dp)
+        )
+
+        Spacer(modifier = Modifier.height(55.dp))
+
+        Text(
+            text = stringResource(R.string.add_point_name),
+            fontFamily = ComfortaaFont,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+            color = Color.Black,
+            modifier = Modifier
+                .align(Alignment.Start)
+                .padding(top = 16.dp, bottom = 1.dp)
+        )
+
+        OutlinedTextField(
+            value = "",
+            shape = RoundedCornerShape(16.dp),
+            onValueChange = {  },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = AquaGreen,
+                unfocusedBorderColor = AquaGreen,
+                focusedLabelColor = AquaGreen,
+                unfocusedLabelColor = AquaGreen,
+            ),
+            label = { "" },
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .padding(vertical = 2.dp),
+            singleLine = true
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Text(
+            text = stringResource(R.string.aqua_point_type),
+            fontFamily = ComfortaaFont,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+            color = Color.Black,
+            modifier = Modifier
+                .align(Alignment.Start)
+                .padding(top = 16.dp, bottom = 1.dp)
+        )
+
+        Spacer(modifier = Modifier.height(15.dp))
+
+        Button(
+            onClick = {  },
+            shape = RoundedCornerShape(16.dp),
+            border = BorderStroke(2.dp, AquaGreen),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = AquaGreen,
+
+            ),
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .height(55.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.aqua_point_type_person),
+                fontFamily = RobotoFont,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                color = Color.White
+            )
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Button(
+            onClick = {  },
+            shape = RoundedCornerShape(16.dp),
+            border = BorderStroke(2.dp, AquaGreen),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.White
+            ),
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .height(55.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.aqua_point_type_animal),
+                fontFamily = RobotoFont,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                color = AquaGreen
+            )
+        }
+
+        Spacer(modifier = Modifier.height(15.dp))
+
+        Button(
+            onClick = {  },
+            shape = RoundedCornerShape(16.dp),
+            border = BorderStroke(2.dp, AquaGreen),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.White
+            ),
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .height(55.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.aqua_point_type_both),
+                fontFamily = RobotoFont,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                color = AquaGreen
+            )
+        }
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        Button(
+            onClick = {  },
+            shape = RoundedCornerShape(16.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = AquaGreen
+            ),
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .height(50.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.submit),
+                fontFamily = RobotoFont,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                color = Color.White
+            )
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
         
+        CreateNavBarPage()
     }
 }
 
