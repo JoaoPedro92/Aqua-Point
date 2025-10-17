@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import pt.iade.ei.aquapoint.ui.theme.AquaPointTheme
 import pt.iade.ei.aquapoint.ui.components.CreateHomePage
 import pt.iade.ei.aquapoint.ui.components.CreateLoginPage
+import pt.iade.ei.aquapoint.ui.components.MapScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -23,6 +24,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AquaPointTheme {
+                MapScreen()
             }
         }
     }
