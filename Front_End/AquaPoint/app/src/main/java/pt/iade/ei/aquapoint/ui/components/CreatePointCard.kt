@@ -51,8 +51,8 @@ fun CreatePointCard(place: Place, modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 13.dp),
-        shape = RoundedCornerShape(40.dp), // bordas arredondadas
-        elevation = CardDefaults.cardElevation(2.dp) // sombra
+        shape = RoundedCornerShape(40.dp),
+        elevation = CardDefaults.cardElevation(2.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
 

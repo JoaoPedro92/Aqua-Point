@@ -15,4 +15,19 @@
     <string name="distance">Distância</string>
     <string name="search">Procurar</string>
     <string name="evaluation">Avaliação</string>
+    <string name="post_name">Posto 1 - Santa Maria</string>
+    <string name="opinion">120 opiniões</string>
+    <string name="post_description">Bebedouro localizado em Santa Maria com boas avaliações gerais</string>
+    <string name="post_distance">15 min - 3,8 km</string>
+    <string name="evaluation_title">Avalia este bebedouro</string>
+    <string name="experience_text">Partilha a tua experiência</string>
+    <string name="comment_placeholder">Escreve um comentário</string>
+    <string name="personal_name">Roberto Matias</string>
+    <string name="evaluation_date">12/10/2025</string>
+    <string name="user_comment">Este bebedouro é realmente excelente. A água é fresca e limpa, e o local está sempre organizado..."</string>
+    <string name="continuation">Continuar a ler</string>
+
+
+
+
 </resources>
