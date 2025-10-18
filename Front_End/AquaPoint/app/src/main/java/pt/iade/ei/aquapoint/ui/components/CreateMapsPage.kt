@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
@@ -65,7 +66,7 @@ import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
 fun MapScreen() {
     val singapore = LatLng(1.35, 103.87)
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(singapore, 10f)
+        position = CameraPosition.fromLatLngZoom(singapore, 5f)
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -78,12 +79,42 @@ fun MapScreen() {
             .fillMaxSize()
             .padding(horizontal = 14.dp)
         ) {
+            Spacer(modifier = Modifier.height(20.dp))
+
             CreateSearchBox()
 
-            Spacer(modifier = Modifier.height(720.dp))
+            Spacer(modifier = Modifier.height(630.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                FloatingActionButton(
+                    onClick = {},
+                    modifier = Modifier.size(50.dp),
+                    containerColor = AquaGreen,
+                    contentColor = Color.White
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Place,
+                        contentDescription = "Center",
+                        modifier = Modifier.size(28.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
 
             CreateNavBarPage()
         }
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun PreviewMapsPage() {
+    AquaPointTheme {
+        MapScreen()
+    }
+}
