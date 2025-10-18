@@ -16,6 +16,7 @@ import pt.iade.ei.aquapoint.ui.theme.AquaPointTheme
 import pt.iade.ei.aquapoint.ui.components.CreateHomePage
 import pt.iade.ei.aquapoint.ui.components.CreateLoginPage
 import pt.iade.ei.aquapoint.ui.components.MapScreen
+import pt.iade.ei.aquapoint.ui.components.Place
 
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +25,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AquaPointTheme {
-                MapScreen()
+                val places = listOf(
+                    Place("Posto 1 - Santa Maria", "15min -3.8km", 4, R.drawable.aqua_point_logo, latitude = 38.78049309176663, longitude = -9.102677320690447),
+                    Place("Posto 2 - Moscavide", "25min - 5km", 3, R.drawable.aqua_point_logo, latitude = 38.78105763775865, longitude = -9.103412245980696),
+                    Place("Posto 3 - Santos", "35min - 7km", 3, R.drawable.aqua_point_logo, latitude = 38.77977799376074, longitude = -9.103589271780537),
+                    Place("Posto 4 - Lumiar", " 10min - 2km", 3, R.drawable.aqua_point_logo, latitude = 38.78053909197767, longitude =  -9.101379131491612)
+                )
+
+                MapScreen(places)
             }
         }
     }
