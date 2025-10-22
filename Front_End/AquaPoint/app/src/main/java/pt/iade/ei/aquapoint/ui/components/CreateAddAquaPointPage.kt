@@ -129,7 +129,7 @@ fun CreateAddAquaPointPage() {
             colors = ButtonDefaults.buttonColors(
                 containerColor = AquaGreen,
 
-            ),
+                ),
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .height(55.dp)
@@ -209,7 +209,7 @@ fun CreateAddAquaPointPage() {
         }
 
         Spacer(modifier = Modifier.height(20.dp))
-        
+
         CreateNavBarPage()
     }
 }
