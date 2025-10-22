@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import pt.iade.ei.aquapoint.R
 import pt.iade.ei.aquapoint.ui.theme.AquaPointTheme
 import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
+
 
 @Composable
 fun CreatePointDetail() {
@@ -75,16 +77,23 @@ fun CreatePointDetail() {
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
             ) {
-                Column(modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp
+                Column(
+                    modifier = Modifier
+                        .padding(
+                            vertical = 12.dp,
+                            horizontal = 16.dp
                 )) {
                     Text(
                         text = stringResource(R.string.post_name),
-                        fontSize = 24.sp,
+                        fontSize = 23.sp,
                         fontFamily = ComfortaaFont,
-                        color = Color.Black
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                        modifier = Modifier
+                            .offset(y = 7.dp)
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(14.dp))
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
@@ -140,7 +149,10 @@ fun CreatePointDetail() {
                         text = stringResource(id = R.string.evaluation_title),
                         fontFamily = ComfortaaFont,
                         fontSize = 20.sp,
-                        color = Color.Black
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                        modifier = Modifier
+                            .offset(y = 7.dp)
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -167,7 +179,7 @@ fun CreatePointDetail() {
                                 tint = Color.Black,
 
                                 modifier = Modifier
-                                    .size(38.dp)
+                                    .size(30.dp)
 
                             )
                         }
@@ -205,11 +217,15 @@ fun CreatePointDetail() {
             elevation = CardDefaults.cardElevation(2.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 13.dp, horizontal = 20.dp)
+                .padding(vertical = 18.dp, horizontal = 20.dp)
         ) {
-            Column(modifier = Modifier.padding(10.dp)) {
+            Column(modifier = Modifier.padding(16.dp)) {
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .offset(y = 7.dp)
+                ) {
                     Image(
                         painter = painterResource(id = R.drawable.bebedouro),
                         contentDescription = "Perfil",
@@ -262,6 +278,7 @@ fun CreatePointDetail() {
                     contentDescription = "Imagem comentário",
                     modifier = Modifier
                         .width(width = 80.dp)
+                        .clip(CircleShape)
                         .height(80.dp),
 
                     contentScale = ContentScale.Crop
