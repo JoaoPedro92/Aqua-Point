@@ -80,7 +80,7 @@ fun PreviewSearchPage(){
             )
             {
                 items(places) { place ->
-                    CreatePointCard(place)
+                    CreatePointCard(place, false)
                 }
             }
             CreateNavBarPage()

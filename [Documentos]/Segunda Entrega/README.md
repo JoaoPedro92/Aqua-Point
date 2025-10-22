@@ -346,7 +346,7 @@ O tópico a seguir apresenta alguns ecrãs que formam a estrutura da aplicação
 ## Bases de dados
 **Entidades e atributos da base de dados**
 <p align="center">
-  <img src="https://i.imgur.com/HWA3WCm.png" />
+  <img src="https://i.imgur.com/HihhR2v.png" />
 </p>
 <p align="center">
   Figura 15 - Entidades e atributos da base de dados

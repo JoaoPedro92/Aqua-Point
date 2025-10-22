@@ -2,6 +2,7 @@ package pt.iade.ei.aquapoint.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -46,7 +48,7 @@ data class Place(
 )
 
 @Composable
-fun CreatePointCard(place: Place, modifier: Modifier = Modifier) {
+fun CreatePointCard(place: Place, isFavorite: Boolean, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -55,6 +57,21 @@ fun CreatePointCard(place: Place, modifier: Modifier = Modifier) {
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
+            if (isFavorite) {
+                Row (
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ){
+                    Icon(
+                        imageVector = Icons.Filled.Favorite,
+                        contentDescription = "Favorito",
+                        tint = Color.Red,
+                        modifier = Modifier
+                            .offset(x= -5.dp)
+                    )
+                }
+            }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(

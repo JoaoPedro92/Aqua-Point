@@ -26,8 +26,9 @@
     <string name="evaluation_date">12/10/2025</string>
     <string name="user_comment">Este bebedouro é realmente excelente. A água é fresca e limpa, e o local está sempre organizado..."</string>
     <string name="continuation">Continuar a ler</string>
-
-
-
-
+    <string name="add_point_name">Nome do bebedouro</string>
+    <string name="aqua_point_type">Tipo de bebedouro</string>
+    <string name="aqua_point_type_person">PESSOAS</string>
+    <string name="aqua_point_type_animal">ANIMAIS</string>
+    <string name="aqua_point_type_both">AMBOS</string>
 </resources>
