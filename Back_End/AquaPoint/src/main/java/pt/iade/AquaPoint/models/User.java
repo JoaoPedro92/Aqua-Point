@@ -2,15 +2,29 @@ package pt.iade.AquaPoint.models;
 
 import java.sql.Date;
 
-public class UserModel {
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private int id;
     private String name;
     private String email;
     private String password;
     private Date joined;
 
+    // construtor para o jpa
+    public User() {}
+
     // construtor
-    public UserModel
+    public User
     (
         int id, 
         String name, 
@@ -25,31 +39,31 @@ public class UserModel {
         this.joined = joined;
     }
 
-    public int GetID() {
+    public int getId() {
         return id;
     }
 
-    public String GetName() {
+    public String getName() {
         return name;
     }
 
-    public String GetEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public String GetPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public Date GetJoined() {
+    public Date getJoined() {
         return joined;
     }
 
-    public void SetName(String newName) {
+    public void setName(String newName) {
         name = newName;
     }
 
-    public void SetPassword(String newPassword) {
+    public void setPassword(String newPassword) {
         password = newPassword;
     }
 }
