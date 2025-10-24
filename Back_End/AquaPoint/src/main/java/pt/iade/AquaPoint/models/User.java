@@ -66,4 +66,8 @@ public class User {
     public void setPassword(String newPassword) {
         password = newPassword;
     }
+
+    public void setJoined(Date newDate) {
+        joined = newDate;
+    }
 }
