@@ -1,6 +1,7 @@
 package pt.iade.ei.aquapoint
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.github.kittinunf.fuel.httpGet
 import pt.iade.ei.aquapoint.ui.theme.AquaPointTheme
 import pt.iade.ei.aquapoint.ui.components.CreateHomePage
 import pt.iade.ei.aquapoint.ui.components.CreateLoginPage
@@ -31,6 +33,14 @@ class MainActivity : ComponentActivity() {
                     Place("Posto 3 - Santos", "35min - 7km", 3, R.drawable.aqua_point_logo, latitude = 38.77977799376074, longitude = -9.103589271780537),
                     Place("Posto 4 - Lumiar", " 10min - 2km", 3, R.drawable.aqua_point_logo, latitude = 38.78053909197767, longitude =  -9.101379131491612)
                 )
+
+                /* exemplo da utilização do metodo do back end com GET
+                "http://10.0.2.2:8080/api/java/aquapoints/getAllAquaPoints/".httpGet().response{
+                        request, response, result ->
+
+                    Log.d("TESTES", response.toString())
+                }
+                 */
 
                 MapScreen(places)
             }

@@ -56,6 +56,12 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
     implementation(libs.androidx.compose.foundation)
+
+    implementation("com.github.kittinunf.fuel:fuel:2.3.1")
+    implementation("com.google.code.gson:gson:2.13.2")
+    implementation("com.github.kittinunf.fuel:fuel-android:2.3.1")
+    implementation("com.github.kittinunf.fuel:fuel-gson:2.3.1")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
