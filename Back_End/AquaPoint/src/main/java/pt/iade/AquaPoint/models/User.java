@@ -63,6 +63,10 @@ public class User {
         name = newName;
     }
 
+    public void setEmail(String newEmail) {
+        email = newEmail;
+    }
+
     public void setPassword(String newPassword) {
         password = newPassword;
     }

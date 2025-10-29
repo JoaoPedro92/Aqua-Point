@@ -8,8 +8,10 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping; 
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import pt.iade.AquaPoint.repository.UserRepository;
 import pt.iade.AquaPoint.models.User;
@@ -35,20 +37,18 @@ public class UsersController {
     }
     
     @PostMapping(path="/getUserDataByName/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) 
-    public User getUserDataByName(/*String name*/) { 
-        return userRepository.findByName("João Silva"); // hardcode "João Silva" para testar, deve ir do android studio
+    public User getUserDataByName(@RequestBody String name) { 
+        return userRepository.findByName(name); 
     }
     
-    // in development...
     @PostMapping(path="/createNewUser/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) 
-    public User createNewUser(User userData) { 
+    public User createNewUser(@RequestBody User userData) {
         userData.setJoined(new Date(System.currentTimeMillis()));
-
-        return userRepository.save(userData); // dados hardcode para testar, devem vir do android studio
+        return userRepository.save(userData);
     }
 
     @PostMapping(path="/editUserData/", produces = MediaType.APPLICATION_JSON_VALUE) 
-    public User editUserData(User userData) { 
-        return userRepository.save(userData); // dados hardcode para testar, devem vir do android studio
+    public User editUserData(@RequestBody User userData) { 
+        return userRepository.save(userData); 
     }
 } 

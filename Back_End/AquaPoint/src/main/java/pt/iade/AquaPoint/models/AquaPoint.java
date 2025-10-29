@@ -63,4 +63,24 @@ public class AquaPoint {
     public int getLongitude() {
         return longitude;
     }
+
+    public void setPoint_name(String point_name) {
+        this.point_name = point_name;
+    }
+
+    public void setPoint_type(int point_type) {
+        this.point_type = point_type;
+    }
+
+    public void setLocal_id(int local_id) {
+        this.local_id = local_id;
+    }
+
+    public void setLatitude(int latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(int longitude) {
+        this.longitude = longitude;
+    }
 }
