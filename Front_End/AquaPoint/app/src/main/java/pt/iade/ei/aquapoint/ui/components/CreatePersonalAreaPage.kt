@@ -1,5 +1,6 @@
 package pt.iade.ei.aquapoint.ui.components
 
+import CreateNavBarPage
 import android.graphics.fonts.FontFamily
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
@@ -53,7 +54,7 @@ fun CreatePersonalArea() {
             .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(35.dp))
+        Spacer(modifier = Modifier.height(50.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -196,7 +197,7 @@ fun CreatePersonalArea() {
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        CreateNavBarPage()
+        //CreateNavBarPage()
     }
 }
 

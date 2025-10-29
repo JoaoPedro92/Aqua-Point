@@ -1,5 +1,6 @@
 package pt.iade.ei.aquapoint.ui.components
 
+import CreateNavBarPage
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
@@ -90,7 +91,7 @@ fun MapScreen(places: List<Place>) {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            CreateNavBarPage()
+            //CreateNavBarPage()
         }
     }
 }

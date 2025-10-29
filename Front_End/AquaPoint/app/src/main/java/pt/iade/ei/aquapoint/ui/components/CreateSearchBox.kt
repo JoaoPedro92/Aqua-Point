@@ -1,9 +1,11 @@
 package pt.iade.ei.aquapoint.ui.components
 
 import android.graphics.fonts.FontFamily
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,6 +49,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.IconButton
+import androidx.compose.ui.focus.onFocusChanged
 
 @Composable
 fun CreateSearchBox() {
@@ -74,6 +77,12 @@ fun CreateSearchBox() {
             },
             modifier = Modifier
                 .weight(1f)
+                .onFocusChanged
+                {
+                    if (it.isFocused) {
+
+                    }
+                }
                 .height(50.dp),
             shape = RoundedCornerShape(22.dp),
             colors = OutlinedTextFieldDefaults.colors(
