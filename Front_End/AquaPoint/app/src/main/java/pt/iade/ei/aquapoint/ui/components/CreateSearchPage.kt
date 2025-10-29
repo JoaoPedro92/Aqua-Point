@@ -1,9 +1,12 @@
 package pt.iade.ei.aquapoint.ui.components
 
+import CreateNavBarPage
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,7 +20,7 @@ import pt.iade.ei.aquapoint.ui.theme.AquaPointTheme
 
 @Preview(showBackground = true )
 @Composable
-fun PreviewSearchPage(){
+fun CreateSearchPage(){
     AquaPointTheme {
         val places = listOf(
             Place("Posto 1 - Santa Maria", "15min -3.8km", 4, R.drawable.aqua_point_logo, latitude = 38.78049309176663, longitude = -9.102677320690447),
@@ -30,6 +33,8 @@ fun PreviewSearchPage(){
             .fillMaxSize()
             .padding(horizontal = 18.dp)
         ) {
+            Spacer(modifier = Modifier.height(20.dp))
+
             CreateSearchBox()
 
             LazyColumn(
@@ -42,7 +47,7 @@ fun PreviewSearchPage(){
                     CreatePointCard(place, false)
                 }
             }
-            CreateNavBarPage()
+            //CreateNavBarPage()
         }
     }
 }

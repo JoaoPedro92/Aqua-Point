@@ -1,5 +1,6 @@
 package pt.iade.ei.aquapoint.ui.components
 
+import CreateNavBarPage
 import android.graphics.fonts.FontFamily
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
@@ -54,7 +55,7 @@ fun CreateAddAquaPointPage() {
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -210,7 +211,7 @@ fun CreateAddAquaPointPage() {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        CreateNavBarPage()
+        //CreateNavBarPage()
     }
 }
 

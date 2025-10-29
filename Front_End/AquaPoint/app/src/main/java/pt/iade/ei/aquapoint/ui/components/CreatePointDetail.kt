@@ -1,5 +1,6 @@
 package pt.iade.ei.aquapoint.ui.components
 
+import CreateNavBarPage
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
@@ -321,7 +322,7 @@ fun CreatePointDetail() {
                 modifier = Modifier
                     .padding(horizontal = 15.dp, vertical = 10.dp)
             ) {
-                CreateNavBarPage()
+                //CreateNavBarPage()
             }
 
     }
