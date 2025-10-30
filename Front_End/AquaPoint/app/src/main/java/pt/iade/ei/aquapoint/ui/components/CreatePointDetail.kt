@@ -1,13 +1,11 @@
 package pt.iade.ei.aquapoint.ui.components
 
-import CreateNavBarPage
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -25,7 +23,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,7 +32,7 @@ import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
 
 
 @Composable
-fun CreatePointDetail() {
+fun CreatePointDetail(place: Place?) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -46,24 +43,26 @@ fun CreatePointDetail() {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(155.dp)
+                .padding(horizontal = 16.dp)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.bebedouro),
                 contentDescription = "Imagem de topo",
                 modifier = Modifier
                     .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
                     .fillMaxHeight(),
                 contentScale = ContentScale.Crop
             )
 
-            Icon(
+            /*Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = "Voltar",
                 tint = Color.White,
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .padding(start = 16.dp, top = 20.dp)
-            )
+            )*/
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -72,7 +71,7 @@ fun CreatePointDetail() {
         Column {
 
             Card(
-                shape = RoundedCornerShape(40.dp),
+                shape = RoundedCornerShape(30.dp),
                 elevation = CardDefaults.cardElevation(2.dp),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -83,9 +82,9 @@ fun CreatePointDetail() {
                         .padding(
                             vertical = 12.dp,
                             horizontal = 16.dp
-                )) {
+                        )) {
                     Text(
-                        text = stringResource(R.string.post_name),
+                        text = place!!.name,
                         fontSize = 23.sp,
                         fontFamily = ComfortaaFont,
                         fontWeight = FontWeight.Bold,
@@ -104,7 +103,9 @@ fun CreatePointDetail() {
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(text = "4.5")
+                        Text(
+                            text = place!!.rating.toString(),
+                        )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(text = "•")
                         Spacer(modifier = Modifier.width(8.dp))
@@ -116,16 +117,16 @@ fun CreatePointDetail() {
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    Text(
+                    /*Text(
                         text = stringResource(id = R.string.post_description),
                         fontSize = 14.sp,
                         color = Color.Gray
-                    )
+                    )*/
 
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = stringResource(id = R.string.post_distance),
+                        text = place!!.distance,
                         fontSize = 14.sp,
                         color = Color.Gray
                     )
@@ -138,7 +139,7 @@ fun CreatePointDetail() {
         //Avaliação
         Column {
             Card(
-                shape = RoundedCornerShape(40.dp),
+                shape = RoundedCornerShape(30.dp),
                 elevation = CardDefaults.cardElevation(2.dp),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -212,9 +213,9 @@ fun CreatePointDetail() {
         }
 
 
-            //avalição feita
+        //avalição feita
         Card(
-            shape = RoundedCornerShape(40.dp),
+            shape = RoundedCornerShape(30.dp),
             elevation = CardDefaults.cardElevation(2.dp),
             modifier = Modifier
                 .fillMaxWidth()
@@ -272,20 +273,20 @@ fun CreatePointDetail() {
                     modifier = Modifier
                         .fillMaxWidth(),
 
-                ){
+                    ){
 
-                Image(
-                    painter = painterResource(id = R.drawable.bebedouro),
-                    contentDescription = "Imagem comentário",
-                    modifier = Modifier
-                        .width(width = 80.dp)
-                        .clip(CircleShape)
-                        .height(80.dp),
+                    Image(
+                        painter = painterResource(id = R.drawable.bebedouro),
+                        contentDescription = "Imagem comentário",
+                        modifier = Modifier
+                            .width(width = 80.dp)
+                            .clip(CircleShape)
+                            .height(80.dp),
 
-                    contentScale = ContentScale.Crop
-                )
+                        contentScale = ContentScale.Crop
+                    )
 
-                Spacer(modifier = Modifier.width(width = 10.dp))
+                    Spacer(modifier = Modifier.width(width = 10.dp))
 
                     Column (
                         modifier = Modifier
@@ -313,34 +314,19 @@ fun CreatePointDetail() {
 
 
 
-             }
+                }
             }
 
         }
 
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 15.dp, vertical = 10.dp)
-            ) {
-                //CreateNavBarPage()
-            }
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 15.dp, vertical = 10.dp)
+        ) {
+            //CreateNavBarPage()
+        }
 
     }
 
 
-}
-
-
-
-
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewPointDetail() {
-    AquaPointTheme {
-        CreatePointDetail()
-
-    }
 }

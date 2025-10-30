@@ -1,13 +1,14 @@
 package pt.iade.ei.aquapoint.ui.components
 
-import CreateNavBarPage
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -15,16 +16,24 @@ import androidx.navigation.NavHostController
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import kotlinx.coroutines.launch
 import pt.iade.ei.aquapoint.Screen
 import pt.iade.ei.aquapoint.ui.theme.AquaGreen
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapScreen(places: List<Place>, navController: NavHostController) {
     val moscavide = LatLng(38.78166399699406, -9.102570032326907)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(moscavide, 17f)
     }
+
+    // Estado do BottomSheet
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
+    var selectedPlace by remember { mutableStateOf<Place?>(null) }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -44,10 +53,12 @@ fun MapScreen(places: List<Place>, navController: NavHostController) {
                     title = place.name,
                     snippet = place.distance,
                     onClick = {
+                        showBottomSheet = true
+                        selectedPlace = place
                         false
                     }
                 ) {
-                    Box(
+                    /*Box(  sistema antigo de abrir point card, trocado por button sheet
                         modifier = Modifier
                             .padding(horizontal = 14.dp)
                     ) {
@@ -55,7 +66,7 @@ fun MapScreen(places: List<Place>, navController: NavHostController) {
                             place = place,
                             isFavorite = false
                         )
-                    }
+                    }*/
                 }
             }
         }
@@ -98,6 +109,39 @@ fun MapScreen(places: List<Place>, navController: NavHostController) {
             Spacer(modifier = Modifier.height(20.dp))
 
             //CreateNavBarPage()
+
+            // sistema button sheet
+            if (showBottomSheet && selectedPlace != null) {
+                LaunchedEffect(Unit) { sheetState.expand() }
+
+                ModalBottomSheet(
+                    onDismissRequest = { showBottomSheet = false },
+                    sheetState = sheetState
+                ) {
+                    AquaPointSheetContent(
+                        place = selectedPlace,
+                        onClose = {
+                            scope.launch {
+                                sheetState.hide()
+                                showBottomSheet = false
+                                selectedPlace = null
+                            }
+                        }
+                    )
+                }
+            }
         }
+    }
+}
+
+@Composable
+fun AquaPointSheetContent(onClose: () -> Unit, place: Place?) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(0.94f)
+            .padding(8.dp)
+    ) {
+        CreatePointDetail(place)
     }
 }
