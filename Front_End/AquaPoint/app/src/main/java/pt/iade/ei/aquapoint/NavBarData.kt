@@ -29,9 +29,11 @@ import pt.iade.ei.aquapoint.ui.components.MapScreen
 import pt.iade.ei.aquapoint.ui.components.Place
 
 
-sealed class Screen(val route: String, val icon: ImageVector) {
+sealed class Screen(val route: String, val icon: ImageVector? = null) {
     object Home : Screen("home", Icons.Filled.Home)
     object Favorite : Screen("favorite", Icons.Filled.Favorite)
     object Add : Screen("add", Icons.Filled.AddCircle)
     object Profile : Screen("profile", Icons.Filled.AccountCircle)
+
+    object Search : Screen("search")
 }

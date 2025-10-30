@@ -32,6 +32,7 @@ import pt.iade.ei.aquapoint.ui.theme.AquaPointTheme
 import pt.iade.ei.aquapoint.ui.components.CreateHomePage
 import pt.iade.ei.aquapoint.ui.components.CreateLoginPage
 import pt.iade.ei.aquapoint.ui.components.CreatePersonalArea
+import pt.iade.ei.aquapoint.ui.components.CreateSearchPage
 import pt.iade.ei.aquapoint.ui.components.MapScreen
 import pt.iade.ei.aquapoint.ui.components.Place
 
@@ -66,10 +67,11 @@ fun LoadHomePage(navController: NavHostController, places: List<Place>) {
             startDestination = Screen.Home.route,
             modifier = Modifier.fillMaxSize()
         ) {
-            composable(Screen.Home.route) { MapScreen(places) }
+            composable(Screen.Home.route) { MapScreen(places, navController) }
             composable(Screen.Favorite.route) { CreateFavoritesPage() }
             composable(Screen.Add.route) { CreateAddAquaPointPage() }
             composable(Screen.Profile.route) { CreatePersonalArea() }
+            composable(Screen.Search.route) { CreateSearchPage() } // página editável
         }
 
         Box(
