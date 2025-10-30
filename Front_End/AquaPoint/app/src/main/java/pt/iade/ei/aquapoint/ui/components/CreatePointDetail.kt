@@ -26,13 +26,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import pt.iade.ei.aquapoint.AquaPoint
 import pt.iade.ei.aquapoint.R
 import pt.iade.ei.aquapoint.ui.theme.AquaPointTheme
 import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
 
 
 @Composable
-fun CreatePointDetail(place: Place?) {
+fun CreatePointDetail(place: AquaPoint?) {
     Column(
         modifier = Modifier
             .fillMaxSize()

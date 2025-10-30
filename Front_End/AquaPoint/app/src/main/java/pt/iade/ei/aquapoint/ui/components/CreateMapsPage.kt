@@ -17,13 +17,14 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 import kotlinx.coroutines.launch
+import pt.iade.ei.aquapoint.AquaPoint
 import pt.iade.ei.aquapoint.Screen
 import pt.iade.ei.aquapoint.ui.theme.AquaGreen
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MapScreen(places: List<Place>, navController: NavHostController) {
+fun MapScreen(places: List<AquaPoint>, navController: NavHostController) {
     val moscavide = LatLng(38.78166399699406, -9.102570032326907)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(moscavide, 17f)
@@ -33,7 +34,7 @@ fun MapScreen(places: List<Place>, navController: NavHostController) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
-    var selectedPlace by remember { mutableStateOf<Place?>(null) }
+    var selectedPlace by remember { mutableStateOf<AquaPoint?>(null) }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -135,7 +136,7 @@ fun MapScreen(places: List<Place>, navController: NavHostController) {
 }
 
 @Composable
-fun AquaPointSheetContent(onClose: () -> Unit, place: Place?) {
+fun AquaPointSheetContent(onClose: () -> Unit, place: AquaPoint?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

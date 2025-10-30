@@ -16,8 +16,8 @@ public class AquaPoint {
     private String point_name;
     private int point_type;
     private int local_id;
-    private int latitude;
-    private int longitude;
+    private double latitude;
+    private double longitude;
 
     // construtor para o jpa
     public AquaPoint() {}
@@ -56,11 +56,11 @@ public class AquaPoint {
         return local_id;
     }
 
-    public int getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public int getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 

@@ -44,14 +44,14 @@ INSERT INTO comment (comment) VALUES
 ('Perfeito para encher garrafas.');
 
 INSERT INTO aqua_points (point_name, point_type, local_id, latitude, longitude) VALUES
-('Fonte da Praça', 1, 1, 38.78049309176, -9.0943),
-('Bebedouro do Parque', 2, 1, 38.78105763775865, -9.10341),
-('Fonte Ribeira', 1, 2, 38.7797779937, -9.10358927178053),
-('Lago da Universidade', 4, 3, 38.7805390919, -9.1013791314),
-('Poço da Praia', 5, 4, 37.0170, -7.9350),
-('Fonte do Centro', 1, 5, 38.779970, -9.101486),
-('Fonte de Belém', 1, 6, 38.779857, -9.100698),
-('Fonte da Boavista', 1, 7, 38.781133, -9.104759);
+('Fonte da Praça', 1, 1, 38.780494689941406, -9.102677345275879),
+('Bebedouro do Parque', 2, 1, 38.78105926513672, -9.103412628173828),
+('Fonte Ribeira', 1, 2, 38.77977752685547, -9.103589057922363),
+('Lago da Universidade', 4, 3, 38.780540466308594, -9.10137939453125),
+('Poço da Praia', 5, 4, 38.780723571777344, -9.100574493408203),
+('Fonte do Centro', 1, 5, 38.78000259399414, -9.1011323928833),
+('Fonte de Belém', 1, 6, 38.780120849609375, -9.102431297302246),
+('Fonte da Boavista', 1, 7, 38.78063201904297, -9.102538108825684);
 
 INSERT INTO points_state (point_id, state_id) VALUES
 (1, 1),

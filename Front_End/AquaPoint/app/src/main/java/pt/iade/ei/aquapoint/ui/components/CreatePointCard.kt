@@ -31,20 +31,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import pt.iade.ei.aquapoint.AquaPoint
 import pt.iade.ei.aquapoint.R
 import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
 
-data class Place(
-    val name: String,
-    val distance: String,
-    val rating: Int,
-    val imageRes: Int,
-    val latitude: Double,
-    val longitude: Double
-)
-
 @Composable
-fun CreatePointCard(place: Place, isFavorite: Boolean, modifier: Modifier = Modifier) {
+fun CreatePointCard(place: AquaPoint, isFavorite: Boolean, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
             .fillMaxWidth()
