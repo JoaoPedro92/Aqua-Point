@@ -15,6 +15,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -27,6 +32,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.github.kittinunf.fuel.httpGet
 import kotlinx.serialization.Serializable
+import pt.iade.ei.aquapoint.data.AquaPointsRepository
+import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
+import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService.parseAquaPoints
 import pt.iade.ei.aquapoint.ui.components.CreateAddAquaPointPage
 import pt.iade.ei.aquapoint.ui.components.CreateFavoritesPage
 import pt.iade.ei.aquapoint.ui.theme.AquaPointTheme
@@ -35,8 +43,6 @@ import pt.iade.ei.aquapoint.ui.components.CreateLoginPage
 import pt.iade.ei.aquapoint.ui.components.CreatePersonalArea
 import pt.iade.ei.aquapoint.ui.components.CreateSearchPage
 import pt.iade.ei.aquapoint.ui.components.MapScreen
-import pt.iade.ei.aquapoint.ui.components.Place
-
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,13 +51,22 @@ class MainActivity : ComponentActivity() {
         setContent {
             AquaPointTheme {
                 val navController = rememberNavController()
+                var places by remember { mutableStateOf<List<AquaPoint>>(emptyList()) }
 
-                val places = listOf(
-                    Place("Posto 1 - Santa Maria", "15min -3.8km", 4, R.drawable.aqua_point_logo, latitude = 38.78049309176663, longitude = -9.102677320690447),
-                    Place("Posto 2 - Moscavide", "25min - 5km", 3, R.drawable.aqua_point_logo, latitude = 38.78105763775865, longitude = -9.103412245980696),
-                    Place("Posto 3 - Santos", "35min - 7km", 3, R.drawable.aqua_point_logo, latitude = 38.77977799376074, longitude = -9.103589271780537),
-                    Place("Posto 4 - Lumiar", " 10min - 2km", 3, R.drawable.aqua_point_logo, latitude = 38.78053909197767, longitude =  -9.101379131491612)
-                )
+                LaunchedEffect(Unit) {
+                    // só chama a API se ainda não tiver cache
+                    if (!AquaPointsRepository.hasCache()) {
+                        NetworkService.getAquaPoints { result ->
+                            val parsed = parseAquaPoints(result)
+
+                            AquaPointsRepository.setCache(parsed)
+
+                            places = parsed
+                        }
+                    } else {
+                        places = AquaPointsRepository.getCached() ?: emptyList()
+                    }
+                }
 
                 LoadHomePage(navController, places)
             }
@@ -60,7 +75,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun LoadHomePage(navController: NavHostController, places: List<Place>) {
+fun LoadHomePage(navController: NavHostController, places: List<AquaPoint>) {
     Box(modifier = Modifier.fillMaxSize()) {
 
         NavHost(

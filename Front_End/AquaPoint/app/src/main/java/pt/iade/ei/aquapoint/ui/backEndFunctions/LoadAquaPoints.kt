@@ -24,7 +24,7 @@ object NetworkService {
     }
 
     /*fun getUsers(onResult: (String) -> Unit) {
-        "http://10.0.2.2:8080/api/java/users/getAll/"
+        "http://10.0.2.2:8080/api/java/users/getAllUsers/"
             .httpGet()
             .responseString { _, _, result ->
                 val output = when (result) {
