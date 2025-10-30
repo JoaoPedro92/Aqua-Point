@@ -49,19 +49,28 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.IconButton
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.focus.onFocusChanged
 
 @Composable
-fun CreateSearchBox() {
+fun CreateSearchBox(
+    onSearchClick: () -> Unit = {},
+    enabled: Boolean = false
+
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 25.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        var searchText by remember { mutableStateOf("") }
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = if (enabled) searchText else "",
+            onValueChange = { if (enabled) searchText = it },
             placeholder = {
                 Text(
                     stringResource(R.string.search),
@@ -77,21 +86,19 @@ fun CreateSearchBox() {
             },
             modifier = Modifier
                 .weight(1f)
-                .onFocusChanged
-                {
-                    if (it.isFocused) {
-
-                    }
-                }
-                .height(50.dp),
+                .height(50.dp)
+            .clickable {  if (!enabled) onSearchClick()},
             shape = RoundedCornerShape(22.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color.LightGray,
                 unfocusedBorderColor = Color.LightGray,
                 focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White
+                unfocusedContainerColor = Color.White,
+                disabledContainerColor = Color.White,
+                disabledTextColor = Color.Black
             ),
-            singleLine = true
+            singleLine = true,
+            enabled = enabled
         )
 
         Spacer(modifier = Modifier.width(16.dp))
@@ -115,6 +122,6 @@ fun CreateSearchBox() {
 @Composable
 fun PreviewSearchBox(){
     AquaPointTheme {
-        CreateSearchBox()
+        //CreateSearchBox()
     }
 }

@@ -66,12 +66,14 @@ fun CreateNavBarPage(items: List<Screen>, navController: NavHostController) {
                             ),
                         contentAlignment = Alignment.Center
                     ) {
-                        Icon(
-                            imageVector = screen.icon,
-                            contentDescription = null,
-                            tint = if (selectedItem == index) Color.White else Color.Gray,
-                            modifier = Modifier.size(28.dp)
-                        )
+                        screen.icon?.let {
+                            Icon(
+                                imageVector = it,
+                                contentDescription = null,
+                                tint = if (selectedItem == index) Color.White else Color.Gray,
+                                modifier = Modifier.size(28.dp)
+                            )
+                        }
                     }
                 },
                 colors = NavigationBarItemDefaults.colors(
