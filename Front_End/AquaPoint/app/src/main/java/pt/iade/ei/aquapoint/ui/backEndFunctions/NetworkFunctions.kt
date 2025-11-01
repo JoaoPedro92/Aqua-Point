@@ -3,6 +3,7 @@ package pt.iade.ei.aquapoint.ui.backEndFunctions
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
 import kotlinx.serialization.json.Json
+import org.json.JSONObject
 import pt.iade.ei.aquapoint.AquaPoint
 
 object NetworkService {
@@ -21,6 +22,22 @@ object NetworkService {
 
     fun parseAquaPoints(jsonString: String): List<AquaPoint> {
         return Json.decodeFromString(jsonString)
+    }
+
+    fun getAquaPointReviews(onResult: (String) -> Unit, pointId : Int) {
+        val json = JSONObject()
+        json.put("id", pointId)
+
+        "http://10.0.2.2:8080/api/java/usersInteractions/getUserReviewByPointId/"
+            .httpGet()
+            .body(json.toString())
+            .responseString { _, _, result ->
+                val output = when (result) {
+                    is Result.Success -> result.get()
+                    is Result.Failure -> "Erro: ${result.error}"
+                }
+                onResult(output)
+            }
     }
 
     /*fun getUsers(onResult: (String) -> Unit) {
