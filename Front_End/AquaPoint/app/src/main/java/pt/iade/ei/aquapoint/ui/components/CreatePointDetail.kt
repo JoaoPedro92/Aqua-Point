@@ -1,8 +1,12 @@
 package pt.iade.ei.aquapoint.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -14,6 +18,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,17 +32,26 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pt.iade.ei.aquapoint.AquaPoint
 import pt.iade.ei.aquapoint.R
-import pt.iade.ei.aquapoint.ui.theme.AquaPointTheme
+import pt.iade.ei.aquapoint.UserReviews
+import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
+import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService.parseUserReviews
 import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
 
 
 @Composable
 fun CreatePointDetail(place: AquaPoint?) {
+    var reviews by remember { mutableStateOf<List<UserReviews>>(emptyList()) }
+
+    LaunchedEffect(Unit) {
+        NetworkService.getAquaPointReviews(place?.id) { result ->
+            reviews = parseUserReviews(result)
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -105,13 +123,13 @@ fun CreatePointDetail(place: AquaPoint?) {
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = place!!.rating.toString(),
+                            text = getAVGRating(reviews),
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(text = "•")
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = stringResource(id = R.string.opinion),
+                            text = "${reviews.size} ${stringResource(R.string.opinion)}",
                             textDecoration = TextDecoration.Underline
                         )
                     }
@@ -213,112 +231,120 @@ fun CreatePointDetail(place: AquaPoint?) {
             }
         }
 
+        Spacer(modifier = Modifier.height(20.dp))
 
         //avalição feita
-        Card(
-            shape = RoundedCornerShape(30.dp),
-            elevation = CardDefaults.cardElevation(2.dp),
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 18.dp, horizontal = 20.dp)
+                .weight(1f)
+                .fillMaxWidth(),
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .offset(y = 7.dp)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.bebedouro),
-                        contentDescription = "Perfil",
+            )
+            {
+                items(reviews) { review ->
+                    Card(
+                        shape = RoundedCornerShape(30.dp),
+                        elevation = CardDefaults.cardElevation(2.dp),
                         modifier = Modifier
-                            .size(40.dp)
-                            .clip(CircleShape),
-                        contentScale = ContentScale.Crop
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = stringResource(id = R.string.personal_name),
-                        fontSize = 14.sp,
-                        fontFamily = ComfortaaFont,
-                        color = Color.Black
-                    )
-                }
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp)
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
 
-                Spacer(modifier = Modifier.height(8.dp))
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .offset(y = 7.dp)
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.user_image),
+                                    contentDescription = "Perfil",
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .clip(CircleShape),
+                                    contentScale = ContentScale.Crop
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = review.name,
+                                    fontSize = 14.sp,
+                                    fontFamily = ComfortaaFont,
+                                    color = Color.Black
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(8.dp))
 
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    repeat(5) {
-                        Icon(
-                            imageVector = Icons.Filled.Star,
-                            contentDescription = "Estrela",
-                            tint = Color(0xFFFFD700),
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Spacer(modifier = Modifier.width(2.dp))
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                repeat(review.rating) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Star,
+                                        contentDescription = "Estrela",
+                                        tint = Color(0xFFFFD700),
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(2.dp))
+                                }
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = review.date,
+                                    fontSize = 12.sp,
+                                    fontFamily = ComfortaaFont,
+                                    color = Color.Gray
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+
+                                ){
+
+                                Column (
+                                    modifier = Modifier
+                                        .weight(1f)
+                                ){
+                                    Text(
+                                        text = review.comment,
+                                        fontSize = 12.sp,
+                                        fontFamily = ComfortaaFont,
+                                        lineHeight = 20.sp,
+                                        color = Color.Black,
+                                        maxLines = 3,
+                                    )
+
+                                    /*Spacer(modifier = Modifier.height(1.dp))
+
+
+                                    Text(
+                                        text = stringResource(id = R.string.continuation),
+                                        fontFamily = ComfortaaFont,
+                                        fontSize = 12.sp,
+                                        color = Color(0xFF4A90E2)
+                                    )*/
+                                }
+
+
+
+                            }
+                        }
+
                     }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = stringResource(id = R.string.evaluation_date),
-                        fontSize = 12.sp,
-                        fontFamily = ComfortaaFont,
-                        color = Color.Gray
-                    )
-                }
 
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-
-                    ){
-
-                    Image(
-                        painter = painterResource(id = R.drawable.bebedouro),
-                        contentDescription = "Imagem comentário",
-                        modifier = Modifier
-                            .width(width = 80.dp)
-                            .clip(CircleShape)
-                            .height(80.dp),
-
-                        contentScale = ContentScale.Crop
-                    )
-
-                    Spacer(modifier = Modifier.width(width = 10.dp))
-
-                    Column (
-                        modifier = Modifier
-                            .weight(1f)
-                    ){
-                        Text(
-                            text = stringResource(id = R.string.user_comment),
-                            fontSize = 12.sp,
-                            fontFamily = ComfortaaFont,
-                            lineHeight = 20.sp,
-                            color = Color.Black,
-                            maxLines = 3,
-                        )
-
-                        Spacer(modifier = Modifier.height(1.dp))
-
-
-                        Text(
-                            text = stringResource(id = R.string.continuation),
-                            fontFamily = ComfortaaFont,
-                            fontSize = 12.sp,
-                            color = Color(0xFF4A90E2)
-                        )
-                    }
-
-
+                    Spacer(modifier = Modifier.height(20.dp))
 
                 }
             }
-
         }
+
+
 
         Row(
             modifier = Modifier
@@ -330,4 +356,15 @@ fun CreatePointDetail(place: AquaPoint?) {
     }
 
 
+}
+
+fun getAVGRating(list: List<UserReviews>): String {
+    if (list.isEmpty()) return "0.0"
+
+    var sum = 0.0
+    for (review in list) {
+        sum += review.rating
+    }
+
+    return (sum / list.size).toString()
 }
