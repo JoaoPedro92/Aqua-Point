@@ -14,14 +14,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import pt.iade.ei.aquapoint.R
+import pt.iade.ei.aquapoint.Screen
 import pt.iade.ei.aquapoint.data.AquaPointsRepository
 import pt.iade.ei.aquapoint.ui.theme.AquaPointTheme
 
 
-@Preview(showBackground = true )
 @Composable
-fun CreateFavoritesPage(){
+fun CreateFavoritesPage(navController: NavHostController){
     AquaPointTheme {
         val places = AquaPointsRepository.getCached() ?: emptyList()
 
@@ -40,7 +41,13 @@ fun CreateFavoritesPage(){
             )
             {
                 items(places) { place ->
-                    CreatePointCard(place, true)
+                    CreatePointCard(
+                        place = place,
+                        isFavorite = true,
+                        onClick = {
+                            navController.navigate(Screen.Detail.createRoute(place.id))
+                        }
+                    )
                 }
             }
 

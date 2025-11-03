@@ -13,6 +13,8 @@ sealed class Screen(val route: String, val icon: ImageVector? = null) {
     object Favorite : Screen("favorite", Icons.Filled.Favorite)
     object Add : Screen("add", Icons.Filled.AddCircle)
     object Profile : Screen("profile", Icons.Filled.AccountCircle)
-
     object Search : Screen("search")
+    object Detail : Screen("detail/{id}") {
+        fun createRoute(id: Int): String = "detail/$id"
+    }
 }
