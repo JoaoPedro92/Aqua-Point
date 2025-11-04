@@ -69,6 +69,12 @@ fun CreatePointCard(place: AquaPoint, isFavorite: Boolean, onClick: (AquaPoint) 
         onClick = { onClick(place) },
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
+        var finalText = place!!.name
+
+        if (place?.state_id == 2) {
+            finalText = "${place!!.name} ⚠️"
+        }
+
         Column(modifier = Modifier.padding(12.dp)) {
             if (isFavorite) {
                 Row (
@@ -101,7 +107,7 @@ fun CreatePointCard(place: AquaPoint, isFavorite: Boolean, onClick: (AquaPoint) 
 
                 )
 
-                Text(text = place.name, fontSize = 20.sp, modifier = Modifier
+                Text(text = finalText, fontSize = 20.sp, modifier = Modifier
                     .offset(y = 6.dp))
             }
 

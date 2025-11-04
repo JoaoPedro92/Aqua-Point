@@ -18,6 +18,7 @@ public class AquaPoint {
     private int local_id;
     private double latitude;
     private double longitude;
+    private int state_id;
 
     // construtor para o jpa
     public AquaPoint() {}
@@ -29,8 +30,9 @@ public class AquaPoint {
         String name, 
         int type, 
         int local_id, 
-        int latitude, 
-        int longitude
+        double latitude, 
+        double longitude,
+        int state_id
     ) 
     {
         point_name = name;
@@ -38,6 +40,7 @@ public class AquaPoint {
         this.local_id = local_id;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.state_id = state_id;
     }
 
     public int getId() {
@@ -64,6 +67,10 @@ public class AquaPoint {
         return longitude;
     }
 
+    public int getState_id() {
+        return state_id;
+    }
+
     public void setPoint_name(String point_name) {
         this.point_name = point_name;
     }
@@ -76,11 +83,15 @@ public class AquaPoint {
         this.local_id = local_id;
     }
 
-    public void setLatitude(int latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public void setLongitude(int longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public void setState_id(int state_id) {
+        this.state_id = state_id;
     }
 }

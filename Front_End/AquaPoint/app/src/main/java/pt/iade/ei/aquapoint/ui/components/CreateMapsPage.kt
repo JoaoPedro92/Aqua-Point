@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
@@ -50,10 +52,17 @@ fun MapScreen(places: List<AquaPoint>, navController: NavHostController) {
                     position = LatLng(place.latitude, place.longitude)
                 )
 
+                var finalColor: BitmapDescriptor = BitmapDescriptorFactory.defaultMarker(200f)
+
+                if (place.state_id == 2) {
+                    finalColor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
+                }
+
                 MarkerInfoWindow(
                     state = markerState,
                     title = place.name,
-                    snippet = place.distance,
+                    /*snippet = place.distance,*/
+                    icon = finalColor,
                     onClick = {
                         showBottomSheet = true
                         selectedPlace = place

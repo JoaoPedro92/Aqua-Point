@@ -101,6 +101,12 @@ fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?) {
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
             ) {
+                var finalText = currentPlace!!.name
+
+                if (currentPlace?.state_id == 2) {
+                    finalText = "${currentPlace!!.name} ⚠️"
+                }
+
                 Column(
                     modifier = Modifier
                         .padding(
@@ -108,7 +114,7 @@ fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?) {
                             horizontal = 16.dp
                         )) {
                     Text(
-                        text = currentPlace!!.name,
+                        text = finalText,
                         fontSize = 23.sp,
                         fontFamily = ComfortaaFont,
                         fontWeight = FontWeight.Bold,
