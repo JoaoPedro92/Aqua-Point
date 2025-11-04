@@ -1,7 +1,6 @@
 package pt.iade.ei.aquapoint.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,9 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -28,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,9 +32,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import pt.iade.ei.aquapoint.AquaPoint
 import pt.iade.ei.aquapoint.R
 import pt.iade.ei.aquapoint.UserReviews
@@ -49,7 +42,7 @@ import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
 
 
 @Composable
-fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController) {
+fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?) {
     var reviews by remember { mutableStateOf<List<UserReviews>>(emptyList()) }
 
     var currentPlace: AquaPoint? = place
@@ -69,25 +62,6 @@ fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController)
             .fillMaxSize()
 
     ) {
-        Spacer(modifier = Modifier.height(35.dp))
-
-        Row(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = "return",
-                tint = Color.Gray,
-                modifier = Modifier
-                    .clickable {
-                        navController.popBackStack()
-                    }
-            )
-        }
-
         // Box com imagem e botão de voltar
         Box(
             modifier = Modifier
@@ -393,15 +367,4 @@ fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController)
     }
 
 
-}
-
-fun getAVGRating(list: List<UserReviews>): String {
-    if (list.isEmpty()) return "0.0"
-
-    var sum = 0.0
-    for (review in list) {
-        sum += review.rating
-    }
-
-    return (sum / list.size).toString()
 }

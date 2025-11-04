@@ -41,6 +41,7 @@ import pt.iade.ei.aquapoint.ui.theme.AquaPointTheme
 import pt.iade.ei.aquapoint.ui.components.CreateHomePage
 import pt.iade.ei.aquapoint.ui.components.CreateLoginPage
 import pt.iade.ei.aquapoint.ui.components.CreatePersonalArea
+import pt.iade.ei.aquapoint.ui.components.CreatePointDetail
 import pt.iade.ei.aquapoint.ui.components.CreateSearchPage
 import pt.iade.ei.aquapoint.ui.components.MapScreen
 
@@ -84,10 +85,14 @@ fun LoadHomePage(navController: NavHostController, places: List<AquaPoint>) {
             modifier = Modifier.fillMaxSize()
         ) {
             composable(Screen.Home.route) { MapScreen(places, navController) }
-            composable(Screen.Favorite.route) { CreateFavoritesPage() }
+            composable(Screen.Favorite.route) { CreateFavoritesPage(navController) }
             composable(Screen.Add.route) { CreateAddAquaPointPage() }
             composable(Screen.Profile.route) { CreatePersonalArea() }
-            composable(Screen.Search.route) { CreateSearchPage() } // página editável
+            composable(Screen.Search.route) { CreateSearchPage(navController) } // página editável
+            composable(Screen.Detail.route) { backStackEntry ->
+                val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+                CreatePointDetail(null, id, navController)
+            }
         }
 
         Box(

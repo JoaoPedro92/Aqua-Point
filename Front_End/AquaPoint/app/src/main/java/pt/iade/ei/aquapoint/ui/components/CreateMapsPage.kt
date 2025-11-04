@@ -1,5 +1,6 @@
 package pt.iade.ei.aquapoint.ui.components
 
+import android.location.Location
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
@@ -13,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
@@ -49,10 +52,17 @@ fun MapScreen(places: List<AquaPoint>, navController: NavHostController) {
                     position = LatLng(place.latitude, place.longitude)
                 )
 
+                var finalColor: BitmapDescriptor = BitmapDescriptorFactory.defaultMarker(200f)
+
+                if (place.state_id == 2) {
+                    finalColor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
+                }
+
                 MarkerInfoWindow(
                     state = markerState,
                     title = place.name,
-                    snippet = place.distance,
+                    /*snippet = place.distance,*/
+                    icon = finalColor,
                     onClick = {
                         showBottomSheet = true
                         selectedPlace = place
@@ -143,6 +153,31 @@ fun AquaPointSheetContent(onClose: () -> Unit, place: AquaPoint?) {
             .fillMaxHeight(0.94f)
             .padding(8.dp)
     ) {
-        CreatePointDetail(place)
+        CreatePointDetailButtonSheet(place, null)
+    }
+}
+
+fun GetAquaPointDistance(place: AquaPoint): String {
+    val myPos = LatLng(38.78166399699406, -9.102570032326907)
+    val markerPosicao = LatLng(place.latitude, place.longitude)
+
+    // Calcular distância
+    val results = FloatArray(1)
+    Location.distanceBetween(
+        myPos.latitude,
+        myPos.longitude,
+        markerPosicao.latitude,
+        markerPosicao.longitude,
+        results
+    )
+
+    val distanceKM = results[0] / 1000.0
+    val speedKMH = 8.0 // velocidade média a pé
+    val timeMin = (distanceKM / speedKMH) * 60
+
+    return if (timeMin < 1.0) {
+        "%.0f sec - %.2f km".format(timeMin * 60, distanceKM)
+    } else {
+        "%.1f min - %.2f km".format(timeMin, distanceKM)
     }
 }

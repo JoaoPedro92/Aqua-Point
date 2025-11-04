@@ -30,7 +30,7 @@ public class AquaPointsController {
 
     @RequestMapping(path="/getAllAquaPoints/", produces = MediaType.APPLICATION_JSON_VALUE) 
     public List<AquaPoint> getAllAquaPoints() { 
-        return aquaPointRepository.findAll();
+        return aquaPointRepository.getAquaPoints();
     }
     
     @PostMapping(path="/getAquaPointById/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) 

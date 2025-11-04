@@ -50,6 +50,8 @@ fun CreateNavBarPage(items: List<Screen>, navController: NavHostController) {
                     selectedItem = index
                     navController.navigate(screen.route)
                 },
+                modifier = Modifier
+                    .padding(horizontal = 5.dp),
                 icon = {
                     Box(
                         modifier = Modifier
