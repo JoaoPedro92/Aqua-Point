@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
@@ -35,13 +36,17 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import kotlinx.coroutines.launch
 import pt.iade.ei.aquapoint.AquaPoint
 import pt.iade.ei.aquapoint.R
@@ -61,20 +66,23 @@ fun CreatePointCard(place: AquaPoint, isFavorite: Boolean, onClick: (AquaPoint) 
         }
     }
 
+    var finalText = place!!.name
+    var opacity: Float = 1.0f
+
+    if (place?.state_id == 2) {
+        finalText = "${place!!.name} ⚠️"
+        opacity = 0.5f
+    }
+
     Card(
         modifier = modifier
             .fillMaxWidth()
+            .alpha(opacity)
             .padding(vertical = 13.dp),
         shape = RoundedCornerShape(40.dp),
         onClick = { onClick(place) },
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
-        var finalText = place!!.name
-
-        if (place?.state_id == 2) {
-            finalText = "${place!!.name} ⚠️"
-        }
-
         Column(modifier = Modifier.padding(12.dp)) {
             if (isFavorite) {
                 Row (
@@ -93,8 +101,24 @@ fun CreatePointCard(place: AquaPoint, isFavorite: Boolean, onClick: (AquaPoint) 
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(
-                    painter = painterResource(id = place.imageRes),
+
+                var isLoading by remember { mutableStateOf(true) }
+
+                if (isLoading) {
+                    CircularProgressIndicator()
+                }
+
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data("http://10.0.2.2:8080/images/aquaPoints/${place.id}.jpg")
+                        .crossfade(true)
+                        .error(R.drawable.no_image)           // aparece se a imagem falhar
+                        .fallback(R.drawable.no_image)        // aparece se a URL for nula
+                        .listener(
+                            onSuccess = { _, _ -> isLoading = false },
+                            onError = { _, _ -> isLoading = false }
+                        )
+                        .build(),
                     contentDescription = "Imagem do local",
                     modifier = Modifier
                         .size(70.dp)

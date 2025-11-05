@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -30,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,6 +39,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import pt.iade.ei.aquapoint.AquaPoint
@@ -95,8 +99,23 @@ fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController)
                 .height(155.dp)
                 .padding(horizontal = 16.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.bebedouro),
+            var isLoading by remember { mutableStateOf(true) }
+
+            if (isLoading) {
+                CircularProgressIndicator()
+            }
+
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data("http://10.0.2.2:8080/images/aquaPoints/${currentPlace?.id}.jpg")
+                    .crossfade(true)
+                    .error(R.drawable.no_image)           // aparece se a imagem falhar
+                    .fallback(R.drawable.no_image)        // aparece se a URL for nula
+                    .listener(
+                        onSuccess = { _, _ -> isLoading = false },
+                        onError = { _, _ -> isLoading = false }
+                    )
+                    .build(),
                 contentDescription = "Imagem de topo",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -279,6 +298,7 @@ fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController)
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
+                    .padding(bottom = 60.dp)
 
             )
             {
@@ -291,7 +311,6 @@ fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController)
                             .padding(horizontal = 20.dp)
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
-
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
@@ -379,6 +398,8 @@ fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController)
 
                 }
             }
+
+
         }
 
 
