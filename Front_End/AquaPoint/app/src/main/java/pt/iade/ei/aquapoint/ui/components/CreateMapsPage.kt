@@ -92,6 +92,7 @@ fun MapScreen(places: List<AquaPoint>, navController: NavHostController) {
 
             CreateSearchBox(
                 onSearchClick = { navController.navigate(Screen.Search.route) },
+                filterButton = false,
             )
 
             Spacer(modifier = Modifier.height(630.dp))

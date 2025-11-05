@@ -59,7 +59,8 @@ fun CreateFilteredAquaPointByName(
         CreateSearchBox(
             searchText = searchText,
             onSearchTextChange = { searchText = it },
-            enabled = true
+            enabled = true,
+            filterButton = true,
         )
 
         Spacer(modifier = Modifier.height(10.dp))

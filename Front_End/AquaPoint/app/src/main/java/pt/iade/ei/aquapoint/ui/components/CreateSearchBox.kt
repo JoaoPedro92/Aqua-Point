@@ -28,7 +28,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -54,6 +53,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.HistoricalChange
 
 @Composable
@@ -61,7 +61,8 @@ fun CreateSearchBox(
     searchText: String = "",
     onSearchTextChange: (String) -> Unit = {},
     onSearchClick: (() -> Unit)? = null,
-    enabled: Boolean = false
+    enabled: Boolean = false,
+    filterButton: Boolean
 
 ) {
     Row(
@@ -78,13 +79,15 @@ fun CreateSearchBox(
                 Text(
                     stringResource(R.string.search),
                     modifier = Modifier
-                        .offset(y = -2.dp)
+                        .offset(y = 0.dp),
+                    color = Color.DarkGray,
                 ) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Filled.Search, // usa seu próprio drawable
                     contentDescription = "Pesquisar",
-                    modifier = Modifier.size(22.dp)
+                    modifier = Modifier.size(22.dp),
+                    tint = Color.DarkGray
                 )
             },
             modifier = Modifier
@@ -103,19 +106,21 @@ fun CreateSearchBox(
             enabled = enabled
         )
 
-        Spacer(modifier = Modifier.width(16.dp))
+        if (filterButton) {
+            Spacer(modifier = Modifier.width(16.dp))
 
-        FloatingActionButton(
-            onClick = {},
-            modifier = Modifier.size(50.dp),
-            containerColor = AquaGreen,
-            contentColor = Color.White
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.filtro),
-                contentDescription = "Filtro",
-                modifier = Modifier.size(28.dp)
-            )
+            FloatingActionButton(
+                onClick = {},
+                modifier = Modifier.size(50.dp),
+                containerColor = AquaGreen,
+                contentColor = Color.White
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.filtro),
+                    contentDescription = "Filtro",
+                    modifier = Modifier.size(28.dp)
+                )
+            }
         }
     }
 }
