@@ -33,8 +33,12 @@ import pt.iade.ei.aquapoint.ui.theme.AquaPointTheme
 @Composable
 fun CreateSearchPage(navController: NavHostController){
     AquaPointTheme {
+        CreateFilteredAquaPointByName(
+            navController = navController,
+            isFavorite = false
+        )
 
-        var searchText by remember { mutableStateOf("") }
+       /* var searchText by remember { mutableStateOf("") }
         var places by remember { mutableStateOf(AquaPointsRepository.getCached() ?: emptyList()) }
 
 
@@ -94,8 +98,8 @@ fun CreateSearchPage(navController: NavHostController){
                     }
                 }
             }
-            //CreateNavBarPage()
-        }
+
+        }*/
     }
 }
 
