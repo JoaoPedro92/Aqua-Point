@@ -24,7 +24,13 @@ import pt.iade.ei.aquapoint.ui.theme.AquaPointTheme
 @Composable
 fun CreateFavoritesPage(navController: NavHostController){
     AquaPointTheme {
-        val places = AquaPointsRepository.getCached() ?: emptyList()
+        CreateFilteredAquaPointByName(
+            navController = navController,
+            isFavorite = true
+        )
+
+
+       /* val places = AquaPointsRepository.getCached() ?: emptyList()
 
         Column(modifier = Modifier
             .fillMaxSize()
@@ -52,7 +58,7 @@ fun CreateFavoritesPage(navController: NavHostController){
             }
 
             //CreateNavBarPage()
-        }
+        }*/
     }
 }
 

@@ -54,10 +54,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.input.pointer.HistoricalChange
 
 @Composable
 fun CreateSearchBox(
-    onSearchClick: () -> Unit = {},
+    searchText: String = "",
+    onSearchTextChange: (String) -> Unit = {},
+    onSearchClick: (() -> Unit)? = null,
     enabled: Boolean = false
 
 ) {
@@ -67,10 +70,10 @@ fun CreateSearchBox(
             .padding(vertical = 25.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        var searchText by remember { mutableStateOf("") }
+
         OutlinedTextField(
             value = if (enabled) searchText else "",
-            onValueChange = { if (enabled) searchText = it },
+            onValueChange = { if (enabled) onSearchTextChange(it) },
             placeholder = {
                 Text(
                     stringResource(R.string.search),
@@ -86,8 +89,7 @@ fun CreateSearchBox(
             },
             modifier = Modifier
                 .weight(1f)
-                .height(50.dp)
-            .clickable {  if (!enabled) onSearchClick()},
+            .clickable {  if (!enabled) onSearchClick?.invoke()},
             shape = RoundedCornerShape(22.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color.LightGray,

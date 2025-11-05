@@ -1,6 +1,7 @@
 package pt.iade.ei.aquapoint.data
 
 import pt.iade.ei.aquapoint.AquaPoint
+import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
 import kotlin.collections.List
 
 object AquaPointsRepository {
@@ -18,13 +19,25 @@ object AquaPointsRepository {
         cache = null
     }
 
-    fun getPointById(id: Int): AquaPoint? {
-        val list: List<AquaPoint> = getCached() ?: emptyList()
 
-        return list.find { aquaPoint -> aquaPoint.id == id }
+    fun updateAquaPoints(onComplete: (List<AquaPoint>) -> Unit) {
+        NetworkService.getAquaPoints { jsonString ->
+            try {
+                val points = NetworkService.parseAquaPoints(jsonString)
+                setCache(points)
+                onComplete(points)
+            } catch (e: Exception) {
+                onComplete(emptyList())
+            }
+        }
     }
+        fun getPointById(id: Int): AquaPoint? {
+            val list: List<AquaPoint> = getCached() ?: emptyList()
 
-    fun hasCache(): Boolean {
-        return cache != null
+            return list.find { aquaPoint -> aquaPoint.id == id }
+        }
+
+        fun hasCache(): Boolean {
+            return cache != null
+        }
     }
-}
