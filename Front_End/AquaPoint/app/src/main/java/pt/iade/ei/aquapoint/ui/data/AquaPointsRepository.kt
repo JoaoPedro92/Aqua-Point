@@ -19,8 +19,8 @@ object AquaPointsRepository {
         cache = null
     }
 
-    // buscar do backend usando callback
-    fun fetchFromBackend(onComplete: (List<AquaPoint>) -> Unit) {
+
+    fun updateAquaPoints(onComplete: (List<AquaPoint>) -> Unit) {
         NetworkService.getAquaPoints { jsonString ->
             try {
                 val points = NetworkService.parseAquaPoints(jsonString)

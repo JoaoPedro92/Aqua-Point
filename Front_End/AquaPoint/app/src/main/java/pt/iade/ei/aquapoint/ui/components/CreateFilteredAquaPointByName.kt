@@ -38,7 +38,7 @@ fun CreateFilteredAquaPointByName(
 
     // Pega dados do backend caso forem atualizados
     LaunchedEffect(Unit) {
-        AquaPointsRepository.fetchFromBackend { updatedPoints ->
+        AquaPointsRepository.updateAquaPoints { updatedPoints ->
             places = updatedPoints
         }
     }
