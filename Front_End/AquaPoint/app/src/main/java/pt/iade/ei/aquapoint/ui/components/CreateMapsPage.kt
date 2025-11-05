@@ -55,7 +55,7 @@ fun MapScreen(places: List<AquaPoint>, navController: NavHostController) {
                 var finalColor: BitmapDescriptor = BitmapDescriptorFactory.defaultMarker(200f)
 
                 if (place.state_id == 2) {
-                    finalColor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
+                    finalColor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)
                 }
 
                 MarkerInfoWindow(
@@ -150,7 +150,7 @@ fun AquaPointSheetContent(onClose: () -> Unit, place: AquaPoint?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.94f)
+            .fillMaxHeight(0.9f)
             .padding(8.dp)
     ) {
         CreatePointDetailButtonSheet(place, null)
