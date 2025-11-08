@@ -44,8 +44,9 @@ Evandro Gaspar
 9. [Requisitos funcionais](#requisitos-funcionais)
 10. [Mockups e interfaces](#mockups-e-interfaces)
 11. [Base de dados](#bases-de-dados)
-12. [Conclusão](#conclusão)
-13. [Referências bibliográficas](#referências-bibliográficas)
+12. [Diagrama de classes](#diagrama-de-classes)
+13. [Conclusão](#conclusão)
+14. [Referências bibliográficas](#referências-bibliográficas)
 
 ## Introdução
 
@@ -358,6 +359,14 @@ O tópico a seguir apresenta alguns ecrãs que formam a estrutura da aplicação
 </p>
 <p align="center">
   Figura 16 - Diagrama da base de dados
+</p>
+
+## Diagrama de classes
+<p align="center">
+  <img src="https://i.imgur.com/O6CDr3r.png" />
+</p>
+<p align="center">
+  Figura 17 - Diagrama da classes
 </p>
 
 ## Conclusão
