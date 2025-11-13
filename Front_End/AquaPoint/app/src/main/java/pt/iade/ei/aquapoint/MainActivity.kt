@@ -33,6 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import com.github.kittinunf.fuel.httpGet
 import kotlinx.serialization.Serializable
 import pt.iade.ei.aquapoint.data.AquaPointsRepository
+import pt.iade.ei.aquapoint.data.UserDataRepository
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService.parseAquaPoints
 import pt.iade.ei.aquapoint.ui.components.CreateAddAquaPointPage
@@ -42,6 +43,7 @@ import pt.iade.ei.aquapoint.ui.components.CreateHomePage
 import pt.iade.ei.aquapoint.ui.components.CreateLoginPage
 import pt.iade.ei.aquapoint.ui.components.CreatePersonalArea
 import pt.iade.ei.aquapoint.ui.components.CreatePointDetail
+import pt.iade.ei.aquapoint.ui.components.CreateRegisterPage
 import pt.iade.ei.aquapoint.ui.components.CreateSearchPage
 import pt.iade.ei.aquapoint.ui.components.MapScreen
 
@@ -77,6 +79,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun LoadHomePage(navController: NavHostController, places: List<AquaPoint>) {
+    val showNavBar = remember { mutableStateOf(true) }
+
     Box(modifier = Modifier.fillMaxSize()) {
 
         NavHost(
@@ -84,37 +88,88 @@ fun LoadHomePage(navController: NavHostController, places: List<AquaPoint>) {
             startDestination = Screen.Home.route,
             modifier = Modifier.fillMaxSize()
         ) {
-            composable(Screen.Home.route) { MapScreen(places, navController) }
-            composable(Screen.Favorite.route) { CreateFavoritesPage(navController) }
-            composable(Screen.Add.route) { CreateAddAquaPointPage() }
-            composable(Screen.Profile.route) { CreatePersonalArea() }
-            composable(Screen.Search.route) { CreateSearchPage(navController) } // página editável
-            composable(Screen.Detail.route) { backStackEntry ->
+            composable(Screen.Home.route) {
+                MapScreen(places, navController)
+                showNavBar.value = true
+            }
+
+            composable(Screen.Favorite.route) {
+                CreateFavoritesPage(navController)
+                showNavBar.value = true
+            }
+
+            composable(Screen.Add.route) {
+                if (UserDataRepository.getUserId() != null) {
+                    CreateAddAquaPointPage()
+                    showNavBar.value = true
+                } else {
+                    CreateHomePage(navController)
+
+                    showNavBar.value = false
+                }
+            }
+
+            composable(Screen.Profile.route) {
+                if (UserDataRepository.getUserId() != null) {
+                    CreatePersonalArea()
+                    showNavBar.value = true
+                } else {
+                    CreateHomePage(navController)
+
+                    showNavBar.value = false
+                }
+            }
+
+            composable(Screen.Search.route) {
+                CreateSearchPage(navController)
+                showNavBar.value = true
+            }
+
+            composable(Screen.Login.route) {
+                CreateLoginPage(navController)
+                showNavBar.value = false
+            }
+
+            composable(Screen.Register.route) {
+                CreateRegisterPage(navController)
+                showNavBar.value = false
+            }
+
+            composable(Screen.MainPage.route) {
+                CreateHomePage(navController)
+                showNavBar.value = false
+            }
+
+            composable(Screen.Detail.route) {
+                backStackEntry ->
                 val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
                 CreatePointDetail(null, id, navController)
+                showNavBar.value = true
             }
         }
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 30.dp
+        if (showNavBar.value) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 16.dp,
+                        end = 16.dp,
+                        bottom = 30.dp
+                    )
+                    .align(Alignment.BottomCenter),
+                contentAlignment = Alignment.Center
+            ) {
+                CreateNavBarPage(
+                    items = listOf(
+                        Screen.Add,
+                        Screen.Favorite,
+                        Screen.Home,
+                        Screen.Profile
+                    ),
+                    navController = navController
                 )
-                .align(Alignment.BottomCenter),
-            contentAlignment = Alignment.Center
-        ) {
-            CreateNavBarPage(
-                items = listOf(
-                    Screen.Add,
-                    Screen.Favorite,
-                    Screen.Home,
-                    Screen.Profile
-                ),
-                navController = navController
-            )
+            }
         }
     }
 }

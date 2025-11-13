@@ -17,4 +17,7 @@ sealed class Screen(val route: String, val icon: ImageVector? = null) {
     object Detail : Screen("detail/{id}") {
         fun createRoute(id: Int): String = "detail/$id"
     }
+    object Login : Screen("login")
+    object Register : Screen("register")
+    object MainPage : Screen("mainPage")
 }

@@ -4,6 +4,7 @@ import android.graphics.fonts.FontFamily
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,9 +45,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.IconButton
+import androidx.navigation.NavHostController
+import pt.iade.ei.aquapoint.Screen
 
 @Composable
-fun CreateHomePage() {
+fun CreateHomePage(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -79,13 +82,13 @@ fun CreateHomePage() {
             )
         }
 
-        Spacer(modifier = Modifier.height(35.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
         Row (
             modifier = Modifier
         ){
             Button(
-                onClick = {  },
+                onClick = { navController.navigate(Screen.Login.route) },
                 shape = RoundedCornerShape(16.dp),
                 border = BorderStroke(2.dp, AquaGreen),
                 colors = ButtonDefaults.buttonColors(
@@ -106,7 +109,7 @@ fun CreateHomePage() {
             }
 
             Button(
-                onClick = {  },
+                onClick = { navController.navigate(Screen.Register.route)  },
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = AquaGreen,
@@ -126,13 +129,24 @@ fun CreateHomePage() {
                 )
             }
         }
-    }
-}
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewHomePage() {
-    AquaPointTheme {
-        CreateHomePage()
+        Spacer(modifier = Modifier.height(3.dp))
+
+        Row (
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = stringResource(R.string.ignore_for_now),
+                fontFamily = RobotoFont,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
+                color = AquaGreen,
+                modifier = Modifier.clickable {
+                    navController.navigate(Screen.Home.route)
+                }
+            )
+        }
     }
 }

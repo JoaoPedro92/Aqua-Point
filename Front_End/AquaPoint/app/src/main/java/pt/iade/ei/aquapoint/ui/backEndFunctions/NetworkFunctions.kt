@@ -46,9 +46,11 @@ object NetworkService {
         return Json.decodeFromString(jsonString)
     }
 
-    /*fun getUsers(onResult: (String) -> Unit) {
-        "http://10.0.2.2:8080/api/java/users/getAllUsers/"
-            .httpGet()
+    fun getUserByEmail(email: String, onResult: (String) -> Unit) {
+        "http://10.0.2.2:8080/api/java/users/getUserDataByEmail/"
+            .httpPost()
+            .header(Headers.CONTENT_TYPE, "application/json")
+            .body(email)
             .responseString { _, _, result ->
                 val output = when (result) {
                     is Result.Success -> result.get()
@@ -56,5 +58,24 @@ object NetworkService {
                 }
                 onResult(output)
             }
-    }*/
+    }
+
+    fun createNewUser(name: String?, email: String?, password: String?, onResult: (String) -> Unit) {
+        val json = JSONObject()
+        json.put("name", name)
+        json.put("email", email)
+        json.put("password", password)
+
+        "http://10.0.2.2:8080/api/java/users/createNewUser/"
+            .httpPost()
+            .header(Headers.CONTENT_TYPE, "application/json")
+            .body(json.toString())
+            .responseString { _, _, result ->
+                val output = when (result) {
+                    is Result.Success -> result.get()
+                    is Result.Failure -> "Erro: ${result.error}"
+                }
+                onResult(output)
+            }
+    }
 }

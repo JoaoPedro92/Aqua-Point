@@ -4,6 +4,7 @@ import android.graphics.fonts.FontFamily
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,9 +45,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.IconButton
+import androidx.navigation.NavHostController
+import pt.iade.ei.aquapoint.Screen
 
 @Composable
-fun CreateLoginPage() {
+fun CreateLoginPage(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -62,7 +65,10 @@ fun CreateLoginPage() {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = "return",
-                tint = Color.Gray
+                tint = Color.Gray,
+                modifier = Modifier.clickable {
+                    navController.navigate(Screen.MainPage.route)
+                }
             )
         }
 
@@ -119,7 +125,7 @@ fun CreateLoginPage() {
         Spacer(modifier = Modifier.height(64.dp))
 
         Button(
-            onClick = {  },
+            onClick = { },
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = AquaGreen
@@ -136,14 +142,5 @@ fun CreateLoginPage() {
                 color = Color.White
             )
         }
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewLoginPage() {
-    AquaPointTheme {
-        CreateLoginPage()
     }
 }
