@@ -35,4 +35,7 @@
     <string name="email_already_exists">Este email já foi registado</string>
     <string name="user_created">Utilizador registado com sucesso</string>
     <string name="user_creation_error">Ocorreu um erro, tente novamente mais tarde...</string>
+    <string name="wrong_credentials">Email ou password incorretos...</string>
+    <string name="login_success">Login efetuado com sucesso</string>
+    <string name="logout_success">Logout efetuado com sucesso</string>
 </resources>

@@ -8,6 +8,7 @@ import com.github.kittinunf.result.Result
 import kotlinx.serialization.json.Json
 import org.json.JSONObject
 import pt.iade.ei.aquapoint.AquaPoint
+import pt.iade.ei.aquapoint.UserData
 import pt.iade.ei.aquapoint.UserReviews
 
 object NetworkService {
@@ -77,5 +78,9 @@ object NetworkService {
                 }
                 onResult(output)
             }
+    }
+
+    fun parseUser(jsonString: String): UserData {
+        return Json.decodeFromString(jsonString)
     }
 }

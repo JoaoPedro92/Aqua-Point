@@ -57,9 +57,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import pt.iade.ei.aquapoint.AquaPoint
 import pt.iade.ei.aquapoint.Screen
+import pt.iade.ei.aquapoint.UserData
 import pt.iade.ei.aquapoint.UserReviews
 import pt.iade.ei.aquapoint.data.AquaPointsRepository
+import pt.iade.ei.aquapoint.data.UserDataRepository
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
+import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService.parseUser
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService.parseUserReviews
 
 @Composable
@@ -170,12 +173,16 @@ fun CreateRegisterPage(navController: NavHostController) {
                         val toast = Toast.makeText(context, alreadyExistsMsg, Toast.LENGTH_LONG)
                         toast.show()
                     } else {
-                        CreateNewUser(name, email, password) { success ->
+                        CreateNewUser(name, email, password) { success, userData ->
                             if (success) {
+                                var parsedUserData: UserData = parseUser(userData)
+
                                 navController.navigate(Screen.Home.route)
 
                                 val toast = Toast.makeText(context, createUserSuccessMessage, Toast.LENGTH_LONG)
                                 toast.show()
+
+                                UserDataRepository.setUserLogin(parsedUserData)
                             } else {
                                 val toast = Toast.makeText(context, errorOccouredCreatingUser, Toast.LENGTH_LONG)
                                 toast.show()
@@ -203,13 +210,13 @@ fun CreateRegisterPage(navController: NavHostController) {
     }
 }
 
-fun CreateNewUser(name: String, email: String, password: String, onResult: (Boolean) -> Unit) {
+fun CreateNewUser(name: String, email: String, password: String, onResult: (Boolean, String) -> Unit) {
     NetworkService.createNewUser(name, email, password) { responseString ->
         val success = !responseString.contains("Erro") &&
                 responseString.isNotBlank() &&
                 responseString != "null"
 
-        onResult(success)
+        onResult(success, responseString)
     }
 }
 

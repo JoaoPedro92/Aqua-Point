@@ -111,7 +111,7 @@ fun LoadHomePage(navController: NavHostController, places: List<AquaPoint>) {
 
             composable(Screen.Profile.route) {
                 if (UserDataRepository.getUserId() != null) {
-                    CreatePersonalArea()
+                    CreatePersonalArea(navController)
                     showNavBar.value = true
                 } else {
                     CreateHomePage(navController)

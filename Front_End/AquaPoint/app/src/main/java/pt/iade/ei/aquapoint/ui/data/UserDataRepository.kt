@@ -20,7 +20,11 @@ object UserDataRepository {
         return currentLogin?.password
     }
 
-    fun SetUserLogin(data: UserData) {
+    fun setUserLogin(data: UserData) {
         currentLogin = data
+    }
+
+    fun removeData() {
+        currentLogin = null
     }
 }
