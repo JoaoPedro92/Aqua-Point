@@ -2,9 +2,11 @@ package pt.iade.ei.aquapoint.ui.components
 
 import CreateNavBarPage
 import android.graphics.fonts.FontFamily
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,11 +45,16 @@ import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.DoorBack
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.IconButton
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavHostController
+import pt.iade.ei.aquapoint.Screen
+import pt.iade.ei.aquapoint.data.UserDataRepository
 
 @Composable
-fun CreatePersonalArea() {
+fun CreatePersonalArea(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -56,14 +63,27 @@ fun CreatePersonalArea() {
     ) {
         Spacer(modifier = Modifier.height(50.dp))
 
+        val context = LocalContext.current
+        val logoutSuccessTxt = stringResource(R.string.logout_success)
+
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Start
+            horizontalArrangement = Arrangement.End
         ) {
             Icon(
-                imageVector = Icons.Filled.ArrowBack,
+                imageVector = Icons.Filled.DoorBack,
                 contentDescription = "return",
-                tint = Color.Gray
+                tint = Color.Gray,
+                modifier = Modifier
+                    .clickable {
+                        if (UserDataRepository.getUserId() != null) {
+                            val toast = Toast.makeText(context, logoutSuccessTxt, Toast.LENGTH_LONG)
+                            toast.show()
+
+                            UserDataRepository.removeData()
+                            navController.navigate(Screen.MainPage.route)
+                        }
+                    }
             )
         }
 
@@ -198,14 +218,5 @@ fun CreatePersonalArea() {
         Spacer(modifier = Modifier.height(30.dp))
 
         //CreateNavBarPage()
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewPersonalAreaPage() {
-    AquaPointTheme {
-        CreatePersonalArea()
     }
 }

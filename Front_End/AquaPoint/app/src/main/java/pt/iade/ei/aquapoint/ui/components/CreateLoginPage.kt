@@ -1,9 +1,11 @@
 package pt.iade.ei.aquapoint.ui.components
 
 import android.graphics.fonts.FontFamily
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,9 +46,22 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.IconButton
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavHostController
+import pt.iade.ei.aquapoint.Screen
+import pt.iade.ei.aquapoint.UserData
+import pt.iade.ei.aquapoint.UserReviews
+import pt.iade.ei.aquapoint.data.UserDataRepository
+import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
+import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService.parseUser
+import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService.parseUserReviews
 
 @Composable
-fun CreateLoginPage() {
+fun CreateLoginPage(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -62,7 +77,10 @@ fun CreateLoginPage() {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = "return",
-                tint = Color.Gray
+                tint = Color.Gray,
+                modifier = Modifier.clickable {
+                    navController.navigate(Screen.MainPage.route)
+                }
             )
         }
 
@@ -81,10 +99,11 @@ fun CreateLoginPage() {
 
         Spacer(modifier = Modifier.height(70.dp))
 
+        var email by remember { mutableStateOf("") }
         OutlinedTextField(
-            value = "",
+            value = email,
             shape = RoundedCornerShape(16.dp),
-            onValueChange = {  },
+            onValueChange = { email = it },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = AquaGreen,
                 unfocusedBorderColor = AquaGreen,
@@ -98,10 +117,11 @@ fun CreateLoginPage() {
             singleLine = true
         )
 
+        var password by remember { mutableStateOf("") }
         OutlinedTextField(
-            value = "",
+            value = password,
             shape = RoundedCornerShape(16.dp),
-            onValueChange = {  },
+            onValueChange = { password = it },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = AquaGreen,
                 unfocusedBorderColor = AquaGreen,
@@ -118,8 +138,33 @@ fun CreateLoginPage() {
 
         Spacer(modifier = Modifier.height(64.dp))
 
+        val context = LocalContext.current
+        val wrongCredentialsTxt = stringResource(R.string.wrong_credentials)
+        val loginSuccess = stringResource(R.string.login_success)
+
         Button(
-            onClick = {  },
+            onClick = {
+                CheckIfUserExistsReturnData(email) { exists, userData ->
+                    if (exists) {
+                        var parsedUserData: UserData = parseUser(userData)
+
+                        if (parsedUserData.password == password && parsedUserData.email == email) {
+                            navController.navigate(Screen.Home.route)
+
+                            val toast = Toast.makeText(context, loginSuccess, Toast.LENGTH_LONG)
+                            toast.show()
+
+                            UserDataRepository.setUserLogin(parsedUserData)
+                        } else {
+                            val toast = Toast.makeText(context, wrongCredentialsTxt, Toast.LENGTH_LONG)
+                            toast.show()
+                        }
+                    } else {
+                        val toast = Toast.makeText(context, wrongCredentialsTxt, Toast.LENGTH_LONG)
+                        toast.show()
+                    }
+                }
+            },
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = AquaGreen
@@ -139,11 +184,12 @@ fun CreateLoginPage() {
     }
 }
 
+fun CheckIfUserExistsReturnData(email: String, onResult: (Boolean, String) -> Unit) {
+    NetworkService.getUserByEmail(email) { responseString ->
+        val exists = !responseString.contains("Erro") &&
+                responseString.isNotBlank() &&
+                responseString != "null"
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewLoginPage() {
-    AquaPointTheme {
-        CreateLoginPage()
+        onResult(exists, responseString)
     }
 }

@@ -1,15 +1,19 @@
 package pt.iade.ei.aquapoint.ui.components
 
 import android.graphics.fonts.FontFamily
+import android.util.Log
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import android.view.Gravity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -44,9 +48,25 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.IconButton
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavHostController
+import pt.iade.ei.aquapoint.AquaPoint
+import pt.iade.ei.aquapoint.Screen
+import pt.iade.ei.aquapoint.UserData
+import pt.iade.ei.aquapoint.UserReviews
+import pt.iade.ei.aquapoint.data.AquaPointsRepository
+import pt.iade.ei.aquapoint.data.UserDataRepository
+import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
+import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService.parseUser
+import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService.parseUserReviews
 
 @Composable
-fun CreateRegisterPage() {
+fun CreateRegisterPage(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -62,7 +82,10 @@ fun CreateRegisterPage() {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = "return",
-                tint = Color.Gray
+                tint = Color.Gray,
+                modifier = Modifier.clickable {
+                    navController.navigate(Screen.MainPage.route)
+                }
             )
         }
 
@@ -81,10 +104,11 @@ fun CreateRegisterPage() {
 
         Spacer(modifier = Modifier.height(50.dp))
 
+        var name by remember { mutableStateOf("") }
         OutlinedTextField(
-            value = "",
+            value = name,
             shape = RoundedCornerShape(16.dp),
-            onValueChange = {  },
+            onValueChange = { name = it },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = AquaGreen,
                 unfocusedBorderColor = AquaGreen,
@@ -98,10 +122,11 @@ fun CreateRegisterPage() {
             singleLine = true
         )
 
+        var email by remember { mutableStateOf("") }
         OutlinedTextField(
-            value = "",
+            value = email,
             shape = RoundedCornerShape(16.dp),
-            onValueChange = {  },
+            onValueChange = { email = it },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = AquaGreen,
                 unfocusedBorderColor = AquaGreen,
@@ -115,10 +140,11 @@ fun CreateRegisterPage() {
             singleLine = true
         )
 
+        var password by remember { mutableStateOf("") }
         OutlinedTextField(
-            value = "",
+            value = password,
             shape = RoundedCornerShape(16.dp),
-            onValueChange = {  },
+            onValueChange = { password = it },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = AquaGreen,
                 unfocusedBorderColor = AquaGreen,
@@ -135,8 +161,36 @@ fun CreateRegisterPage() {
 
         Spacer(modifier = Modifier.height(64.dp))
 
+        val context = LocalContext.current
+        val alreadyExistsMsg = stringResource(R.string.email_already_exists)
+        val createUserSuccessMessage = stringResource(R.string.user_created)
+        val errorOccouredCreatingUser = stringResource(R.string.user_creation_error)
+
         Button(
-            onClick = {  },
+            onClick = {
+                CheckIfUserExists(email) { exists ->
+                    if (exists) {
+                        val toast = Toast.makeText(context, alreadyExistsMsg, Toast.LENGTH_LONG)
+                        toast.show()
+                    } else {
+                        CreateNewUser(name, email, password) { success, userData ->
+                            if (success) {
+                                var parsedUserData: UserData = parseUser(userData)
+
+                                navController.navigate(Screen.Home.route)
+
+                                val toast = Toast.makeText(context, createUserSuccessMessage, Toast.LENGTH_LONG)
+                                toast.show()
+
+                                UserDataRepository.setUserLogin(parsedUserData)
+                            } else {
+                                val toast = Toast.makeText(context, errorOccouredCreatingUser, Toast.LENGTH_LONG)
+                                toast.show()
+                            }
+                        }
+                    }
+                }
+            },
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = AquaGreen
@@ -156,11 +210,22 @@ fun CreateRegisterPage() {
     }
 }
 
+fun CreateNewUser(name: String, email: String, password: String, onResult: (Boolean, String) -> Unit) {
+    NetworkService.createNewUser(name, email, password) { responseString ->
+        val success = !responseString.contains("Erro") &&
+                responseString.isNotBlank() &&
+                responseString != "null"
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewRegisterPage() {
-    AquaPointTheme {
-        CreateRegisterPage()
+        onResult(success, responseString)
+    }
+}
+
+fun CheckIfUserExists(email: String, onResult: (Boolean) -> Unit) {
+    NetworkService.getUserByEmail(email) { responseString ->
+        val exists = !responseString.contains("Erro") &&
+                responseString.isNotBlank() &&
+                responseString != "null"
+
+        onResult(exists)
     }
 }

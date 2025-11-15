@@ -36,9 +36,9 @@ public class UsersController {
         return userRepository.findAll();
     }
     
-    @PostMapping(path="/getUserDataByName/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) 
-    public User getUserDataByName(@RequestBody String name) { 
-        return userRepository.findByName(name); 
+    @PostMapping(path="/getUserDataByEmail/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) 
+    public User getUserDataByName(@RequestBody String email) { 
+        return userRepository.findByEmail(email); 
     }
     
     @PostMapping(path="/createNewUser/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) 
