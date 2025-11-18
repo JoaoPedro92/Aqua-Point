@@ -25,6 +25,56 @@ object NetworkService {
             }
     }
 
+    fun getFavoriteAquaPoints(userId: Int?, onResult: (String) -> Unit) {
+        "http://10.0.2.2:8080/api/java/aquapoints/getFavoriteAquaPointsByUserId/"
+            .httpPost()
+            .header(Headers.CONTENT_TYPE, "application/json")
+            .body(userId.toString())
+            .responseString { _, _, result ->
+                val output = when (result) {
+                    is Result.Success -> result.get()
+                    is Result.Failure -> "Erro: ${result.error}"
+                }
+                onResult(output)
+            }
+    }
+
+    fun addAquaPointToFavorite(userId: Int?, pointId: Int?, onResult: (String) -> Unit) {
+        val json = JSONObject()
+        json.put("userId", userId)
+        json.put("pointId", pointId)
+
+        "http://10.0.2.2:8080/api/java/aquapoints/addAquaPointToFavorite/"
+            .httpPost()
+            .header(Headers.CONTENT_TYPE, "application/json")
+            .body(json.toString())
+            .responseString { _, _, result ->
+                val output = when (result) {
+                    is Result.Success -> result.get()
+                    is Result.Failure -> "Erro: ${result.error}"
+                }
+                onResult(output)
+            }
+    }
+
+    fun removeAquaPointFromFavorites(userId: Int?, pointId: Int?, onResult: (String) -> Unit) {
+        val json = JSONObject()
+        json.put("userId", userId)
+        json.put("pointId", pointId)
+
+        "http://10.0.2.2:8080/api/java/aquapoints/removeAquaPointFromFavorites/"
+            .httpPost()
+            .header(Headers.CONTENT_TYPE, "application/json")
+            .body(json.toString())
+            .responseString { _, _, result ->
+                val output = when (result) {
+                    is Result.Success -> result.get()
+                    is Result.Failure -> "Erro: ${result.error}"
+                }
+                onResult(output)
+            }
+    }
+
     fun parseAquaPoints(jsonString: String): List<AquaPoint> {
         return Json.decodeFromString(jsonString)
     }

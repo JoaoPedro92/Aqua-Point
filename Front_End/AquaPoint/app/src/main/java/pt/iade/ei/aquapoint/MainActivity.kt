@@ -94,8 +94,22 @@ fun LoadHomePage(navController: NavHostController, places: List<AquaPoint>) {
             }
 
             composable(Screen.Favorite.route) {
-                CreateFavoritesPage(navController)
-                showNavBar.value = true
+                if (UserDataRepository.getUserId() != null) {
+                    LaunchedEffect(Unit) {
+                        NetworkService.getFavoriteAquaPoints(UserDataRepository.getUserId()) { result ->
+                            val parsed = parseAquaPoints(result)
+
+                            AquaPointsRepository.setFavoriteCache(parsed)
+                        }
+                    }
+
+                    CreateFavoritesPage(navController)
+                    showNavBar.value = true
+                } else {
+                    CreateHomePage(navController)
+
+                    showNavBar.value = false
+                }
             }
 
             composable(Screen.Add.route) {
@@ -121,6 +135,14 @@ fun LoadHomePage(navController: NavHostController, places: List<AquaPoint>) {
             }
 
             composable(Screen.Search.route) {
+                LaunchedEffect(Unit) {
+                    NetworkService.getFavoriteAquaPoints(UserDataRepository.getUserId()) { result ->
+                        val parsed = parseAquaPoints(result)
+
+                        AquaPointsRepository.setFavoriteCache(parsed)
+                    }
+                }
+
                 CreateSearchPage(navController)
                 showNavBar.value = true
             }

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import pt.iade.AquaPoint.models.AquaPoint;
 import pt.iade.AquaPoint.models.UserInteraction;
 
 import java.util.List;

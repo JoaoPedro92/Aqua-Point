@@ -24,8 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import pt.iade.ei.aquapoint.Screen
 import pt.iade.ei.aquapoint.data.AquaPointsRepository
-
-
+import pt.iade.ei.aquapoint.data.UserDataRepository
 
 
 @Composable
@@ -37,12 +36,19 @@ fun CreateFilteredAquaPointByName(
     var places by remember { mutableStateOf(AquaPointsRepository.getCached() ?: emptyList()) }
 
     // Pega dados do backend caso forem atualizados
-    LaunchedEffect(Unit) {
-        AquaPointsRepository.updateAquaPoints { updatedPoints ->
-            places = updatedPoints
+    if (isFavorite) {
+        LaunchedEffect(Unit) {
+            AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { updatedPoints ->
+                places = updatedPoints
+            }
+        }
+    } else {
+        LaunchedEffect(Unit) {
+            AquaPointsRepository.updateAquaPoints { updatedPoints ->
+                places = updatedPoints
+            }
         }
     }
-
 
     val filteredPlaces = remember(searchText, places) {
         if (searchText.isBlank()) places
