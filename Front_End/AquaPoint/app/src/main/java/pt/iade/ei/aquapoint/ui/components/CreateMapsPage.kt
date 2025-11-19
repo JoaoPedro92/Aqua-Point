@@ -137,7 +137,8 @@ fun MapScreen(places: List<AquaPoint>, navController: NavHostController) {
                                 showBottomSheet = false
                                 selectedPlace = null
                             }
-                        }
+                        },
+                        navController = navController,
                     )
                 }
             }
@@ -146,14 +147,14 @@ fun MapScreen(places: List<AquaPoint>, navController: NavHostController) {
 }
 
 @Composable
-fun AquaPointSheetContent(onClose: () -> Unit, place: AquaPoint?) {
+fun AquaPointSheetContent(onClose: () -> Unit, place: AquaPoint?, navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(0.9f)
             .padding(8.dp)
     ) {
-        CreatePointDetailButtonSheet(place, null)
+        CreatePointDetailButtonSheet(place, null, navController = navController)
     }
 }
 

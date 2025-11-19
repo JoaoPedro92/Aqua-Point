@@ -36,10 +36,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import pt.iade.ei.aquapoint.AquaPoint
 import pt.iade.ei.aquapoint.R
+import pt.iade.ei.aquapoint.Screen
 import pt.iade.ei.aquapoint.UserReviews
 import pt.iade.ei.aquapoint.data.AquaPointsRepository
 import pt.iade.ei.aquapoint.data.UserDataRepository
@@ -50,7 +52,7 @@ import pt.iade.ei.aquapoint.ui.theme.StarYellow
 
 
 @Composable
-fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?) {
+fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?, navController: NavHostController) {
     var reviews by remember { mutableStateOf<List<UserReviews>>(emptyList()) }
 
     var currentPlace: AquaPoint? = place
@@ -182,22 +184,26 @@ fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?) {
                                 .wrapContentWidth(Alignment.End)
                                 .offset(y = -35.dp, x = 5.dp)
                                 .clickable {
-                                    if (AquaPointsRepository.isFavorite(currentPlace?.id)) {
-                                        NetworkService.removeAquaPointFromFavorites(UserDataRepository.getUserId(), currentPlace?.id) {
-                                            AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { pointsData ->
-                                                AquaPointsRepository.setFavoriteCache(pointsData)
+                                    if (UserDataRepository.getUserId() != null) {
+                                        if (AquaPointsRepository.isFavorite(currentPlace?.id)) {
+                                            NetworkService.removeAquaPointFromFavorites(UserDataRepository.getUserId(), currentPlace?.id) {
+                                                AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { pointsData ->
+                                                    AquaPointsRepository.setFavoriteCache(pointsData)
 
-                                                favColor = Color.Gray
+                                                    favColor = Color.Gray
+                                                }
+                                            }
+                                        } else {
+                                            NetworkService.addAquaPointToFavorite(UserDataRepository.getUserId(), currentPlace?.id) {
+                                                AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { pointsData ->
+                                                    AquaPointsRepository.setFavoriteCache(pointsData)
+
+                                                    favColor = Color.Red
+                                                }
                                             }
                                         }
                                     } else {
-                                        NetworkService.addAquaPointToFavorite(UserDataRepository.getUserId(), currentPlace?.id) {
-                                            AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { pointsData ->
-                                                AquaPointsRepository.setFavoriteCache(pointsData)
-
-                                                favColor = Color.Red
-                                            }
-                                        }
+                                        navController.navigate(Screen.MainPage.route)
                                     }
                                 }
                         )

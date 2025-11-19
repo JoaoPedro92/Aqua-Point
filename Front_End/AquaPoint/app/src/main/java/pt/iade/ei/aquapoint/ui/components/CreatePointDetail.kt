@@ -45,6 +45,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import pt.iade.ei.aquapoint.AquaPoint
 import pt.iade.ei.aquapoint.R
+import pt.iade.ei.aquapoint.Screen
 import pt.iade.ei.aquapoint.UserReviews
 import pt.iade.ei.aquapoint.data.AquaPointsRepository
 import pt.iade.ei.aquapoint.data.UserDataRepository
@@ -207,22 +208,26 @@ fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController)
                                 .wrapContentWidth(Alignment.End)
                                 .offset(y = -35.dp, x = 5.dp)
                                 .clickable {
-                                    if (AquaPointsRepository.isFavorite(id)) {
-                                        NetworkService.removeAquaPointFromFavorites(UserDataRepository.getUserId(), id) {
-                                            AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { pointsData ->
-                                                AquaPointsRepository.setFavoriteCache(pointsData)
+                                    if (UserDataRepository.getUserId() != null) {
+                                        if (AquaPointsRepository.isFavorite(id)) {
+                                            NetworkService.removeAquaPointFromFavorites(UserDataRepository.getUserId(), id) {
+                                                AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { pointsData ->
+                                                    AquaPointsRepository.setFavoriteCache(pointsData)
 
-                                                favColor = Color.Gray
+                                                    favColor = Color.Gray
+                                                }
+                                            }
+                                        } else {
+                                            NetworkService.addAquaPointToFavorite(UserDataRepository.getUserId(), id) {
+                                                AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { pointsData ->
+                                                    AquaPointsRepository.setFavoriteCache(pointsData)
+
+                                                    favColor = Color.Red
+                                                }
                                             }
                                         }
                                     } else {
-                                        NetworkService.addAquaPointToFavorite(UserDataRepository.getUserId(), id) {
-                                            AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { pointsData ->
-                                                AquaPointsRepository.setFavoriteCache(pointsData)
-
-                                                favColor = Color.Red
-                                            }
-                                        }
+                                        navController.navigate(Screen.MainPage.route)
                                     }
                                 }
                         )
