@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pt.iade.AquaPoint.models.AquaPoint;
+import pt.iade.AquaPoint.models.RemoveAquaPoint;
 import pt.iade.AquaPoint.repository.AquaPointRepository;
 
 import org.springframework.web.bind.annotation.PathVariable; 
@@ -38,13 +39,29 @@ public class AquaPointsController {
         return aquaPointRepository.findById(id).orElse(null); 
     }
 
-    @PostMapping(path="/createNewAquaPoint/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) 
-    public AquaPoint createNewAquaPoint(@RequestBody AquaPoint pointData) { 
-        return aquaPointRepository.save(pointData); 
+    @PostMapping(path="/getFavoriteAquaPointsByUserId/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) 
+    public List<AquaPoint> getFavoriteAquaPointsByUserId(@RequestBody int id) { 
+        return aquaPointRepository.getFavoriteAquaPointsByUserId(id);
     }
 
-    @PostMapping(path="/editAquaPointData/", produces = MediaType.APPLICATION_JSON_VALUE) 
-    public AquaPoint editAquaPoint(@RequestBody AquaPoint pointData) { 
+    @PostMapping(path="/removeAquaPointFromFavorites/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) 
+    public int removeAquaPointFromFavorites(@RequestBody RemoveAquaPoint data) { 
+        int userId = data.getUserId();
+        int pointId = data.getPointId();
+
+        return aquaPointRepository.removeAquaPointFromFavorites(pointId, userId);
+    }
+
+    @PostMapping(path="/addAquaPointToFavorite/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) 
+    public int addAquaPointToFavorite(@RequestBody RemoveAquaPoint data) { 
+        int userId = data.getUserId();
+        int pointId = data.getPointId();
+
+        return aquaPointRepository.addAquaPointToFavorite(pointId, userId);
+    }
+
+    @PostMapping(path="/createNewAquaPoint/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) 
+    public AquaPoint createNewAquaPoint(@RequestBody AquaPoint pointData) { 
         return aquaPointRepository.save(pointData); 
     }
 } 

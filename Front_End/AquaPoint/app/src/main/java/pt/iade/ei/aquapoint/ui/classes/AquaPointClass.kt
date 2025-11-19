@@ -1,6 +1,7 @@
-package pt.iade.ei.aquapoint
+package pt.iade.ei.aquapoint.ui.classes
 
 import kotlinx.serialization.Serializable
+import pt.iade.ei.aquapoint.R
 
 @Serializable
 data class AquaPoint(

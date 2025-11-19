@@ -65,10 +65,12 @@ fun CreateSearchBox(
     filterButton: Boolean
 
 ) {
+    Spacer(modifier = Modifier.height(35.dp))
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 25.dp),
+            .padding(vertical = 7.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 

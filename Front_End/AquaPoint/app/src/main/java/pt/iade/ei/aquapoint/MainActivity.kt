@@ -2,18 +2,13 @@ package pt.iade.ei.aquapoint
 
 import CreateNavBarPage
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,30 +17,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.github.kittinunf.fuel.httpGet
-import kotlinx.serialization.Serializable
 import pt.iade.ei.aquapoint.data.AquaPointsRepository
 import pt.iade.ei.aquapoint.data.UserDataRepository
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService.parseAquaPoints
-import pt.iade.ei.aquapoint.ui.components.CreateAddAquaPointPage
-import pt.iade.ei.aquapoint.ui.components.CreateFavoritesPage
+import pt.iade.ei.aquapoint.ui.classes.AquaPoint
+import pt.iade.ei.aquapoint.ui.pages.CreateAddAquaPointPage
+import pt.iade.ei.aquapoint.ui.pages.CreateFavoritesPage
 import pt.iade.ei.aquapoint.ui.theme.AquaPointTheme
-import pt.iade.ei.aquapoint.ui.components.CreateHomePage
-import pt.iade.ei.aquapoint.ui.components.CreateLoginPage
-import pt.iade.ei.aquapoint.ui.components.CreatePersonalArea
+import pt.iade.ei.aquapoint.ui.pages.CreateHomePage
+import pt.iade.ei.aquapoint.ui.pages.CreateLoginPage
+import pt.iade.ei.aquapoint.ui.pages.CreatePersonalArea
 import pt.iade.ei.aquapoint.ui.components.CreatePointDetail
-import pt.iade.ei.aquapoint.ui.components.CreateRegisterPage
-import pt.iade.ei.aquapoint.ui.components.CreateSearchPage
-import pt.iade.ei.aquapoint.ui.components.MapScreen
+import pt.iade.ei.aquapoint.ui.pages.CreateRegisterPage
+import pt.iade.ei.aquapoint.ui.pages.CreateSearchPage
+import pt.iade.ei.aquapoint.ui.pages.MapScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,8 +85,22 @@ fun LoadHomePage(navController: NavHostController, places: List<AquaPoint>) {
             }
 
             composable(Screen.Favorite.route) {
-                CreateFavoritesPage(navController)
-                showNavBar.value = true
+                if (UserDataRepository.getUserId() != null) {
+                    LaunchedEffect(Unit) {
+                        NetworkService.getFavoriteAquaPoints(UserDataRepository.getUserId()) { result ->
+                            val parsed = parseAquaPoints(result)
+
+                            AquaPointsRepository.setFavoriteCache(parsed)
+                        }
+                    }
+
+                    CreateFavoritesPage(navController)
+                    showNavBar.value = true
+                } else {
+                    CreateHomePage(navController)
+
+                    showNavBar.value = false
+                }
             }
 
             composable(Screen.Add.route) {
@@ -121,6 +126,14 @@ fun LoadHomePage(navController: NavHostController, places: List<AquaPoint>) {
             }
 
             composable(Screen.Search.route) {
+                LaunchedEffect(Unit) {
+                    NetworkService.getFavoriteAquaPoints(UserDataRepository.getUserId()) { result ->
+                        val parsed = parseAquaPoints(result)
+
+                        AquaPointsRepository.setFavoriteCache(parsed)
+                    }
+                }
+
                 CreateSearchPage(navController)
                 showNavBar.value = true
             }

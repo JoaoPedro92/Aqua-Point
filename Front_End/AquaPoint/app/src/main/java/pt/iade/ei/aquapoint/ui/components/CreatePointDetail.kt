@@ -10,8 +10,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -29,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -41,15 +40,17 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import pt.iade.ei.aquapoint.AquaPoint
+import pt.iade.ei.aquapoint.ui.classes.AquaPoint
 import pt.iade.ei.aquapoint.R
-import pt.iade.ei.aquapoint.UserReviews
+import pt.iade.ei.aquapoint.Screen
+import pt.iade.ei.aquapoint.ui.classes.UserReviews
 import pt.iade.ei.aquapoint.data.AquaPointsRepository
+import pt.iade.ei.aquapoint.data.UserDataRepository
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService.parseUserReviews
+import pt.iade.ei.aquapoint.ui.pages.GetAquaPointDistance
 import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
+import pt.iade.ei.aquapoint.ui.theme.StarYellow
 
 
 @Composable
@@ -188,6 +189,45 @@ fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController)
                             text = "${reviews.size} ${stringResource(R.string.opinion)}",
                             textDecoration = TextDecoration.Underline
                         )
+
+                        var favColor by remember { mutableStateOf(Color.Gray) }
+
+                        if (AquaPointsRepository.isFavorite(id)) {
+                            favColor = Color.Red
+                        }
+
+                        Icon(
+                            imageVector = Icons.Filled.Favorite,
+                            contentDescription = "return",
+                            tint = favColor,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentWidth(Alignment.End)
+                                .offset(y = -35.dp, x = 5.dp)
+                                .clickable {
+                                    if (UserDataRepository.getUserId() != null) {
+                                        if (AquaPointsRepository.isFavorite(id)) {
+                                            NetworkService.removeAquaPointFromFavorites(UserDataRepository.getUserId(), id) {
+                                                AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { pointsData ->
+                                                    AquaPointsRepository.setFavoriteCache(pointsData)
+
+                                                    favColor = Color.Gray
+                                                }
+                                            }
+                                        } else {
+                                            NetworkService.addAquaPointToFavorite(UserDataRepository.getUserId(), id) {
+                                                AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { pointsData ->
+                                                    AquaPointsRepository.setFavoriteCache(pointsData)
+
+                                                    favColor = Color.Red
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        navController.navigate(Screen.MainPage.route)
+                                    }
+                                }
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -249,24 +289,32 @@ fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController)
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        repeat(5) {
+                        var rating by remember { mutableStateOf(0) }
+
+                        repeat(5) { i ->
+                            val starNumber = i + 1
                             Icon(
                                 imageVector = Icons.Filled.Star,
-                                contentDescription = "Estrela de avaliação",
-                                tint = Color.Black,
+                                contentDescription = "Estrela $starNumber",
+
+                                tint = if (starNumber <= rating) StarYellow else Color.Black,
 
                                 modifier = Modifier
                                     .size(30.dp)
-
+                                    .clickable {
+                                        rating = starNumber
+                                    }
                             )
                         }
                     }
 
                     Spacer(modifier = Modifier.height(5.dp))
 
+                    var comment by remember { mutableStateOf("") }
+
                     TextField(
-                        value = "",
-                        onValueChange = {},
+                        value = comment,
+                        onValueChange = { comment = it },
                         placeholder = { Text(stringResource(id = R.string.comment_placeholder)) },
                         modifier = Modifier
                             .fillMaxWidth()
