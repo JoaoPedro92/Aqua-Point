@@ -1,6 +1,6 @@
 package pt.iade.ei.aquapoint.data
 
-import pt.iade.ei.aquapoint.AquaPoint
+import pt.iade.ei.aquapoint.ui.classes.AquaPoint
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
 import kotlin.collections.List
 

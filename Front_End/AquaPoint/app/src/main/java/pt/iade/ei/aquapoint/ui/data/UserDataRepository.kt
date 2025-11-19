@@ -1,9 +1,6 @@
 package pt.iade.ei.aquapoint.data
 
-import pt.iade.ei.aquapoint.AquaPoint
-import pt.iade.ei.aquapoint.UserData
-import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
-import kotlin.collections.List
+import pt.iade.ei.aquapoint.ui.classes.UserData
 
 object UserDataRepository {
     private var currentLogin: UserData? = null

@@ -39,14 +39,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import pt.iade.ei.aquapoint.AquaPoint
+import pt.iade.ei.aquapoint.ui.classes.AquaPoint
 import pt.iade.ei.aquapoint.R
 import pt.iade.ei.aquapoint.Screen
-import pt.iade.ei.aquapoint.UserReviews
+import pt.iade.ei.aquapoint.ui.classes.UserReviews
 import pt.iade.ei.aquapoint.data.AquaPointsRepository
 import pt.iade.ei.aquapoint.data.UserDataRepository
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService.parseUserReviews
+import pt.iade.ei.aquapoint.ui.pages.GetAquaPointDistance
 import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
 import pt.iade.ei.aquapoint.ui.theme.StarYellow
 

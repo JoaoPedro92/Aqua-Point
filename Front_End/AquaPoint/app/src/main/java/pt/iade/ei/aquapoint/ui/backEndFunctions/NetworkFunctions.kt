@@ -1,15 +1,14 @@
 package pt.iade.ei.aquapoint.ui.backEndFunctions
 
-import android.util.Log
 import com.github.kittinunf.fuel.core.Headers
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.result.Result
 import kotlinx.serialization.json.Json
 import org.json.JSONObject
-import pt.iade.ei.aquapoint.AquaPoint
-import pt.iade.ei.aquapoint.UserData
-import pt.iade.ei.aquapoint.UserReviews
+import pt.iade.ei.aquapoint.ui.classes.AquaPoint
+import pt.iade.ei.aquapoint.ui.classes.UserData
+import pt.iade.ei.aquapoint.ui.classes.UserReviews
 
 object NetworkService {
 

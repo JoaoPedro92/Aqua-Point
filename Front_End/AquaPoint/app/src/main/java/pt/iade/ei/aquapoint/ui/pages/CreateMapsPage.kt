@@ -1,4 +1,4 @@
-package pt.iade.ei.aquapoint.ui.components
+package pt.iade.ei.aquapoint.ui.pages
 
 import android.location.Location
 import androidx.compose.foundation.layout.*
@@ -20,8 +20,10 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 import kotlinx.coroutines.launch
-import pt.iade.ei.aquapoint.AquaPoint
+import pt.iade.ei.aquapoint.ui.classes.AquaPoint
 import pt.iade.ei.aquapoint.Screen
+import pt.iade.ei.aquapoint.ui.components.CreatePointDetailButtonSheet
+import pt.iade.ei.aquapoint.ui.components.CreateSearchBox
 import pt.iade.ei.aquapoint.ui.theme.AquaGreen
 
 
