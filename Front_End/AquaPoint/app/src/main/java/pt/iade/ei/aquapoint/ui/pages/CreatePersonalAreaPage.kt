@@ -195,62 +195,58 @@ fun CreatePersonalArea(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
+        val currentPasswordIncorrect = stringResource(R.string.current_password_incorrect)
+        val fillFields = stringResource(R.string.fill_fields)
+        val failedUpdateData = stringResource(R.string.failed_update_data)
+
         Button(
             onClick = {
 
-                val cachedPassword = UserDataRepository.getUserPassword() ?: ""
-                val user = UserDataRepository.getUserData()
-                val userId = user?.id
-                val currentEmail = user?.email ?: ""
-                val currentJoined = user?.joined ?: ""
+                UserDataRepository.getUserData()?.let { user ->
+                    val cachedPassword = UserDataRepository.getUserPassword() ?: ""
 
+                    val nameChanged = name != user.name
+                    val passwordChanged = newPassword.isNotEmpty()
 
-                val nameChanged = name != (user?.name ?: "")
-                val passwordChanged = newPassword.isNotEmpty()
+                    when {
+                        passwordChanged && currentPassword != cachedPassword -> {
+                            Toast.makeText(context, currentPasswordIncorrect, Toast.LENGTH_LONG).show()
+                        }
+                        !nameChanged && !passwordChanged -> {
+                            Toast.makeText(context, fillFields, Toast.LENGTH_LONG).show()
+                        }
+                        else -> {
+                            val passwordToUpdate = if (passwordChanged) newPassword else cachedPassword
 
-                if (userId == null) {
-                    Toast.makeText(context, "Usuário não encontrado!", Toast.LENGTH_LONG).show()
-                    // Só valida a senha se o usuário digitou uma nova senha
-                } else if (passwordChanged && currentPassword != cachedPassword) {
-                    Toast.makeText(context, "Senha atual incorreta!", Toast.LENGTH_LONG).show()
-                } else if (!nameChanged && !passwordChanged) {
-                    Toast.makeText(context, "Nenhuma alteração efetuada!", Toast.LENGTH_LONG).show()
-                } else {
-                    // Define qual senha será enviada para o backend
-                    val passwordToUpdate = if (passwordChanged) newPassword else cachedPassword
-
-                    // Chama a função de atualização
-                    UpdateUserReturnData(
-                        id = userId,
-                        updatedName = name,
-                        updatedPassword = passwordToUpdate,
-                        email = currentEmail,
-                        joined = currentJoined
-                    ) { success ->
-                        if (success) {
-                            user.let {
-                                UserDataRepository.setUserLogin(
-                                    it.copy(
-                                        name = name,
-                                        password = passwordToUpdate
+                            UpdateUserData(
+                                id = user.id,
+                                updatedName = name,
+                                updatedPassword = passwordToUpdate,
+                                email = user.email,
+                                joined = user.joined
+                            ) { success ->
+                                if (success) {
+                                    UserDataRepository.setUserLogin(
+                                        user.copy(
+                                            name = name,
+                                            password = passwordToUpdate
+                                        )
                                     )
-                                )
 
-                                currentPassword = ""
-                                newPassword = ""
+                                    currentPassword = ""
+                                    newPassword = ""
+
+                                    val message = when {
+                                        nameChanged && passwordChanged -> "Nome e senha atualizados!"
+                                        nameChanged -> "Nome atualizado!"
+                                        passwordChanged -> "Senha atualizada!"
+                                        else -> ""
+                                    }
+                                    if (message.isNotEmpty()) Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                                } else {
+                                    Toast.makeText(context, failedUpdateData, Toast.LENGTH_LONG).show()
+                                }
                             }
-
-
-                            val message = when {
-                                nameChanged && passwordChanged -> "Nome e senha atualizados!"
-                                nameChanged -> "Nome atualizado!"
-                                passwordChanged -> "Senha alterada!"
-                                else -> "Nenhuma alteração efetuada!"
-                            }
-
-                            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-                        } else {
-                            Toast.makeText(context, "Falha ao atualizar os dados.", Toast.LENGTH_LONG).show()
                         }
                     }
                 }
@@ -277,7 +273,8 @@ fun CreatePersonalArea(navController: NavHostController) {
     }
 }
 
-fun UpdateUserReturnData(
+
+fun UpdateUserData(
     id: Int,
     email: String,
     updatedName: String,
@@ -289,7 +286,6 @@ fun UpdateUserReturnData(
         id = id,
         email = email,
         newName = updatedName,
-        currentPassword = updatedPassword,
         newPassword = updatedPassword,
         joined = joined
     ) { response ->

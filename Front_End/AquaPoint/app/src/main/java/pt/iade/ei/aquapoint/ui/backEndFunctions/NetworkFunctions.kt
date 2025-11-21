@@ -143,7 +143,6 @@ object NetworkService {
         id: Int,
         email: String,
         newName: String,
-        currentPassword: String,
         newPassword: String,
         joined: String,
         onResult: (String) -> Unit
@@ -152,8 +151,7 @@ object NetworkService {
         json.put("id", id)
         json.put("email", email)
         json.put("name", newName)
-        json.put("password", currentPassword)
-        json.put("updatedPassword", newPassword)
+        json.put("password", newPassword)
         json.put("joined", joined)
 
         "http://10.0.2.2:8080/api/java/users/editUserData/".httpPost()
