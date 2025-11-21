@@ -34,10 +34,17 @@ import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DoorBack
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.navigation.NavHostController
 import pt.iade.ei.aquapoint.Screen
 import pt.iade.ei.aquapoint.data.UserDataRepository
+import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
+import pt.iade.ei.aquapoint.ui.classes.UserData
 
 @Composable
 fun CreatePersonalArea(navController: NavHostController) {
@@ -96,6 +103,9 @@ fun CreatePersonalArea(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(25.dp))
 
+
+        var name by remember { mutableStateOf(UserDataRepository.getUserName() ?: "") }
+
         Text(
             text = stringResource(R.string.your_name),
             fontFamily = ComfortaaFont,
@@ -108,9 +118,9 @@ fun CreatePersonalArea(navController: NavHostController) {
         )
 
         OutlinedTextField(
-            value = "",
+            value = name,
             shape = RoundedCornerShape(16.dp),
-            onValueChange = {  },
+            onValueChange = { name = it },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = AquaGreen,
                 unfocusedBorderColor = AquaGreen,
@@ -124,6 +134,7 @@ fun CreatePersonalArea(navController: NavHostController) {
             singleLine = true
         )
 
+        var currentPassword by remember { mutableStateOf("") }
         Text(
             text = stringResource(R.string.current_password),
             fontFamily = ComfortaaFont,
@@ -136,9 +147,9 @@ fun CreatePersonalArea(navController: NavHostController) {
         )
 
         OutlinedTextField(
-            value = "",
+            value = currentPassword,
             shape = RoundedCornerShape(16.dp),
-            onValueChange = {  },
+            onValueChange = { currentPassword = it },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = AquaGreen,
                 unfocusedBorderColor = AquaGreen,
@@ -146,12 +157,14 @@ fun CreatePersonalArea(navController: NavHostController) {
                 unfocusedLabelColor = AquaGreen,
             ),
             label = { Text(stringResource(R.string.password_input)) },
+            visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .padding(vertical = 2.dp),
             singleLine = true
         )
 
+        var newPassword by remember { mutableStateOf("") }
         Text(
             text = stringResource(R.string.new_password_area),
             fontFamily = ComfortaaFont,
@@ -162,11 +175,10 @@ fun CreatePersonalArea(navController: NavHostController) {
                 .align(Alignment.Start)
                 .padding(top = 16.dp, bottom = 1.dp)
         )
-
         OutlinedTextField(
-            value = "",
+            value = newPassword,
             shape = RoundedCornerShape(16.dp),
-            onValueChange = {  },
+            onValueChange = { newPassword = it },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = AquaGreen,
                 unfocusedBorderColor = AquaGreen,
@@ -174,6 +186,7 @@ fun CreatePersonalArea(navController: NavHostController) {
                 unfocusedLabelColor = AquaGreen,
             ),
             label = { Text(stringResource(R.string.password_input)) },
+            visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .padding(vertical = 2.dp),
@@ -183,7 +196,65 @@ fun CreatePersonalArea(navController: NavHostController) {
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
-            onClick = {  },
+            onClick = {
+
+                val cachedPassword = UserDataRepository.getUserPassword() ?: ""
+                val user = UserDataRepository.getUserData()
+                val userId = user?.id
+                val currentEmail = user?.email ?: ""
+                val currentJoined = user?.joined ?: ""
+
+
+                val nameChanged = name != (user?.name ?: "")
+                val passwordChanged = newPassword.isNotEmpty()
+
+                if (userId == null) {
+                    Toast.makeText(context, "Usuário não encontrado!", Toast.LENGTH_LONG).show()
+                    // Só valida a senha se o usuário digitou uma nova senha
+                } else if (passwordChanged && currentPassword != cachedPassword) {
+                    Toast.makeText(context, "Senha atual incorreta!", Toast.LENGTH_LONG).show()
+                } else if (!nameChanged && !passwordChanged) {
+                    Toast.makeText(context, "Nenhuma alteração efetuada!", Toast.LENGTH_LONG).show()
+                } else {
+                    // Define qual senha será enviada para o backend
+                    val passwordToUpdate = if (passwordChanged) newPassword else cachedPassword
+
+                    // Chama a função de atualização
+                    UpdateUserReturnData(
+                        id = userId,
+                        updatedName = name,
+                        updatedPassword = passwordToUpdate,
+                        email = currentEmail,
+                        joined = currentJoined
+                    ) { success ->
+                        if (success) {
+                            user.let {
+                                UserDataRepository.setUserLogin(
+                                    it.copy(
+                                        name = name,
+                                        password = passwordToUpdate
+                                    )
+                                )
+
+                                currentPassword = ""
+                                newPassword = ""
+                            }
+
+
+                            val message = when {
+                                nameChanged && passwordChanged -> "Nome e senha atualizados!"
+                                nameChanged -> "Nome atualizado!"
+                                passwordChanged -> "Senha alterada!"
+                                else -> "Nenhuma alteração efetuada!"
+                            }
+
+                            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                        } else {
+                            Toast.makeText(context, "Falha ao atualizar os dados.", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+            },
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = AquaGreen
@@ -203,6 +274,26 @@ fun CreatePersonalArea(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        //CreateNavBarPage()
+    }
+}
+
+fun UpdateUserReturnData(
+    id: Int,
+    email: String,
+    updatedName: String,
+    updatedPassword: String,
+    joined: String,
+    onResult: (Boolean) -> Unit
+) {
+    NetworkService.updateUser(
+        id = id,
+        email = email,
+        newName = updatedName,
+        currentPassword = updatedPassword,
+        newPassword = updatedPassword,
+        joined = joined
+    ) { response ->
+        val success = !response.contains("Erro", ignoreCase = true)
+        onResult(success)
     }
 }

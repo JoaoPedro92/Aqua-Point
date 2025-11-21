@@ -1,5 +1,6 @@
 package pt.iade.ei.aquapoint.ui.backEndFunctions
 
+import android.util.Log
 import com.github.kittinunf.fuel.core.Headers
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
@@ -110,7 +111,12 @@ object NetworkService {
             }
     }
 
-    fun createNewUser(name: String?, email: String?, password: String?, onResult: (String) -> Unit) {
+    fun createNewUser(
+        name: String?,
+        email: String?,
+        password: String?,
+        onResult: (String) -> Unit
+    ) {
         val json = JSONObject()
         json.put("name", name)
         json.put("email", email)
@@ -132,4 +138,34 @@ object NetworkService {
     fun parseUser(jsonString: String): UserData {
         return Json.decodeFromString(jsonString)
     }
+
+    fun updateUser(
+        id: Int,
+        email: String,
+        newName: String,
+        currentPassword: String,
+        newPassword: String,
+        joined: String,
+        onResult: (String) -> Unit
+    ) {
+        val json = JSONObject()
+        json.put("id", id)
+        json.put("email", email)
+        json.put("name", newName)
+        json.put("password", currentPassword)
+        json.put("updatedPassword", newPassword)
+        json.put("joined", joined)
+
+        "http://10.0.2.2:8080/api/java/users/editUserData/".httpPost()
+            .header(Headers.CONTENT_TYPE, "application/json")
+            .body(json.toString())
+            .responseString { _, _, result ->
+                val output = when (result) {
+                    is Result.Success -> result.get()
+                    is Result.Failure -> "Erro: ${result.error}"
+                }
+                onResult(output)
+            }
+    }
+
 }
