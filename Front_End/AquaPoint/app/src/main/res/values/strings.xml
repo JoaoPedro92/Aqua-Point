@@ -8,7 +8,7 @@
     <string name="mail_example">iade@exemplo.com</string>
     <string name="password_input">********</string>
     <string name="go_back">Return</string>
-    <string name="your_name">O seu nome</string>
+    <string name="your_name">Nome</string>
     <string name="personal_area">Área pessoal</string>
     <string name="current_password">Password atual</string>
     <string name="new_password_area">Nova password</string>
@@ -38,4 +38,8 @@
     <string name="wrong_credentials">Email ou password incorretos...</string>
     <string name="login_success">Login efetuado com sucesso</string>
     <string name="logout_success">Logout efetuado com sucesso</string>
+    <string name="current_password_incorrect">Senha atual incorreta!</string>
+    <string name="fill_fields">Por favor, preencha os campos!</string>
+    <string name="failed_update_data">Falha ao atualizar os dados!</string>
+
 </resources>
