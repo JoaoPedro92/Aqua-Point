@@ -38,4 +38,6 @@
     <string name="wrong_credentials">Email ou password incorretos...</string>
     <string name="login_success">Login efetuado com sucesso</string>
     <string name="logout_success">Logout efetuado com sucesso</string>
+    <string name="new_review_success">Review adicionada com sucesso</string>
+    <string name="fill_all_fields">Preencha todos os campos!</string>
 </resources>

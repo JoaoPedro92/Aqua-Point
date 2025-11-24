@@ -1,5 +1,6 @@
 package pt.iade.ei.aquapoint.ui.components
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -48,6 +50,7 @@ import pt.iade.ei.aquapoint.data.UserDataRepository
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService.parseUserReviews
 import pt.iade.ei.aquapoint.ui.pages.GetAquaPointDistance
+import pt.iade.ei.aquapoint.ui.theme.AquaGreen
 import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
 import pt.iade.ei.aquapoint.ui.theme.StarYellow
 
@@ -263,14 +266,18 @@ fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?, navController: Nav
 
                     Spacer(modifier = Modifier.height(12.dp))
 
+                    var rating by remember { mutableStateOf(0) }
+                    var comment by remember { mutableStateOf("") }
+                    var context = LocalContext.current
+                    var successMessage = stringResource(R.string.new_review_success)
+                    var fillAllFieldsMessage = stringResource(R.string.fill_all_fields)
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        var rating by remember { mutableStateOf(0) }
-
                         repeat(5) { i ->
                             val starNumber = i + 1
                             Icon(
@@ -290,27 +297,81 @@ fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?, navController: Nav
 
                     Spacer(modifier = Modifier.height(5.dp))
 
-                    var comment by remember { mutableStateOf("") }
-
-                    TextField(
-                        value = comment,
-                        onValueChange = { comment = it },
-                        placeholder = { Text(stringResource(id = R.string.comment_placeholder)) },
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(55.dp),
-                        colors = TextFieldDefaults.colors(
-                            unfocusedContainerColor = Color.Transparent,
-                            focusedContainerColor = Color.Transparent,
-                            disabledContainerColor = Color.Transparent,
-                            errorContainerColor = Color.Transparent,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent,
-                            disabledIndicatorColor = Color.Transparent,
-                            errorIndicatorColor = Color.Red
-                        )
+                    ) {
+                        Column(
+                        ) {
+                            TextField(
+                                value = comment,
+                                onValueChange = { comment = it },
+                                placeholder = { Text(stringResource(id = R.string.comment_placeholder)) },
+                                modifier = Modifier
+                                    .width(310.dp)
+                                    .offset(x = -5.dp)
+                                    .offset(y = 5.dp)
+                                    .height(55.dp),
+                                colors = TextFieldDefaults.colors(
+                                    unfocusedContainerColor = Color.Transparent,
+                                    focusedContainerColor = Color.Transparent,
+                                    disabledContainerColor = Color.Transparent,
+                                    errorContainerColor = Color.Transparent,
+                                    focusedIndicatorColor = Color.Transparent,
+                                    unfocusedIndicatorColor = Color.Transparent,
+                                    disabledIndicatorColor = Color.Transparent,
+                                    errorIndicatorColor = Color.Red
+                                )
 
-                    )
+                            )
+                        }
+
+                        Column(
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Send,
+                                contentDescription = "Send review",
+
+                                tint = AquaGreen,
+
+                                modifier = Modifier
+                                    .size(23.dp)
+                                    .offset(y = 21.dp)
+                                    .offset(x = -1.dp)
+                                    .clickable {
+                                        if (UserDataRepository.getUserId() != null) {
+                                            if (rating > 0 && comment != "" && comment != " ") {
+                                                NetworkService.createNewReview(
+                                                    UserDataRepository.getUserId(),
+                                                    currentPlace?.id,
+                                                    rating,
+                                                    comment
+                                                ) { result ->
+                                                    AquaPointsRepository.updateAquaPoints { result ->
+                                                        AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { result ->
+                                                            NetworkService.getAquaPointReviews(currentPlace?.id) { result ->
+                                                                reviews = parseUserReviews(result)
+
+                                                                rating = 0;
+                                                                comment = ""
+
+                                                                val toast = Toast.makeText(context, successMessage, Toast.LENGTH_LONG)
+                                                                toast.show()
+                                                            }
+                                                        };
+                                                    }
+                                                }
+                                            } else {
+                                                val toast = Toast.makeText(context, fillAllFieldsMessage, Toast.LENGTH_LONG)
+                                                toast.show()
+                                            }
+                                        } else {
+                                            navController.navigate(Screen.MainPage.route)
+                                        }
+                                    }
+                            )
+                        }
+                    }
                 }
             }
         }

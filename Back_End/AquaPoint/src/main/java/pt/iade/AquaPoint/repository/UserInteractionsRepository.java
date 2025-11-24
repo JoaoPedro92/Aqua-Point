@@ -6,7 +6,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import pt.iade.AquaPoint.models.AquaPoint;
+import pt.iade.AquaPoint.models.Rating;
 import pt.iade.AquaPoint.models.UserInteraction;
+
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
 
 import java.util.List;
 
@@ -21,4 +25,18 @@ public interface UserInteractionsRepository extends JpaRepository<UserInteractio
         nativeQuery = true
     )
     List<UserInteraction> getUserReviewByPointId(@Param("pointId") int pointId);
+
+    @Modifying
+    @Transactional
+    @Query(
+        value = "INSERT INTO interaction (user_id, point_id, comment_id, rating_id, date) "+
+            "VALUES (:user_id, :point_id, :commentId, :ratingId, CURRENT_DATE())",
+        nativeQuery = true
+    )
+    int addNewReview(
+        @Param("user_id") int user_id, 
+        @Param("point_id") int point_id, 
+        @Param("commentId") int commentId, 
+        @Param("ratingId") int ratingId
+    );
 }
