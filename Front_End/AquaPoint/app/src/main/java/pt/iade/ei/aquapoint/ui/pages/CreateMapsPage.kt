@@ -20,8 +20,10 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 import kotlinx.coroutines.launch
+import pt.iade.ei.aquapoint.R
 import pt.iade.ei.aquapoint.ui.classes.AquaPoint
 import pt.iade.ei.aquapoint.Screen
+import pt.iade.ei.aquapoint.data.AquaPointsRepository
 import pt.iade.ei.aquapoint.ui.components.CreatePointDetailButtonSheet
 import pt.iade.ei.aquapoint.ui.components.CreateSearchBox
 import pt.iade.ei.aquapoint.ui.theme.AquaGreen
@@ -54,17 +56,24 @@ fun MapScreen(places: List<AquaPoint>, navController: NavHostController) {
                     position = LatLng(place.latitude, place.longitude)
                 )
 
-                var finalColor: BitmapDescriptor = BitmapDescriptorFactory.defaultMarker(200f)
+                var markerStyle: BitmapDescriptor = BitmapDescriptorFactory.defaultMarker(200f)
+                var isFavorite = AquaPointsRepository.isFavorite(place.id)
 
-                if (place.state_id == 2) {
-                    finalColor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)
+                if (isFavorite) {
+                    if (place.state_id == 2) {
+                        markerStyle = BitmapDescriptorFactory.fromResource(R.drawable.favorite_not_working)
+                    } else {
+                        markerStyle = BitmapDescriptorFactory.fromResource(R.drawable.favorite_working)
+                    }
+                } else if (place.state_id == 2) {
+                    markerStyle = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)
                 }
 
                 MarkerInfoWindow(
                     state = markerState,
                     title = place.name,
                     /*snippet = place.distance,*/
-                    icon = finalColor,
+                    icon = markerStyle,
                     onClick = {
                         showBottomSheet = true
                         selectedPlace = place
