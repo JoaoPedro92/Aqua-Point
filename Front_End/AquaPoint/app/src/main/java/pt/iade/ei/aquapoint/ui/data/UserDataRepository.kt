@@ -17,6 +17,10 @@ object UserDataRepository {
         return currentLogin?.password
     }
 
+    fun getUserData(): UserData? {
+        return currentLogin
+    }
+
     fun setUserLogin(data: UserData) {
         currentLogin = data
     }
