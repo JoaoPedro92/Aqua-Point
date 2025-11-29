@@ -35,6 +35,10 @@ import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 @Composable
 fun CreateAddAquaPointPage() {
@@ -80,10 +84,12 @@ fun CreateAddAquaPointPage() {
                 .padding(top = 16.dp, bottom = 1.dp)
         )
 
+        var aquaPointName by remember { mutableStateOf("") }
+
         OutlinedTextField(
-            value = "",
+            value = aquaPointName,
             shape = RoundedCornerShape(16.dp),
-            onValueChange = {  },
+            onValueChange = { aquaPointName = it },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = AquaGreen,
                 unfocusedBorderColor = AquaGreen,
@@ -112,12 +118,14 @@ fun CreateAddAquaPointPage() {
 
         Spacer(modifier = Modifier.height(15.dp))
 
+        var selectedOption by remember { mutableStateOf(0) }
+
         Button(
-            onClick = {  },
+            onClick = { selectedOption = 0 },
             shape = RoundedCornerShape(16.dp),
             border = BorderStroke(2.dp, AquaGreen),
             colors = ButtonDefaults.buttonColors(
-                containerColor = AquaGreen,
+                containerColor = if (selectedOption == 0) AquaGreen else Color.White,
 
                 ),
             modifier = Modifier
@@ -129,18 +137,18 @@ fun CreateAddAquaPointPage() {
                 fontFamily = RobotoFont,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
-                color = Color.White
+                color = if (selectedOption == 0) Color.White else AquaGreen
             )
         }
 
         Spacer(modifier = Modifier.height(10.dp))
 
         Button(
-            onClick = {  },
+            onClick = { selectedOption = 1 },
             shape = RoundedCornerShape(16.dp),
             border = BorderStroke(2.dp, AquaGreen),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White
+                containerColor = if (selectedOption == 1) AquaGreen else Color.White
             ),
             modifier = Modifier
                 .fillMaxWidth(1f)
@@ -151,18 +159,18 @@ fun CreateAddAquaPointPage() {
                 fontFamily = RobotoFont,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
-                color = AquaGreen
+                color = if (selectedOption == 1) Color.White else AquaGreen
             )
         }
 
         Spacer(modifier = Modifier.height(15.dp))
 
         Button(
-            onClick = {  },
+            onClick = { selectedOption = 2 },
             shape = RoundedCornerShape(16.dp),
             border = BorderStroke(2.dp, AquaGreen),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White
+                containerColor = if (selectedOption == 2) AquaGreen else Color.White
             ),
             modifier = Modifier
                 .fillMaxWidth(1f)
@@ -173,7 +181,7 @@ fun CreateAddAquaPointPage() {
                 fontFamily = RobotoFont,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
-                color = AquaGreen
+                color = if (selectedOption == 2) Color.White else AquaGreen
             )
         }
 
