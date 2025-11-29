@@ -38,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
+import org.mindrot.jbcrypt.BCrypt
 import pt.iade.ei.aquapoint.Screen
 import pt.iade.ei.aquapoint.ui.classes.UserData
 import pt.iade.ei.aquapoint.data.UserDataRepository
@@ -132,7 +133,7 @@ fun CreateLoginPage(navController: NavHostController) {
                     if (exists) {
                         var parsedUserData: UserData = parseUser(userData)
 
-                        if (parsedUserData.password == password && parsedUserData.email == email) {
+                        if (BCrypt.checkpw(password, parsedUserData.password) && parsedUserData.email == email) {
                             navController.navigate(Screen.Home.route)
 
                             val toast = Toast.makeText(context, loginSuccess, Toast.LENGTH_LONG)
