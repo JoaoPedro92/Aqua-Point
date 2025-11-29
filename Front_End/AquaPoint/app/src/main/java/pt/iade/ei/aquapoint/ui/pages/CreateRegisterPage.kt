@@ -38,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
+import org.mindrot.jbcrypt.BCrypt
 import pt.iade.ei.aquapoint.Screen
 import pt.iade.ei.aquapoint.ui.classes.UserData
 import pt.iade.ei.aquapoint.data.UserDataRepository
@@ -152,7 +153,9 @@ fun CreateRegisterPage(navController: NavHostController) {
                         val toast = Toast.makeText(context, alreadyExistsMsg, Toast.LENGTH_LONG)
                         toast.show()
                     } else {
-                        CreateNewUser(name, email, password) { success, userData ->
+                        var finalPassword = BCrypt.hashpw(password, BCrypt.gensalt()) /// gensalt é uma função que gera automaticamente um SALT ( valor aleatório ) seguro, para ser usado no hash da password
+
+                        CreateNewUser(name, email, finalPassword) { success, userData ->
                             if (success) {
                                 var parsedUserData: UserData = parseUser(userData)
 
