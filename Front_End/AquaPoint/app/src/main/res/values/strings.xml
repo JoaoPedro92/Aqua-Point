@@ -41,5 +41,6 @@
     <string name="current_password_incorrect">Senha atual incorreta!</string>
     <string name="fill_fields">Por favor, preencha os campos!</string>
     <string name="failed_update_data">Falha ao atualizar os dados!</string>
-
+    <string name="new_review_success">Review adicionada com sucesso</string>
+    <string name="fill_all_fields">Preencha todos os campos!</string>
 </resources>

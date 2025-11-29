@@ -139,6 +139,26 @@ object NetworkService {
         return Json.decodeFromString(jsonString)
     }
 
+    fun createNewReview(userId: Int?, pointId: Int?, rating: Int?, comment: String?, onResult: (String) -> Unit) {
+        val json = JSONObject()
+        json.put("userId", userId)
+        json.put("pointId", pointId)
+        json.put("rating", rating)
+        json.put("comment", comment)
+
+        "http://10.0.2.2:8080/api/java/usersInteractions/addNewAquaPointReview/"
+            .httpPost()
+            .header(Headers.CONTENT_TYPE, "application/json")
+            .body(json.toString())
+            .responseString { _, _, result ->
+                val output = when (result) {
+                    is Result.Success -> result.get()
+                    is Result.Failure -> "Erro: ${result.error}"
+                }
+                onResult(output)
+            }
+    }
+
     fun updateUser(
         id: Int,
         email: String,
@@ -165,5 +185,4 @@ object NetworkService {
                 onResult(output)
             }
     }
-
 }
