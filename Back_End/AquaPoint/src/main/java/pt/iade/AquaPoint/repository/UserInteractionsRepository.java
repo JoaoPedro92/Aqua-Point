@@ -21,7 +21,7 @@ public interface UserInteractionsRepository extends JpaRepository<UserInteractio
                 "INNER JOIN users ON users.id = interaction.user_id " +
                 "INNER JOIN rating ON rating.id = interaction.rating_id " +
                 "INNER JOIN comment ON comment.id = interaction.comment_id " +
-                "WHERE interaction.point_id = :pointId",
+                "WHERE interaction.point_id = :pointId ORDER BY date DESC",
         nativeQuery = true
     )
     List<UserInteraction> getUserReviewByPointId(@Param("pointId") int pointId);
