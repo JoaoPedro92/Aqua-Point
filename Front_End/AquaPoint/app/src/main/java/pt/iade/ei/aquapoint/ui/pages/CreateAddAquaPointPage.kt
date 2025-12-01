@@ -1,7 +1,11 @@
 package pt.iade.ei.aquapoint.ui.pages
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -63,12 +67,23 @@ fun CreateAddAquaPointPage() {
 
         Spacer(modifier = Modifier.height(30.dp))
 
+        var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+
+        val galleryLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.GetContent()
+        ) { uri: Uri? ->
+            selectedImageUri = uri
+        }
+
         Image(
             painter = painterResource(R.drawable.add_new_point),
             contentDescription = "Logo",
             modifier = Modifier
                 .height(150.dp)
                 .width(200.dp)
+                .clickable {
+                    galleryLauncher.launch("image/*")
+                }
         )
 
         Spacer(modifier = Modifier.height(55.dp))
