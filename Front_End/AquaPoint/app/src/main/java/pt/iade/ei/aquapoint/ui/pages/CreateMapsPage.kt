@@ -24,6 +24,7 @@ import pt.iade.ei.aquapoint.R
 import pt.iade.ei.aquapoint.ui.classes.AquaPoint
 import pt.iade.ei.aquapoint.Screen
 import pt.iade.ei.aquapoint.data.AquaPointsRepository
+import pt.iade.ei.aquapoint.data.UserCoordinates
 import pt.iade.ei.aquapoint.ui.components.CreatePointDetailButtonSheet
 import pt.iade.ei.aquapoint.ui.components.CreateSearchBox
 import pt.iade.ei.aquapoint.ui.theme.AquaGreen
@@ -32,7 +33,7 @@ import pt.iade.ei.aquapoint.ui.theme.AquaGreen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapScreen(places: List<AquaPoint>, navController: NavHostController) {
-    val moscavide = LatLng(38.78166399699406, -9.102570032326907)
+    val moscavide = LatLng(UserCoordinates.getLatitude(), UserCoordinates.getLongitude())
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(moscavide, 17f)
     }

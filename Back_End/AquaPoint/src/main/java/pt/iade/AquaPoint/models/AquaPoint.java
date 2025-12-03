@@ -1,8 +1,12 @@
 package pt.iade.AquaPoint.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
@@ -18,7 +22,10 @@ public class AquaPoint {
     private int local_id;
     private double latitude;
     private double longitude;
-    private int state_id;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "aquaPoint")
+    private PointState pointState;
 
     // construtor para o jpa
     public AquaPoint() {}
@@ -31,8 +38,7 @@ public class AquaPoint {
         int type, 
         int local_id, 
         double latitude, 
-        double longitude,
-        int state_id
+        double longitude
     ) 
     {
         point_name = name;
@@ -40,7 +46,6 @@ public class AquaPoint {
         this.local_id = local_id;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.state_id = state_id;
     }
 
     public int getId() {
@@ -67,8 +72,13 @@ public class AquaPoint {
         return longitude;
     }
 
-    public int getState_id() {
-        return state_id;
+    @JsonProperty("state_id")
+    public Integer getStateIdForJson() {
+        if (pointState == null) { 
+            return 0;
+        } else {
+            return pointState.getStateId();
+        } 
     }
 
     public void setPoint_name(String point_name) {
@@ -89,9 +99,5 @@ public class AquaPoint {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
-    }
-
-    public void setState_id(int state_id) {
-        this.state_id = state_id;
     }
 }

@@ -31,7 +31,7 @@ public class AquaPointsController {
 
     @RequestMapping(path="/getAllAquaPoints/", produces = MediaType.APPLICATION_JSON_VALUE) 
     public List<AquaPoint> getAllAquaPoints() { 
-        return aquaPointRepository.getAquaPoints();
+        return aquaPointRepository.findAll();
     }
     
     @PostMapping(path="/getAquaPointById/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) 
@@ -62,6 +62,9 @@ public class AquaPointsController {
 
     @PostMapping(path="/createNewAquaPoint/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) 
     public AquaPoint createNewAquaPoint(@RequestBody AquaPoint pointData) { 
-        return aquaPointRepository.save(pointData); 
+        AquaPoint AddedAquaPoint = aquaPointRepository.save(pointData);
+        aquaPointRepository.AddAquaPointToStateList(AddedAquaPoint.getId(), 1);
+
+        return AddedAquaPoint; 
     }
 } 
