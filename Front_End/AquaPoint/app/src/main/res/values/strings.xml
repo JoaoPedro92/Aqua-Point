@@ -48,4 +48,5 @@
     <string name="choose_an_option">Escolha um tipo</string>
     <string name="aqua_point_choose_local">Escolha um local</string>
     <string name="select_buttons_selected">Opção selecionada</string>
+    <string name="add_new_point">Adicionar novo</string>
 </resources>

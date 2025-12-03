@@ -40,10 +40,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import org.mindrot.jbcrypt.BCrypt
 import pt.iade.ei.aquapoint.Screen
+import pt.iade.ei.aquapoint.data.AquaPointsRepository
 import pt.iade.ei.aquapoint.ui.classes.UserData
 import pt.iade.ei.aquapoint.data.UserDataRepository
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService.parseUser
+import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService.parseUserReviews
 
 @Composable
 fun CreateRegisterPage(navController: NavHostController) {
@@ -159,12 +161,14 @@ fun CreateRegisterPage(navController: NavHostController) {
                             if (success) {
                                 var parsedUserData: UserData = parseUser(userData)
 
-                                navController.navigate(Screen.Home.route)
-
                                 val toast = Toast.makeText(context, createUserSuccessMessage, Toast.LENGTH_LONG)
                                 toast.show()
 
                                 UserDataRepository.setUserLogin(parsedUserData)
+
+                                AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { result ->
+                                    navController.navigate(Screen.Home.route)
+                                };
                             } else {
                                 val toast = Toast.makeText(context, errorOccouredCreatingUser, Toast.LENGTH_LONG)
                                 toast.show()

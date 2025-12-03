@@ -14,12 +14,13 @@ import pt.iade.AquaPoint.models.AquaPoint;
 @Repository
 public interface AquaPointRepository extends JpaRepository<AquaPoint, Integer> {
     /*@Query(
-        value = "SELECT ap.id, ap.point_name, ap.point_type, ap.local_id, ap.latitude, ap.longitude, ps.state_id "+
-        "FROM aqua_points ap "+
-        "LEFT JOIN points_state ps ON ap.id = ps.point_id",
+        value = "SELECT ap.id, ap.point_name, ap.point_type, ap.local_id, ap.latitude, ap.longitude, ps.state_id " +
+                "FROM aqua_points ap " +
+                "LEFT JOIN points_state ps ON ap.id = ps.point_id " +
+                "WHERE ap.id = :id",
         nativeQuery = true
     )
-    List<AquaPoint> getAquaPoints();*/ /* método antigo */
+    AquaPoint getAquaPointWithState(@Param("id") int id);*/
 
     @Query(
         value = "SELECT DISTINCT ap.id, ap.point_name, ap.point_type, ap.local_id, ap.latitude, ap.longitude, ps.state_id " +

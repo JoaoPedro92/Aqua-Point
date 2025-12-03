@@ -1,6 +1,7 @@
 package pt.iade.ei.aquapoint.ui.pages
 
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -318,6 +319,7 @@ fun CreateAddAquaPointPage(navController: NavHostController) {
                             selectedOption = null
                             selectedImageUri = null
                             selectedOptionLocal = null
+                            UserCoordinates.restoreDefaults()
 
                             val toast = Toast.makeText(context, aqua_point_added_with_success, Toast.LENGTH_LONG)
                             toast.show()

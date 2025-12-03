@@ -2,6 +2,7 @@ package pt.iade.ei.aquapoint
 
 import CreateNavBarPage
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -23,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import pt.iade.ei.aquapoint.data.AquaPointsRepository
+import pt.iade.ei.aquapoint.data.UserCoordinates
 import pt.iade.ei.aquapoint.data.UserDataRepository
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService.parseAquaPoints
@@ -45,31 +47,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             AquaPointTheme {
                 val navController = rememberNavController()
-                var places by remember { mutableStateOf<List<AquaPoint>>(emptyList()) }
 
-                LaunchedEffect(Unit) {
-                    // só chama a API se ainda não tiver cache
-                    if (!AquaPointsRepository.hasCache()) {
-                        NetworkService.getAquaPoints { result ->
-                            val parsed = parseAquaPoints(result)
-
-                            AquaPointsRepository.setCache(parsed)
-
-                            places = parsed
-                        }
-                    } else {
-                        places = AquaPointsRepository.getCached() ?: emptyList()
-                    }
-                }
-
-                LoadHomePage(navController, places)
+                LoadHomePage(navController)
             }
         }
     }
 }
 
 @Composable
-fun LoadHomePage(navController: NavHostController, places: List<AquaPoint>) {
+fun LoadHomePage(navController: NavHostController) {
     val showNavBar = remember { mutableStateOf(true) }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -80,12 +66,14 @@ fun LoadHomePage(navController: NavHostController, places: List<AquaPoint>) {
             modifier = Modifier.fillMaxSize()
         ) {
             composable(Screen.Home.route) {
-                MapScreen(places, navController)
+                MapScreen(navController)
                 showNavBar.value = true
             }
 
             composable(Screen.Favorite.route) {
                 if (UserDataRepository.getUserId() != null) {
+                    UserCoordinates.restoreDefaults()
+
                     LaunchedEffect(Unit) {
                         NetworkService.getFavoriteAquaPoints(UserDataRepository.getUserId()) { result ->
                             val parsed = parseAquaPoints(result)
@@ -116,6 +104,8 @@ fun LoadHomePage(navController: NavHostController, places: List<AquaPoint>) {
 
             composable(Screen.Profile.route) {
                 if (UserDataRepository.getUserId() != null) {
+                    UserCoordinates.restoreDefaults()
+
                     CreatePersonalArea(navController)
                     showNavBar.value = true
                 } else {

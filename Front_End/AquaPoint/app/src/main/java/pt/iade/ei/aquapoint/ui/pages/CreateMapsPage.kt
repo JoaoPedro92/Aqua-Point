@@ -1,6 +1,7 @@
 package pt.iade.ei.aquapoint.ui.pages
 
 import android.location.Location
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
@@ -12,6 +13,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.android.gms.maps.model.BitmapDescriptor
@@ -25,6 +27,8 @@ import pt.iade.ei.aquapoint.ui.classes.AquaPoint
 import pt.iade.ei.aquapoint.Screen
 import pt.iade.ei.aquapoint.data.AquaPointsRepository
 import pt.iade.ei.aquapoint.data.UserCoordinates
+import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
+import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService.parseAquaPoints
 import pt.iade.ei.aquapoint.ui.components.CreatePointDetailButtonSheet
 import pt.iade.ei.aquapoint.ui.components.CreateSearchBox
 import pt.iade.ei.aquapoint.ui.theme.AquaGreen
@@ -32,7 +36,7 @@ import pt.iade.ei.aquapoint.ui.theme.AquaGreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MapScreen(places: List<AquaPoint>, navController: NavHostController) {
+fun MapScreen(navController: NavHostController) {
     val moscavide = LatLng(UserCoordinates.getLatitude(), UserCoordinates.getLongitude())
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(moscavide, 17f)
@@ -44,13 +48,35 @@ fun MapScreen(places: List<AquaPoint>, navController: NavHostController) {
     var showBottomSheet by remember { mutableStateOf(false) }
     var selectedPlace by remember { mutableStateOf<AquaPoint?>(null) }
 
+    var clickedLatLng by remember { mutableStateOf<LatLng?>(null) }
+
+    var places by remember { mutableStateOf<List<AquaPoint>>(emptyList()) }
+
+    LaunchedEffect(Unit) {
+        // só chama a API se ainda não tiver cache
+        if (!AquaPointsRepository.hasCache()) {
+            NetworkService.getAquaPoints { result ->
+                val parsed = parseAquaPoints(result)
+
+                AquaPointsRepository.setCache(parsed)
+
+                places = parsed
+            }
+        } else {
+            places = AquaPointsRepository.getCached() ?: emptyList()
+        }
+    }
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
         // --- Mapa ---
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraPositionState
+            cameraPositionState = cameraPositionState,
+            onMapClick = { latLng ->
+                clickedLatLng = latLng
+            }
         ) {
             for (place in places) {
                 val markerState = rememberMarkerState(
@@ -91,6 +117,22 @@ fun MapScreen(places: List<AquaPoint>, navController: NavHostController) {
                         )
                     }*/
                 }
+            }
+
+            clickedLatLng?.let { pos ->
+                MarkerInfoWindow(
+                    state = MarkerState(position = pos),
+                    icon = BitmapDescriptorFactory.fromResource(R.drawable.add_new_aqua_point_marker),
+                    title = stringResource(R.string.add_new_point),
+                    onClick = {
+                        UserCoordinates.setLatitude(pos.latitude)
+                        UserCoordinates.setLongitude(pos.longitude)
+
+                        navController.navigate(Screen.Add.route)
+
+                        true
+                    }
+                )
             }
         }
 

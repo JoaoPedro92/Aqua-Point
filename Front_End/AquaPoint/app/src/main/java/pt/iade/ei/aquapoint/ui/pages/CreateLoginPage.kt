@@ -40,6 +40,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import org.mindrot.jbcrypt.BCrypt
 import pt.iade.ei.aquapoint.Screen
+import pt.iade.ei.aquapoint.data.AquaPointsRepository
 import pt.iade.ei.aquapoint.ui.classes.UserData
 import pt.iade.ei.aquapoint.data.UserDataRepository
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
@@ -134,12 +135,14 @@ fun CreateLoginPage(navController: NavHostController) {
                         var parsedUserData: UserData = parseUser(userData)
 
                         if (BCrypt.checkpw(password, parsedUserData.password) && parsedUserData.email == email) {
-                            navController.navigate(Screen.Home.route)
-
                             val toast = Toast.makeText(context, loginSuccess, Toast.LENGTH_LONG)
                             toast.show()
 
                             UserDataRepository.setUserLogin(parsedUserData)
+
+                            AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { result ->
+                                navController.navigate(Screen.Home.route)
+                            };
                         } else {
                             val toast = Toast.makeText(context, wrongCredentialsTxt, Toast.LENGTH_LONG)
                             toast.show()
