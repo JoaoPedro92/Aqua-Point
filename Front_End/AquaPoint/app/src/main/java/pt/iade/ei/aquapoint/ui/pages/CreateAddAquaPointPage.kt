@@ -93,7 +93,6 @@ fun CreateAddAquaPointPage(navController: NavHostController) {
             selectedImageUri = uri
         }
 
-
         var finalImage = painterResource(R.drawable.add_new_point)
 
         if (selectedImageUri != null) {
@@ -308,6 +307,9 @@ fun CreateAddAquaPointPage(navController: NavHostController) {
                         val toast = Toast.makeText(context, point_already_exists, Toast.LENGTH_LONG)
                         toast.show()
                     } else {
+                        val inputStream = context.contentResolver.openInputStream(selectedImageUri!!)
+                        val bytes = inputStream?.readBytes()
+
                         NetworkService.createNewAquaPoint(
                             aquaPointName,
                             selectedOption,
@@ -315,6 +317,8 @@ fun CreateAddAquaPointPage(navController: NavHostController) {
                             UserCoordinates.getLongitude(),
                             selectedOptionLocal
                         ) { responseString ->
+                            val newAquaPoint = NetworkService.parseAquaPoint(responseString)
+
                             aquaPointName = ""
                             selectedOption = null
                             selectedImageUri = null
@@ -324,14 +328,12 @@ fun CreateAddAquaPointPage(navController: NavHostController) {
                             val toast = Toast.makeText(context, aqua_point_added_with_success, Toast.LENGTH_LONG)
                             toast.show()
 
-                            AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { pointsData ->
-                                AquaPointsRepository.setFavoriteCache(pointsData)
-
-                                AquaPointsRepository.updateAquaPoints() { pointsData ->
-                                    AquaPointsRepository.setCache(pointsData)
-
-                                    navController.navigate(Screen.Home.route)
+                            if (bytes != null) {
+                                NetworkService.uploadNewImage(bytes, "${newAquaPoint.id}.jpg") { response ->
+                                    UpdateAquaPointsData(navController)
                                 }
+                            } else {
+                                UpdateAquaPointsData(navController)
                             }
                         }
                     }
@@ -363,6 +365,17 @@ fun CreateAddAquaPointPage(navController: NavHostController) {
     }
 }
 
+fun UpdateAquaPointsData(navController: NavHostController) {
+    AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { pointsData ->
+        AquaPointsRepository.setFavoriteCache(pointsData)
+
+        AquaPointsRepository.updateAquaPoints() { pointsData ->
+            AquaPointsRepository.setCache(pointsData)
+
+            navController.navigate(Screen.Home.route)
+        }
+    }
+}
 
 /*@Preview(showBackground = true)
 @Composable
