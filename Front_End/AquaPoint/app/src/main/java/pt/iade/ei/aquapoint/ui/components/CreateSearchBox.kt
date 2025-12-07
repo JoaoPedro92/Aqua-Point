@@ -62,7 +62,8 @@ fun CreateSearchBox(
     onSearchTextChange: (String) -> Unit = {},
     onSearchClick: (() -> Unit)? = null,
     enabled: Boolean = false,
-    filterButton: Boolean
+    filterButton: Boolean,
+    onFilterClick: () -> Unit = {}
 
 ) {
     Spacer(modifier = Modifier.height(35.dp))
@@ -86,7 +87,7 @@ fun CreateSearchBox(
                 ) },
             leadingIcon = {
                 Icon(
-                    imageVector = Icons.Filled.Search, // usa seu próprio drawable
+                    imageVector = Icons.Filled.Search,
                     contentDescription = "Pesquisar",
                     modifier = Modifier.size(22.dp),
                     tint = Color.DarkGray
@@ -112,7 +113,7 @@ fun CreateSearchBox(
             Spacer(modifier = Modifier.width(16.dp))
 
             FloatingActionButton(
-                onClick = {},
+                onClick = { onFilterClick() },
                 modifier = Modifier.size(50.dp),
                 containerColor = AquaGreen,
                 contentColor = Color.White

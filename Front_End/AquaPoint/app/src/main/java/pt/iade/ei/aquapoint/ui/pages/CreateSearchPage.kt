@@ -2,14 +2,14 @@ package pt.iade.ei.aquapoint.ui.pages
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import pt.iade.ei.aquapoint.ui.components.CreateFilteredAquaPointByName
+import pt.iade.ei.aquapoint.ui.components.CreateFilterAquaPoint
 import pt.iade.ei.aquapoint.ui.theme.AquaPointTheme
 
 
 @Composable
 fun CreateSearchPage(navController: NavHostController){
     AquaPointTheme {
-        CreateFilteredAquaPointByName(
+        CreateFilterAquaPoint(
             navController = navController,
             isFavorite = false
         )
