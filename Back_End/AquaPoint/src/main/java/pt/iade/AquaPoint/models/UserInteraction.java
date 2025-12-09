@@ -18,6 +18,7 @@ public class UserInteraction {
     private String name;
     private int rating;
     private String comment;
+    private int user_id;
     private Date date;
 
     // construtor para o jpa
@@ -30,6 +31,7 @@ public class UserInteraction {
         String name, 
         int rating, 
         String comment, 
+        int user_id,
         Date date
     ) 
     {
@@ -37,11 +39,16 @@ public class UserInteraction {
         this.name = name;
         this.rating = rating;
         this.comment = comment;
+        this.user_id = user_id;
         this.date = date;
     }
 
     public int getId() {
         return id;
+    }
+
+    public int getUser_id() {
+        return user_id;
     }
 
     public String getName() {
@@ -70,6 +77,10 @@ public class UserInteraction {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public void setDate(Date date) {

@@ -71,6 +71,7 @@ dependencies {
     implementation("io.coil-kt:coil:2.7.0")
 
     implementation("org.mindrot:jbcrypt:0.4")
+    implementation(libs.play.services.location)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
