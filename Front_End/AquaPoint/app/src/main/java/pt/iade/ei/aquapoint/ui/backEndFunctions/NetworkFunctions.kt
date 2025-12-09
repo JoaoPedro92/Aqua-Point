@@ -251,4 +251,26 @@ object NetworkService {
                 onResult(out)
             }
     }
+
+    fun uploadNewUserImage(imageData: ByteArray, imageName: String, onResult: (String) -> Unit) {
+        val inputStream = imageData.inputStream()
+
+        "http://10.0.2.2:8080/api/java/imagesManager/uploadUserProfileImage/"
+            .httpUpload()
+            .add(
+                BlobDataPart(
+                    inputStream,
+                    name = "file",
+                    filename = imageName,
+                    contentType = "image/png"
+                )
+            )
+            .responseString { _, _, result ->
+                val out = result.fold(
+                    success = { it },
+                    failure = { "Erro: ${it.message}" }
+                )
+                onResult(out)
+            }
+    }
 }
