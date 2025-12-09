@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pt.iade.AquaPoint.models.AquaPoint;
 import pt.iade.AquaPoint.models.RemoveAquaPoint;
+import pt.iade.AquaPoint.models.ModifyPointState;
 import pt.iade.AquaPoint.repository.AquaPointRepository;
 
 import org.springframework.web.bind.annotation.PathVariable; 
@@ -66,5 +67,10 @@ public class AquaPointsController {
         aquaPointRepository.AddAquaPointToStateList(AddedAquaPoint.getId(), 1);
 
         return AddedAquaPoint; 
+    }
+
+    @PostMapping(path="/editAquaPointState/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) 
+    public int editAquaPointState(@RequestBody ModifyPointState data) { 
+        return aquaPointRepository.EditPointState(data.getPointId(), data.getStateId()); 
     }
 } 
