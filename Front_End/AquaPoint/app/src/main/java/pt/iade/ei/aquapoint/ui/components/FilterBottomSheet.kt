@@ -17,23 +17,21 @@ import pt.iade.ei.aquapoint.ui.theme.AquaGreen
 fun FilterBottomSheet(
     selectedRating: Int,
     onRatingSelected: (Int) -> Unit,
-
     orderLess: Boolean,
     orderMore: Boolean,
     onOrderLess: () -> Unit,
     onOrderMore: () -> Unit,
-
     onApply: () -> Unit,
     onClear: () -> Unit,
     onDismiss: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true   // impede o modal de expandir sozinho
+        skipPartiallyExpanded = true
     )
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
-        sheetState = sheetState,       // controla altura automática
+        sheetState = sheetState,
         dragHandle = null
     ) {
 
@@ -90,7 +88,7 @@ fun FilterBottomSheet(
             }
 
             Spacer(modifier = Modifier.height(18.dp))
-            //botões
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween

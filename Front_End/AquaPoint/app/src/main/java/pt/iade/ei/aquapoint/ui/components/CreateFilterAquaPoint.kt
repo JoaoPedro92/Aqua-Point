@@ -25,7 +25,6 @@ fun CreateFilterAquaPoint(
     var searchText by remember { mutableStateOf("") }
     var places by remember { mutableStateOf(AquaPointsRepository.getCached() ?: emptyList()) }
 
-    // Carrega os pontos
     LaunchedEffect(Unit) {
         if (isFavorite) {
             AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) {
@@ -38,7 +37,7 @@ fun CreateFilterAquaPoint(
         }
     }
 
-    // Estados dos filtros
+    // ---- ESTADOS DO FILTRO ----
     var showFilter by remember { mutableStateOf(false) }
 
     var reviewCounts by remember { mutableStateOf<Map<Int, Int>>(emptyMap()) }
@@ -48,7 +47,8 @@ fun CreateFilterAquaPoint(
     var orderLess by remember { mutableStateOf(false) }
     var orderMore by remember { mutableStateOf(false) }
 
-    // Resultado final filtrado
+    val hasFilters = selectedRating > 0 || orderLess || orderMore
+
     val filteredPlaces = remember(
         searchText, places, reviewCounts, avgRatings,
         selectedRating, orderLess, orderMore
@@ -64,12 +64,12 @@ fun CreateFilterAquaPoint(
         )
     }
 
-    // UI
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 18.dp)
     ) {
+
         Spacer(modifier = Modifier.height(20.dp))
 
         CreateSearchBox(
@@ -77,8 +77,8 @@ fun CreateFilterAquaPoint(
             onSearchTextChange = { searchText = it },
             enabled = true,
             filterButton = true,
+            filterActive = hasFilters,
             onFilterClick = {
-                // Carregar reviews antes de abrir o modal
                 loadReviewsForFilter(places) { counts, avgs ->
                     reviewCounts = counts
                     avgRatings = avgs
@@ -102,16 +102,13 @@ fun CreateFilterAquaPoint(
                     CreatePointCard(
                         place = place,
                         isFavorite = isFavorite,
-                        onClick = {
-                            navController.navigate(Screen.Detail.createRoute(place.id))
-                        }
+                        onClick = { navController.navigate(Screen.Detail.createRoute(place.id)) }
                     )
                 }
             }
         }
     }
 
-    // Modal de filtros
     if (showFilter) {
         FilterBottomSheet(
             selectedRating = selectedRating,
@@ -150,18 +147,16 @@ fun loadReviewsForFilter(
 
     val counts = mutableMapOf<Int, Int>()
     val avgs = mutableMapOf<Int, Double>()
-    var remaining = points.size
+    var pending = points.size
 
-    points.forEach { point ->
-        NetworkService.getAquaPointReviews(point.id) { json ->
+    points.forEach { p ->
+        NetworkService.getAquaPointReviews(p.id) { json ->
             val reviews = parseUserReviews(json)
-            counts[point.id] = reviews.size
-            avgs[point.id] = if (reviews.isEmpty()) 0.0 else reviews.map { it.rating }.average()
+            counts[p.id] = reviews.size
+            avgs[p.id] = if (reviews.isEmpty()) 0.0 else reviews.map { it.rating }.average()
 
-            remaining--
-            if (remaining == 0) {
-                onComplete(counts, avgs)
-            }
+            pending--
+            if (pending == 0) onComplete(counts, avgs)
         }
     }
 }
@@ -176,20 +171,13 @@ fun applyFilters(
     orderMore: Boolean
 ): List<AquaPoint> {
 
-    // Filtrar nome + rating
     var result = all.filter { point ->
-        val avg = ratings[point.id] ?: 0.0
-
-        val matchSearch = point.name.contains(searchText, ignoreCase = true)
-        val matchRating = avg >= minRating
-
-        matchSearch && matchRating
+        (ratings[point.id] ?: 0.0) >= minRating &&
+                point.name.contains(searchText, ignoreCase = true)
     }
 
-    // Ordenação principal: rating menor → maior
     result = result.sortedBy { ratings[it.id] ?: 0.0 }
 
-    // Ordenar por número de opiniões se selecionado
     if (orderLess) result = result.sortedBy { reviewCounts[it.id] ?: 0 }
     if (orderMore) result = result.sortedByDescending { reviewCounts[it.id] ?: 0 }
 
