@@ -58,4 +58,12 @@ public interface AquaPointRepository extends JpaRepository<AquaPoint, Integer> {
         nativeQuery = true
     )
     int AddAquaPointToStateList(@Param("pointId") int pointId, @Param("state_id") int state_id);
+
+    @Modifying
+    @Transactional
+    @Query(
+        value = "UPDATE points_state SET state_id = :state_id WHERE point_id = :pointId",
+        nativeQuery = true
+    )
+    int EditPointState(@Param("pointId") int pointId, @Param("state_id") int state_id);
 }

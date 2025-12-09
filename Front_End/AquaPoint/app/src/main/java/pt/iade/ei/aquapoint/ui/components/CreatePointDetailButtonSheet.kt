@@ -1,5 +1,6 @@
 package pt.iade.ei.aquapoint.ui.components
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -11,8 +12,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -53,11 +56,13 @@ import pt.iade.ei.aquapoint.ui.pages.GetAquaPointDistance
 import pt.iade.ei.aquapoint.ui.theme.AquaGreen
 import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
 import pt.iade.ei.aquapoint.ui.theme.StarYellow
-
+import pt.iade.ei.aquapoint.ui.theme.DarkRed
+import pt.iade.ei.aquapoint.ui.theme.DarkGreen
 
 @Composable
 fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?, navController: NavHostController) {
     var reviews by remember { mutableStateOf<List<UserReviews>>(emptyList()) }
+    var context = LocalContext.current
 
     var currentPlace: AquaPoint? = place
 
@@ -130,7 +135,7 @@ fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?, navController: Nav
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
             ) {
-                var finalText = currentPlace!!.name
+                var finalText = "${currentPlace!!.name}"
 
                 if (currentPlace?.state_id == 2) {
                     finalText = "${currentPlace!!.name} ⚠️"
@@ -213,6 +218,8 @@ fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?, navController: Nav
                         )
                     }
 
+
+
                     Spacer(modifier = Modifier.height(8.dp))
 
                     /*Text(
@@ -255,20 +262,65 @@ fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?, navController: Nav
                             .offset(y = 7.dp)
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    var flagColor by remember { mutableStateOf(DarkRed) }
+                    var aqua_point_state_modified = R.string.aqua_point_state_modified
+
+                    if (place?.state_id == 2) {
+                        flagColor = DarkGreen
+                    }
+
+                    Icon(
+                        imageVector = Icons.Outlined.Flag,
+                        contentDescription = "return",
+                        tint = flagColor,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentWidth(Alignment.End)
+                            .offset(y = -15.dp, x = 5.dp)
+                            .clickable {
+                                if (UserDataRepository.getUserId() != null) {
+                                    var newState = 1
+
+                                    if (place?.state_id == 1) {
+                                        newState = 2
+                                    }
+
+                                    NetworkService.updatePointState(place?.id, newState) { response ->
+                                        AquaPointsRepository.updateAquaPoints() { pointsData ->
+                                            AquaPointsRepository.setCache(pointsData)
+
+                                            val toast = Toast.makeText(context, aqua_point_state_modified, Toast.LENGTH_LONG)
+                                            toast.show()
+
+                                            if (newState == 1) {
+                                                flagColor = DarkRed
+                                            } else {
+                                                flagColor = DarkGreen
+                                            }
+
+                                            navController.navigate(Screen.Home.route)
+                                        }
+                                    }
+                                } else {
+                                    navController.navigate(Screen.MainPage.route)
+                                }
+                            }
+                    )
+
 
                     Text(
                         text = stringResource(id = R.string.experience_text),
                         fontSize = 14.sp,
                         fontFamily = ComfortaaFont,
-                        color = Color.Gray
+                        color = Color.Gray,
+                        modifier = Modifier
+                            .offset(y = -10.dp)
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
 
                     var rating by remember { mutableStateOf(0) }
                     var comment by remember { mutableStateOf("") }
-                    var context = LocalContext.current
                     var successMessage = stringResource(R.string.new_review_success)
                     var fillAllFieldsMessage = stringResource(R.string.fill_all_fields)
 

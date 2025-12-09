@@ -273,4 +273,22 @@ object NetworkService {
                 onResult(out)
             }
     }
+
+    fun updatePointState(pointId: Int?, stateId: Int?, onResult: (String) -> Unit) {
+        val json = JSONObject()
+        json.put("point_id", pointId)
+        json.put("state_id", stateId)
+
+        "http://10.0.2.2:8080/api/java/aquapoints/editAquaPointState/"
+            .httpPost()
+            .header(Headers.CONTENT_TYPE, "application/json")
+            .body(json.toString())
+            .responseString { _, _, result ->
+                val output = when (result) {
+                    is Result.Success -> result.get()
+                    is Result.Failure -> "Erro: ${result.error}"
+                }
+                onResult(output)
+            }
+    }
 }
