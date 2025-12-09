@@ -62,6 +62,12 @@ object AquaPointsRepository {
         return list.find { aquaPoint -> aquaPoint.id == id }
     }
 
+    fun doesPointExistsByName(name: String): Boolean {
+        val list: List<AquaPoint> = getCached() ?: emptyList()
+
+        return list.any { it.name == name }
+    }
+
     fun isFavorite(id: Int?): Boolean {
         return favoriteCache?.any { it.id == id } ?: false
     }
