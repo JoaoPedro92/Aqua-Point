@@ -130,7 +130,6 @@ fun CreatePointCard(place: AquaPoint, isFavorite: Boolean, onClick: (AquaPoint) 
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Segunda linha: distância à esquerda, avaliação à direita
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
