@@ -1,12 +1,16 @@
 package pt.iade.ei.aquapoint.ui.pages
 
+import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -34,14 +38,22 @@ import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DoorBack
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import pt.iade.ei.aquapoint.Screen
+import pt.iade.ei.aquapoint.data.UserCoordinates
 import pt.iade.ei.aquapoint.data.UserDataRepository
 import pt.iade.ei.aquapoint.ui.backEndFunctions.NetworkService
 import pt.iade.ei.aquapoint.ui.classes.UserData
@@ -93,13 +105,61 @@ fun CreatePersonalArea(navController: NavHostController) {
                 .padding(top = 16.dp, bottom = 32.dp)
         )
 
-        Image(
-            painter = painterResource(R.drawable.user_image),
-            contentDescription = "Logo",
-            modifier = Modifier
-                .height(140.dp)
-                .width(150.dp)
-        )
+        var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+
+        val galleryLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.GetContent()
+        ) { uri: Uri? ->
+            val inputStream = context.contentResolver.openInputStream(uri!!)
+            val bytes = inputStream?.readBytes()
+
+            if (bytes != null) {
+                NetworkService.uploadNewUserImage(bytes, "${UserDataRepository.getUserId()}.jpg") { response ->
+                    selectedImageUri = uri
+                }
+            }
+        }
+
+        if (selectedImageUri == null) {
+            var isLoading by remember { mutableStateOf(true) }
+
+            if (isLoading) {
+                CircularProgressIndicator()
+            }
+
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data("http://10.0.2.2:8080/images/userProfiles/${UserDataRepository.getUserId()}.jpg")
+                    .crossfade(true)
+                    .memoryCachePolicy(CachePolicy.DISABLED)
+                    .diskCachePolicy(CachePolicy.DISABLED)
+                    .error(R.drawable.user_image)           // aparece se a imagem falhar
+                    .fallback(R.drawable.user_image)        // aparece se a URL for nula
+                    .listener(
+                        onSuccess = { _, _ -> isLoading = false },
+                        onError = { _, _ -> isLoading = false }
+                    )
+                    .build(),
+                contentDescription = "Imagem de topo",
+                modifier = Modifier
+                    .height(140.dp)
+                    .width(150.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .clickable {
+                        galleryLauncher.launch("image/*")
+                    },
+                contentScale = ContentScale.Crop
+            )
+        } else {
+            Image(
+                painter = rememberAsyncImagePainter(selectedImageUri),
+                contentDescription = "Logo",
+                modifier = Modifier
+                    .height(140.dp)
+                    .width(150.dp)
+                    .clip(RoundedCornerShape(16.dp))
+            )
+        }
 
         Spacer(modifier = Modifier.height(25.dp))
 
