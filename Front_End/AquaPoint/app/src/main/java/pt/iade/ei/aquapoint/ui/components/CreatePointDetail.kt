@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 import pt.iade.ei.aquapoint.ui.classes.AquaPoint
 import pt.iade.ei.aquapoint.R
@@ -472,15 +473,34 @@ fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController)
                                 modifier = Modifier
                                     .offset(y = 7.dp)
                             ) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.user_image),
-                                    contentDescription = "Perfil",
+                                var isLoading by remember { mutableStateOf(true) }
+
+                                if (isLoading) {
+                                    CircularProgressIndicator()
+                                }
+
+                                AsyncImage(
+                                    model = ImageRequest.Builder(LocalContext.current)
+                                        .data("http://10.0.2.2:8080/images/userProfiles/${review.user_id}.jpg")
+                                        .crossfade(true)
+                                        .memoryCachePolicy(CachePolicy.DISABLED)
+                                        .diskCachePolicy(CachePolicy.DISABLED)
+                                        .error(R.drawable.user_image)           // aparece se a imagem falhar
+                                        .fallback(R.drawable.user_image)        // aparece se a URL for nula
+                                        .listener(
+                                            onSuccess = { _, _ -> isLoading = false },
+                                            onError = { _, _ -> isLoading = false }
+                                        )
+                                        .build(),
+                                    contentDescription = "Imagem de topo",
                                     modifier = Modifier
                                         .size(40.dp)
                                         .clip(CircleShape),
                                     contentScale = ContentScale.Crop
                                 )
+
                                 Spacer(modifier = Modifier.width(8.dp))
+
                                 Text(
                                     text = review.name,
                                     fontSize = 14.sp,

@@ -17,7 +17,7 @@ import java.util.List;
 @Repository
 public interface UserInteractionsRepository extends JpaRepository<UserInteraction, Integer> {
     @Query(
-        value = "select interaction.id, interaction.date, users.name, rating.rating, comment.comment from interaction " +
+        value = "select interaction.id, interaction.date, users.name, rating.rating, comment.comment, interaction.user_id from interaction " +
                 "INNER JOIN users ON users.id = interaction.user_id " +
                 "INNER JOIN rating ON rating.id = interaction.rating_id " +
                 "INNER JOIN comment ON comment.id = interaction.comment_id " +

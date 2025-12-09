@@ -8,5 +8,6 @@ data class UserReviews(
     val name: String,
     val rating: Int,
     val comment: String,
+    val user_id: Int,
     val date: String,
 )
