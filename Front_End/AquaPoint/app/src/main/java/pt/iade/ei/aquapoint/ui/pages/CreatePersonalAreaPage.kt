@@ -129,7 +129,7 @@ fun CreatePersonalArea(navController: NavHostController) {
 
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data("http://10.0.2.2:8080/images/userProfiles/${UserDataRepository.getUserId()}.jpg")
+                    .data(NetworkService.createImageURL("images/userProfiles/${UserDataRepository.getUserId()}.jpg"))
                     .crossfade(true)
                     .memoryCachePolicy(CachePolicy.DISABLED)
                     .diskCachePolicy(CachePolicy.DISABLED)

@@ -103,7 +103,7 @@ fun CreatePointCard(place: AquaPoint, isFavorite: Boolean, onClick: (AquaPoint) 
 
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data("http://10.0.2.2:8080/images/aquaPoints/${place.id}.jpg")
+                        .data(NetworkService.createImageURL("images/aquaPoints/${place.id}.jpg"))
                         .crossfade(true)
                         .error(R.drawable.no_image)           // aparece se a imagem falhar
                         .fallback(R.drawable.no_image)        // aparece se a URL for nula

@@ -207,6 +207,12 @@ fun MapScreen(navController: NavHostController) {
                         true
                     }
                 )
+
+                LaunchedEffect(clickedLatLng) { // dar zoom ao clicar aleatoriamente no mapa
+                    cameraPositionState.animate(
+                        update = CameraUpdateFactory.newLatLngZoom(pos, 16f)
+                    )
+                }
             }
         }
 
@@ -255,7 +261,15 @@ fun MapScreen(navController: NavHostController) {
 
             // sistema button sheet
             if (showBottomSheet && selectedPlace != null) {
-                LaunchedEffect(Unit) { sheetState.expand() }
+                LaunchedEffect(Unit) {
+                    sheetState.expand()
+                }
+
+                LaunchedEffect(selectedPlace) {
+                    cameraPositionState.animate(
+                        update = CameraUpdateFactory.newLatLngZoom(LatLng(selectedPlace!!.latitude, selectedPlace!!.longitude), 16f)
+                    )
+                }
 
                 ModalBottomSheet(
                     onDismissRequest = { showBottomSheet = false },
@@ -283,7 +297,7 @@ fun AquaPointSheetContent(onClose: () -> Unit, place: AquaPoint?, navController:
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.9f)
+            .fillMaxHeight(0.75f)
             .padding(8.dp)
     ) {
         CreatePointDetailButtonSheet(place, null, navController = navController)

@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
@@ -76,10 +78,12 @@ fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController)
         }
     }
 
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-
+            .verticalScroll(scrollState)
     ) {
         Spacer(modifier = Modifier.height(35.dp))
 
@@ -115,7 +119,7 @@ fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController)
 
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data("http://10.0.2.2:8080/images/aquaPoints/${currentPlace?.id}.jpg")
+                    .data(NetworkService.createImageURL("images/aquaPoints/${currentPlace?.id}.jpg"))
                     .crossfade(true)
                     .error(R.drawable.no_image)           // aparece se a imagem falhar
                     .fallback(R.drawable.no_image)        // aparece se a URL for nula
@@ -449,7 +453,7 @@ fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController)
         //avalição feita
         Box(
             modifier = Modifier
-                .weight(1f)
+                .heightIn(max = 350.dp)
                 .fillMaxWidth(),
         ) {
             LazyColumn(
@@ -481,7 +485,7 @@ fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController)
 
                                 AsyncImage(
                                     model = ImageRequest.Builder(LocalContext.current)
-                                        .data("http://10.0.2.2:8080/images/userProfiles/${review.user_id}.jpg")
+                                        .data(NetworkService.createImageURL("images/userProfiles/${review.user_id}.jpg"))
                                         .crossfade(true)
                                         .memoryCachePolicy(CachePolicy.DISABLED)
                                         .diskCachePolicy(CachePolicy.DISABLED)
