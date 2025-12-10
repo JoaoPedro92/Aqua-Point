@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -217,49 +218,42 @@ fun MapScreen(navController: NavHostController) {
         }
 
         // --- UI sobreposta
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 14.dp)
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Spacer(modifier = Modifier.height(20.dp))
-
-            CreateSearchBox(
-                onSearchClick = { navController.navigate(Screen.Search.route) },
-                filterButton = false,
-            )
-
-            Spacer(modifier = Modifier.height(630.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 14.dp)
             ) {
-                FloatingActionButton(
-                    onClick = {
-                        cameraPositionState.position = CameraPosition.fromLatLngZoom(
-                            LatLng(UserCoordinates.getLatitude(),
-                                UserCoordinates.getLongitude()),
-                            16.5f
-                        )
-                    },
-                    modifier = Modifier.size(50.dp),
-                    containerColor = AquaGreen,
-                    contentColor = Color.White
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Place,
-                        contentDescription = "Center",
-                        modifier = Modifier.size(28.dp)
-                    )
-                }
+                Spacer(modifier = Modifier.height(20.dp))
+
+                CreateSearchBox(
+                    onSearchClick = { navController.navigate(Screen.Search.route) },
+                    filterButton = false,
+                )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            FloatingActionButton(
+                onClick = {
+                    cameraPositionState.position = CameraPosition.fromLatLngZoom(
+                        LatLng(UserCoordinates.getLatitude(), UserCoordinates.getLongitude()),
+                        16.5f
+                    )
+                },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(horizontal = 20.dp, vertical = 100.dp),
+                containerColor = AquaGreen,
+                contentColor = Color.White
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Place,
+                    contentDescription = "Center",
+                    modifier = Modifier.size(28.dp)
+                )
+            }
 
-            //CreateNavBarPage()
-
-            // sistema button sheet
             if (showBottomSheet && selectedPlace != null) {
                 LaunchedEffect(Unit) {
                     sheetState.expand()
