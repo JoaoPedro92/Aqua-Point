@@ -37,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import pt.iade.ei.aquapoint.ui.theme.ComfortaaFont
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DoorBack
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.getValue
@@ -66,15 +67,25 @@ fun CreatePersonalArea(navController: NavHostController) {
             .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(55.dp))
 
         val context = LocalContext.current
         val logoutSuccessTxt = stringResource(R.string.logout_success)
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "return",
+                tint = Color.Gray,
+                modifier = Modifier
+                    .clickable{
+                        navController.navigate(Screen.Home.route)
+                    }
+            )
+
             Icon(
                 imageVector = Icons.Filled.DoorBack,
                 contentDescription = "return",

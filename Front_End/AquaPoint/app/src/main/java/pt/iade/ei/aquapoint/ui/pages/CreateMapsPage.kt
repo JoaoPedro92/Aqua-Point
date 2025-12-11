@@ -4,10 +4,8 @@ import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.location.Location
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
@@ -25,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptor
@@ -211,7 +208,7 @@ fun MapScreen(navController: NavHostController) {
 
                 LaunchedEffect(clickedLatLng) { // dar zoom ao clicar aleatoriamente no mapa
                     cameraPositionState.animate(
-                        update = CameraUpdateFactory.newLatLngZoom(pos, 16f)
+                        update = CameraUpdateFactory.newLatLngZoom(pos, 16.5f)
                     )
                 }
             }
@@ -234,12 +231,11 @@ fun MapScreen(navController: NavHostController) {
                 )
             }
 
+            var resetMapView by remember { mutableStateOf(false) }
+
             FloatingActionButton(
                 onClick = {
-                    cameraPositionState.position = CameraPosition.fromLatLngZoom(
-                        LatLng(UserCoordinates.getLatitude(), UserCoordinates.getLongitude()),
-                        16.5f
-                    )
+                    resetMapView = true
                 },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
@@ -254,6 +250,14 @@ fun MapScreen(navController: NavHostController) {
                 )
             }
 
+            LaunchedEffect(resetMapView) { // dar zoom ao clicar aleatoriamente no mapa
+                cameraPositionState.animate(
+                    update = CameraUpdateFactory.newLatLngZoom(LatLng(UserCoordinates.getLatitude(), UserCoordinates.getLongitude()), 16.5f)
+                )
+
+                resetMapView = false
+            }
+
             if (showBottomSheet && selectedPlace != null) {
                 LaunchedEffect(Unit) {
                     sheetState.expand()
@@ -261,7 +265,7 @@ fun MapScreen(navController: NavHostController) {
 
                 LaunchedEffect(selectedPlace) {
                     cameraPositionState.animate(
-                        update = CameraUpdateFactory.newLatLngZoom(LatLng(selectedPlace!!.latitude, selectedPlace!!.longitude), 16f)
+                        update = CameraUpdateFactory.newLatLngZoom(LatLng(selectedPlace!!.latitude, selectedPlace!!.longitude), 16.5f)
                     )
                 }
 
@@ -294,13 +298,14 @@ fun AquaPointSheetContent(onClose: () -> Unit, place: AquaPoint?, navController:
             .fillMaxHeight(0.75f)
             .padding(8.dp)
     ) {
-        CreatePointDetailButtonSheet(place, null, navController = navController)
+        CreatePointDetailButtonSheet(place, null, navController = navController, onClose)
     }
 }
 
 fun GetAquaPointDistance(place: AquaPoint): String {
-    val myPos = LatLng(38.78166399699406, -9.102570032326907)
+    val myPos = LatLng(UserCoordinates.getLatitude(), UserCoordinates.getLongitude())
     val markerPosicao = LatLng(place.latitude, place.longitude)
+    var finalString = ""
 
     // Calcular distância
     val results = FloatArray(1)
@@ -316,9 +321,13 @@ fun GetAquaPointDistance(place: AquaPoint): String {
     val speedKMH = 8.0 // velocidade média a pé
     val timeMin = (distanceKM / speedKMH) * 60
 
-    return if (timeMin < 1.0) {
-        "%.0f sec - %.2f km".format(timeMin * 60, distanceKM)
+    if (timeMin < 1.0) {
+        finalString = "%.0f sec - %.2f km".format(timeMin * 60, distanceKM)
+    } else if (timeMin > 59) {
+        finalString = "%.1f h - %.2f km".format(timeMin/60, distanceKM)
     } else {
-        "%.1f min - %.2f km".format(timeMin, distanceKM)
+        finalString = "%.1f min - %.2f km".format(timeMin, distanceKM)
     }
+
+    return finalString
 }

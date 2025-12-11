@@ -370,79 +370,70 @@ fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController)
                     Spacer(modifier = Modifier.height(5.dp))
 
                     Row(
+                        horizontalArrangement = Arrangement.Start,
                         modifier = Modifier
                             .fillMaxWidth()
                     ) {
-                        Column(
-                        ) {
-                            TextField(
-                                value = comment,
-                                onValueChange = { comment = it },
-                                placeholder = { Text(stringResource(id = R.string.comment_placeholder)) },
-                                modifier = Modifier
-                                    .width(330.dp)
-                                    .offset(x = -5.dp)
-                                    .offset(y = 5.dp)
-                                    .height(55.dp),
-                                colors = TextFieldDefaults.colors(
-                                    unfocusedContainerColor = Color.Transparent,
-                                    focusedContainerColor = Color.Transparent,
-                                    disabledContainerColor = Color.Transparent,
-                                    errorContainerColor = Color.Transparent,
-                                    focusedIndicatorColor = Color.Transparent,
-                                    unfocusedIndicatorColor = Color.Transparent,
-                                    disabledIndicatorColor = Color.Transparent,
-                                    errorIndicatorColor = Color.Red
-                                )
-
+                        TextField(
+                            value = comment,
+                            onValueChange = { comment = it },
+                            placeholder = { Text(stringResource(id = R.string.comment_placeholder)) },
+                            modifier = Modifier
+                                .width(260.dp)
+                                .offset(x = -10.dp, y = 5.dp)
+                                .height(55.dp),
+                            colors = TextFieldDefaults.colors(
+                                unfocusedContainerColor = Color.Transparent,
+                                focusedContainerColor = Color.Transparent,
+                                disabledContainerColor = Color.Transparent,
+                                errorContainerColor = Color.Transparent,
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent,
+                                disabledIndicatorColor = Color.Transparent,
+                                errorIndicatorColor = Color.Red
                             )
-                        }
+                        )
 
-                        Column(
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.Send,
-                                contentDescription = "Send review",
+                        Icon(
+                            imageVector = Icons.Filled.Send,
+                            contentDescription = "Send review",
+                            tint = AquaGreen,
+                            modifier = Modifier
+                                .size(40.dp)
+                                .wrapContentWidth(Alignment.End)
+                                .offset(y = 10.dp, x = -5.dp)
+                                .clickable {
+                                    if (UserDataRepository.getUserId() != null) {
+                                        if (rating > 0 && comment != "" && comment != " ") {
+                                            NetworkService.createNewReview(
+                                                UserDataRepository.getUserId(),
+                                                currentPlace?.id,
+                                                rating,
+                                                comment
+                                            ) { result ->
+                                                AquaPointsRepository.updateAquaPoints { result ->
+                                                    AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { result ->
+                                                        NetworkService.getAquaPointReviews(currentPlace?.id) { result ->
+                                                            reviews = parseUserReviews(result)
 
-                                tint = AquaGreen,
+                                                            rating = 0;
+                                                            comment = ""
 
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .offset(y = 10.dp)
-                                    .offset(x = -2.dp)
-                                    .clickable {
-                                        if (UserDataRepository.getUserId() != null) {
-                                            if (rating > 0 && comment != "" && comment != " ") {
-                                                NetworkService.createNewReview(
-                                                    UserDataRepository.getUserId(),
-                                                    currentPlace?.id,
-                                                    rating,
-                                                    comment
-                                                ) { result ->
-                                                    AquaPointsRepository.updateAquaPoints { result ->
-                                                        AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { result ->
-                                                            NetworkService.getAquaPointReviews(currentPlace?.id) { result ->
-                                                                reviews = parseUserReviews(result)
-
-                                                                rating = 0;
-                                                                comment = ""
-
-                                                                val toast = Toast.makeText(context, successMessage, Toast.LENGTH_LONG)
-                                                                toast.show()
-                                                            }
-                                                        };
-                                                    }
+                                                            val toast = Toast.makeText(context, successMessage, Toast.LENGTH_LONG)
+                                                            toast.show()
+                                                        }
+                                                    };
                                                 }
-                                            } else {
-                                                val toast = Toast.makeText(context, fillAllFieldsMessage, Toast.LENGTH_LONG)
-                                                toast.show()
                                             }
                                         } else {
-                                            navController.navigate(Screen.MainPage.route)
+                                            val toast = Toast.makeText(context, fillAllFieldsMessage, Toast.LENGTH_LONG)
+                                            toast.show()
                                         }
+                                    } else {
+                                        navController.navigate(Screen.MainPage.route)
                                     }
-                            )
-                        }
+                                }
+                        )
                     }
                 }
             }

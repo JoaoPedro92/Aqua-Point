@@ -8,8 +8,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import pt.iade.ei.aquapoint.R
 import pt.iade.ei.aquapoint.Screen
 import pt.iade.ei.aquapoint.data.AquaPointsRepository
 import pt.iade.ei.aquapoint.data.UserDataRepository
@@ -94,7 +96,7 @@ fun CreateFilterAquaPoint(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Text("Bebedouro não encontrado", color = Color.Gray)
+                Text(stringResource(R.string.nothing_to_show), color = Color.Gray)
             }
         } else {
             LazyColumn(modifier = Modifier.fillMaxSize()) {

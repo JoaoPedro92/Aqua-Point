@@ -50,4 +50,12 @@
     <string name="select_buttons_selected">Opção selecionada</string>
     <string name="add_new_point">Adicionar novo</string>
     <string name="aqua_point_state_modified">Estado do bebedouro atualizado</string>
+    <string name="filers">Filtros</string>
+    <string name="filter_by_rating">Filtrar por avaliações</string>
+    <string name="filter_by_comments">Estado do bebedouro atualizado</string>
+    <string name="less_ratings">Menos opiniões</string>
+    <string name="better_ratings">Mais opiniões</string>
+    <string name="apply">Aplicar</string>
+    <string name="clear">Limpar</string>
+    <string name="nothing_to_show">Não temos dados para apresentar</string>
 </resources>

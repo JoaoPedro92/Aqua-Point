@@ -139,7 +139,7 @@ fun CreatePointCard(place: AquaPoint, isFavorite: Boolean, onClick: (AquaPoint) 
                     .padding(horizontal = 12.dp, vertical = 6.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "${stringResource(R.string.distance)}: ${GetAquaPointDistance(place)}",
+                Text(text = "${GetAquaPointDistance(place)}",
                     fontSize = 12.sp,
                     fontFamily = ComfortaaFont)
 
