@@ -92,26 +92,24 @@ fun LoadHomePage(navController: NavHostController) {
             }
 
             composable(Screen.Add.route) {
+                showNavBar.value = false
+
                 if (UserDataRepository.getUserId() != null) {
                     CreateAddAquaPointPage(navController)
-                    showNavBar.value = true
                 } else {
                     CreateHomePage(navController)
-
-                    showNavBar.value = false
                 }
             }
 
             composable(Screen.Profile.route) {
+                showNavBar.value = false
+
                 if (UserDataRepository.getUserId() != null) {
                     UserCoordinates.restoreDefaults()
 
                     CreatePersonalArea(navController)
-                    showNavBar.value = true
                 } else {
                     CreateHomePage(navController)
-
-                    showNavBar.value = false
                 }
             }
 

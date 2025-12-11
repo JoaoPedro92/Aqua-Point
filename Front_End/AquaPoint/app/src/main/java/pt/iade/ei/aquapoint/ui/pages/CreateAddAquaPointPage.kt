@@ -79,7 +79,11 @@ fun CreateAddAquaPointPage(navController: NavHostController) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = "return",
-                tint = Color.Gray
+                tint = Color.Gray,
+                modifier = Modifier
+                    .clickable{
+                        navController.navigate(Screen.Home.route)
+                    }
             )
         }
 

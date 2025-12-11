@@ -9,7 +9,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import pt.iade.ei.aquapoint.R
 import pt.iade.ei.aquapoint.ui.theme.AquaGreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,11 +45,11 @@ fun FilterBottomSheet(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Text("Filtros", style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(R.string.filers), style = MaterialTheme.typography.titleLarge)
             Spacer(modifier = Modifier.height(12.dp))
 
 
-            Text("Filtrar por avaliações")
+            Text(stringResource(R.string.filter_by_rating))
             Spacer(modifier = Modifier.height(6.dp))
 
             Row(horizontalArrangement = Arrangement.Center) {
@@ -55,7 +57,7 @@ fun FilterBottomSheet(
                     IconButton(onClick = { onRatingSelected(star) }) {
                         Icon(
                             imageVector = Icons.Filled.Star,
-                            contentDescription = "Star $star",
+                            contentDescription = "$star",
                             tint = if (star <= selectedRating) Color(0xFFFFD700) else Color.Gray,
                             modifier = Modifier.size(30.dp)
                         )
@@ -66,7 +68,7 @@ fun FilterBottomSheet(
             Spacer(modifier = Modifier.height(18.dp))
 
 
-            Text("Filtrar por opiniões")
+            Text(stringResource(R.string.filter_by_comments))
             Spacer(modifier = Modifier.height(6.dp))
 
             Row(
@@ -75,13 +77,13 @@ fun FilterBottomSheet(
             ) {
 
                 Text(
-                    text = "Menos opiniões",
+                    text = stringResource(R.string.less_ratings),
                     color = if (orderLess) Color.Black else Color.Gray,
                     modifier = Modifier.clickable { onOrderLess() }
                 )
 
                 Text(
-                    text = "Mais opiniões",
+                    text = stringResource(R.string.better_ratings),
                     color = if (orderMore) Color.Black else Color.Gray,
                     modifier = Modifier.clickable { onOrderMore() }
                 )
@@ -98,7 +100,7 @@ fun FilterBottomSheet(
                     onClick = onClear,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Limpar", color = AquaGreen)
+                    Text(stringResource(R.string.clear), color = AquaGreen)
                 }
 
                 Spacer(modifier = Modifier.width(12.dp))
@@ -111,7 +113,7 @@ fun FilterBottomSheet(
                     ),
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Aplicar")
+                    Text(stringResource(R.string.apply))
                 }
             }
         }

@@ -42,7 +42,7 @@ fun CreateHomePage(navController: NavHostController) {
             .padding(horizontal = 0.dp, vertical = 5.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(25.dp))
 
         Image(
             painter = painterResource(R.drawable.aqua_point_logo),
@@ -68,7 +68,7 @@ fun CreateHomePage(navController: NavHostController) {
             )
         }
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Row (
             modifier = Modifier

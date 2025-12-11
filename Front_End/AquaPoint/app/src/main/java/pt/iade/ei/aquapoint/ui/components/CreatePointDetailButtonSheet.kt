@@ -1,18 +1,17 @@
 package pt.iade.ei.aquapoint.ui.components
 
-import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Flag
@@ -35,7 +34,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -61,7 +59,12 @@ import pt.iade.ei.aquapoint.ui.theme.DarkRed
 import pt.iade.ei.aquapoint.ui.theme.DarkGreen
 
 @Composable
-fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?, navController: NavHostController) {
+fun CreatePointDetailButtonSheet(
+    place: AquaPoint?,
+    id: Int?,
+    navController: NavHostController,
+    onSheetClose: () -> Unit?
+) {
     var reviews by remember { mutableStateOf<List<UserReviews>>(emptyList()) }
     var context = LocalContext.current
 
@@ -77,10 +80,12 @@ fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?, navController: Nav
         }
     }
 
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-
+            .verticalScroll(scrollState)
     ) {
         // Box com imagem e botão de voltar
         Box(
@@ -97,7 +102,7 @@ fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?, navController: Nav
 
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data("http://10.0.2.2:8080/images/aquaPoints/${currentPlace?.id}.jpg")
+                    .data(NetworkService.createImageURL("images/aquaPoints/${currentPlace?.id}.jpg"))
                     .crossfade(true)
                     .error(R.drawable.no_image)           // aparece se a imagem falhar
                     .fallback(R.drawable.no_image)        // aparece se a URL for nula
@@ -213,6 +218,7 @@ fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?, navController: Nav
                                             }
                                         }
                                     } else {
+                                        onSheetClose()
                                         navController.navigate(Screen.MainPage.route)
                                     }
                                 }
@@ -243,6 +249,11 @@ fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?, navController: Nav
         Spacer(modifier = Modifier.height(16.dp))
 
         //Avaliação
+        var rating by remember { mutableStateOf(0) }
+        var comment by remember { mutableStateOf("") }
+        var successMessage = stringResource(R.string.new_review_success)
+        var fillAllFieldsMessage = stringResource(R.string.fill_all_fields)
+
         Column {
             Card(
                 shape = RoundedCornerShape(30.dp),
@@ -299,15 +310,16 @@ fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?, navController: Nav
                                                 flagColor = DarkGreen
                                             }
 
+                                            onSheetClose()
                                             navController.navigate(Screen.Home.route)
                                         }
                                     }
                                 } else {
+                                    onSheetClose()
                                     navController.navigate(Screen.MainPage.route)
                                 }
                             }
                     )
-
 
                     Text(
                         text = stringResource(id = R.string.experience_text),
@@ -319,11 +331,6 @@ fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?, navController: Nav
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
-
-                    var rating by remember { mutableStateOf(0) }
-                    var comment by remember { mutableStateOf("") }
-                    var successMessage = stringResource(R.string.new_review_success)
-                    var fillAllFieldsMessage = stringResource(R.string.fill_all_fields)
 
                     Row(
                         modifier = Modifier
@@ -351,81 +358,75 @@ fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?, navController: Nav
                     Spacer(modifier = Modifier.height(5.dp))
 
                     Row(
+                        horizontalArrangement = Arrangement.Start,
                         modifier = Modifier
                             .fillMaxWidth()
                     ) {
-                        Column(
-                        ) {
-                            TextField(
-                                value = comment,
-                                onValueChange = { comment = it },
-                                placeholder = { Text(stringResource(id = R.string.comment_placeholder)) },
-                                modifier = Modifier
-                                    .width(310.dp)
-                                    .offset(x = -5.dp)
-                                    .offset(y = 5.dp)
-                                    .height(55.dp),
-                                colors = TextFieldDefaults.colors(
-                                    unfocusedContainerColor = Color.Transparent,
-                                    focusedContainerColor = Color.Transparent,
-                                    disabledContainerColor = Color.Transparent,
-                                    errorContainerColor = Color.Transparent,
-                                    focusedIndicatorColor = Color.Transparent,
-                                    unfocusedIndicatorColor = Color.Transparent,
-                                    disabledIndicatorColor = Color.Transparent,
-                                    errorIndicatorColor = Color.Red
-                                )
-
+                        TextField(
+                            value = comment,
+                            onValueChange = { comment = it },
+                            placeholder = { Text(stringResource(id = R.string.comment_placeholder)) },
+                            modifier = Modifier
+                                .width(260.dp)
+                                .offset(x = -10.dp, y = 5.dp)
+                                .height(55.dp),
+                            colors = TextFieldDefaults.colors(
+                                unfocusedContainerColor = Color.Transparent,
+                                focusedContainerColor = Color.Transparent,
+                                disabledContainerColor = Color.Transparent,
+                                errorContainerColor = Color.Transparent,
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent,
+                                disabledIndicatorColor = Color.Transparent,
+                                errorIndicatorColor = Color.Red
                             )
-                        }
+                        )
 
-                        Column(
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.Send,
-                                contentDescription = "Send review",
+                        Icon(
+                            imageVector = Icons.Filled.Send,
+                            contentDescription = "Send review",
+                            tint = AquaGreen,
+                            modifier = Modifier
+                                .size(40.dp)
+                                .wrapContentWidth(Alignment.End)
+                                .offset(y = 10.dp, x = -5.dp)
+                                .clickable {
+                                    if (UserDataRepository.getUserId() != null) {
+                                        if (rating > 0 && comment != "" && comment != " ") {
+                                            NetworkService.createNewReview(
+                                                UserDataRepository.getUserId(),
+                                                currentPlace?.id,
+                                                rating,
+                                                comment
+                                            ) { result ->
+                                                AquaPointsRepository.updateAquaPoints { result ->
+                                                    AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { result ->
+                                                        NetworkService.getAquaPointReviews(currentPlace?.id) { result ->
+                                                            reviews = parseUserReviews(result)
 
-                                tint = AquaGreen,
+                                                            rating = 0;
+                                                            comment = ""
 
-                                modifier = Modifier
-                                    .size(23.dp)
-                                    .offset(y = 21.dp)
-                                    .offset(x = -1.dp)
-                                    .clickable {
-                                        if (UserDataRepository.getUserId() != null) {
-                                            if (rating > 0 && comment != "" && comment != " ") {
-                                                NetworkService.createNewReview(
-                                                    UserDataRepository.getUserId(),
-                                                    currentPlace?.id,
-                                                    rating,
-                                                    comment
-                                                ) { result ->
-                                                    AquaPointsRepository.updateAquaPoints { result ->
-                                                        AquaPointsRepository.updateFavoriteAquaPoints(UserDataRepository.getUserId()) { result ->
-                                                            NetworkService.getAquaPointReviews(currentPlace?.id) { result ->
-                                                                reviews = parseUserReviews(result)
-
-                                                                rating = 0;
-                                                                comment = ""
-
-                                                                val toast = Toast.makeText(context, successMessage, Toast.LENGTH_LONG)
-                                                                toast.show()
-                                                            }
-                                                        };
-                                                    }
+                                                            val toast = Toast.makeText(context, successMessage, Toast.LENGTH_LONG)
+                                                            toast.show()
+                                                        }
+                                                    };
                                                 }
-                                            } else {
-                                                val toast = Toast.makeText(context, fillAllFieldsMessage, Toast.LENGTH_LONG)
-                                                toast.show()
                                             }
                                         } else {
-                                            navController.navigate(Screen.MainPage.route)
+                                            val toast = Toast.makeText(context, fillAllFieldsMessage, Toast.LENGTH_LONG)
+                                            toast.show()
                                         }
+                                    } else {
+                                        onSheetClose()
+                                        navController.navigate(Screen.MainPage.route)
                                     }
-                            )
-                        }
+                                }
+                        )
                     }
                 }
+
+
             }
         }
 
@@ -434,7 +435,7 @@ fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?, navController: Nav
         //avalição feita
         Box(
             modifier = Modifier
-                .weight(1f)
+                .heightIn(max = 350.dp)
                 .fillMaxWidth(),
         ) {
             LazyColumn(
@@ -465,7 +466,7 @@ fun CreatePointDetailButtonSheet(place: AquaPoint?, id: Int?, navController: Nav
 
                                 AsyncImage(
                                     model = ImageRequest.Builder(LocalContext.current)
-                                        .data("http://10.0.2.2:8080/images/userProfiles/${review.user_id}.jpg")
+                                        .data(NetworkService.createImageURL("images/userProfiles/${review.user_id}.jpg"))
                                         .crossfade(true)
                                         .memoryCachePolicy(CachePolicy.DISABLED)
                                         .diskCachePolicy(CachePolicy.DISABLED)

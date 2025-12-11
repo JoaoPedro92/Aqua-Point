@@ -14,9 +14,10 @@ import pt.iade.ei.aquapoint.ui.classes.UserReviews
 import com.github.kittinunf.fuel.core.BlobDataPart
 
 object NetworkService {
+    var networkIP = "10.0.2.2"
 
     fun getAquaPoints(onResult: (String) -> Unit) {
-        "http://10.0.2.2:8080/api/java/aquapoints/getAllAquaPoints/"
+        "http://${networkIP}:8080/api/java/aquapoints/getAllAquaPoints/"
             .httpGet()
             .responseString { _, _, result ->
                 val output = when (result) {
@@ -28,7 +29,7 @@ object NetworkService {
     }
 
     fun getFavoriteAquaPoints(userId: Int?, onResult: (String) -> Unit) {
-        "http://10.0.2.2:8080/api/java/aquapoints/getFavoriteAquaPointsByUserId/"
+        "http://${networkIP}:8080/api/java/aquapoints/getFavoriteAquaPointsByUserId/"
             .httpPost()
             .header(Headers.CONTENT_TYPE, "application/json")
             .body(userId.toString())
@@ -46,7 +47,7 @@ object NetworkService {
         json.put("userId", userId)
         json.put("pointId", pointId)
 
-        "http://10.0.2.2:8080/api/java/aquapoints/addAquaPointToFavorite/"
+        "http://${networkIP}:8080/api/java/aquapoints/addAquaPointToFavorite/"
             .httpPost()
             .header(Headers.CONTENT_TYPE, "application/json")
             .body(json.toString())
@@ -64,7 +65,7 @@ object NetworkService {
         json.put("userId", userId)
         json.put("pointId", pointId)
 
-        "http://10.0.2.2:8080/api/java/aquapoints/removeAquaPointFromFavorites/"
+        "http://${networkIP}:8080/api/java/aquapoints/removeAquaPointFromFavorites/"
             .httpPost()
             .header(Headers.CONTENT_TYPE, "application/json")
             .body(json.toString())
@@ -86,7 +87,7 @@ object NetworkService {
     }
 
     fun getAquaPointReviews(pointId: Int?, onResult: (String) -> Unit) {
-        "http://10.0.2.2:8080/api/java/usersInteractions/getUserReviewByPointId/"
+        "http://${networkIP}:8080/api/java/usersInteractions/getUserReviewByPointId/"
             .httpPost()
             .header(Headers.CONTENT_TYPE, "application/json")
             .body(pointId.toString())
@@ -104,7 +105,7 @@ object NetworkService {
     }
 
     fun getUserByEmail(email: String, onResult: (String) -> Unit) {
-        "http://10.0.2.2:8080/api/java/users/getUserDataByEmail/"
+        "http://${networkIP}:8080/api/java/users/getUserDataByEmail/"
             .httpPost()
             .header(Headers.CONTENT_TYPE, "application/json")
             .body(email)
@@ -128,7 +129,7 @@ object NetworkService {
         json.put("email", email)
         json.put("password", password)
 
-        "http://10.0.2.2:8080/api/java/users/createNewUser/"
+        "http://${networkIP}:8080/api/java/users/createNewUser/"
             .httpPost()
             .header(Headers.CONTENT_TYPE, "application/json")
             .body(json.toString())
@@ -152,7 +153,7 @@ object NetworkService {
         json.put("rating", rating)
         json.put("comment", comment)
 
-        "http://10.0.2.2:8080/api/java/usersInteractions/addNewAquaPointReview/"
+        "http://${networkIP}:8080/api/java/usersInteractions/addNewAquaPointReview/"
             .httpPost()
             .header(Headers.CONTENT_TYPE, "application/json")
             .body(json.toString())
@@ -180,7 +181,7 @@ object NetworkService {
         json.put("password", newPassword)
         json.put("joined", joined)
 
-        "http://10.0.2.2:8080/api/java/users/editUserData/".httpPost()
+        "http://${networkIP}:8080/api/java/users/editUserData/".httpPost()
             .header(Headers.CONTENT_TYPE, "application/json")
             .body(json.toString())
             .responseString { _, _, result ->
@@ -200,7 +201,7 @@ object NetworkService {
         json.put("longitude", pointLongitude)
         json.put("local_id", localId)
 
-        "http://10.0.2.2:8080/api/java/aquapoints/createNewAquaPoint/"
+        "http://${networkIP}:8080/api/java/aquapoints/createNewAquaPoint/"
             .httpPost()
             .header(Headers.CONTENT_TYPE, "application/json")
             .body(json.toString())
@@ -214,7 +215,7 @@ object NetworkService {
     }
 
     fun getLocalsData(onResult: (String) -> Unit) {
-        "http://10.0.2.2:8080/api/java/locals/getAllLocals/"
+        "http://${networkIP}:8080/api/java/locals/getAllLocals/"
             .httpPost()
             .header(Headers.CONTENT_TYPE, "application/json")
             .responseString { _, _, result ->
@@ -233,7 +234,7 @@ object NetworkService {
     fun uploadNewImage(imageData: ByteArray, imageName: String, onResult: (String) -> Unit) {
         val inputStream = imageData.inputStream()
 
-        "http://10.0.2.2:8080/api/java/imagesManager/uploadAquaPointImage/"
+        "http://${networkIP}:8080/api/java/imagesManager/uploadAquaPointImage/"
             .httpUpload()
             .add(
                 BlobDataPart(
@@ -255,7 +256,7 @@ object NetworkService {
     fun uploadNewUserImage(imageData: ByteArray, imageName: String, onResult: (String) -> Unit) {
         val inputStream = imageData.inputStream()
 
-        "http://10.0.2.2:8080/api/java/imagesManager/uploadUserProfileImage/"
+        "http://${networkIP}:8080/api/java/imagesManager/uploadUserProfileImage/"
             .httpUpload()
             .add(
                 BlobDataPart(
@@ -279,7 +280,7 @@ object NetworkService {
         json.put("point_id", pointId)
         json.put("state_id", stateId)
 
-        "http://10.0.2.2:8080/api/java/aquapoints/editAquaPointState/"
+        "http://${networkIP}:8080/api/java/aquapoints/editAquaPointState/"
             .httpPost()
             .header(Headers.CONTENT_TYPE, "application/json")
             .body(json.toString())
@@ -290,5 +291,9 @@ object NetworkService {
                 }
                 onResult(output)
             }
+    }
+
+    fun createImageURL(url: String): String {
+        return "http://${networkIP}:8080/${url}";
     }
 }

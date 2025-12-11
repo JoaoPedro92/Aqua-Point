@@ -103,7 +103,7 @@ fun CreatePointCard(place: AquaPoint, isFavorite: Boolean, onClick: (AquaPoint) 
 
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data("http://10.0.2.2:8080/images/aquaPoints/${place.id}.jpg")
+                        .data(NetworkService.createImageURL("images/aquaPoints/${place.id}.jpg"))
                         .crossfade(true)
                         .error(R.drawable.no_image)           // aparece se a imagem falhar
                         .fallback(R.drawable.no_image)        // aparece se a URL for nula
@@ -139,7 +139,7 @@ fun CreatePointCard(place: AquaPoint, isFavorite: Boolean, onClick: (AquaPoint) 
                     .padding(horizontal = 12.dp, vertical = 6.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "${stringResource(R.string.distance)}: ${GetAquaPointDistance(place)}",
+                Text(text = "${GetAquaPointDistance(place)}",
                     fontSize = 12.sp,
                     fontFamily = ComfortaaFont)
 

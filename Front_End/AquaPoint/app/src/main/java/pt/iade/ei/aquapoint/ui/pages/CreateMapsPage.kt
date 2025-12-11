@@ -4,10 +4,8 @@ import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.location.Location
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
@@ -17,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -24,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptor
@@ -207,55 +205,69 @@ fun MapScreen(navController: NavHostController) {
                         true
                     }
                 )
+
+                LaunchedEffect(clickedLatLng) { // dar zoom ao clicar aleatoriamente no mapa
+                    cameraPositionState.animate(
+                        update = CameraUpdateFactory.newLatLngZoom(pos, 16.5f)
+                    )
+                }
             }
         }
 
         // --- UI sobreposta
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 14.dp)
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Spacer(modifier = Modifier.height(20.dp))
-
-            CreateSearchBox(
-                onSearchClick = { navController.navigate(Screen.Search.route) },
-                filterButton = false,
-            )
-
-            Spacer(modifier = Modifier.height(630.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 14.dp)
             ) {
-                FloatingActionButton(
-                    onClick = {
-                        cameraPositionState.position = CameraPosition.fromLatLngZoom(
-                            LatLng(UserCoordinates.getLatitude(),
-                                UserCoordinates.getLongitude()),
-                            16.5f
-                        )
-                    },
-                    modifier = Modifier.size(50.dp),
-                    containerColor = AquaGreen,
-                    contentColor = Color.White
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Place,
-                        contentDescription = "Center",
-                        modifier = Modifier.size(28.dp)
-                    )
-                }
+                Spacer(modifier = Modifier.height(20.dp))
+
+                CreateSearchBox(
+                    onSearchClick = { navController.navigate(Screen.Search.route) },
+                    filterButton = false,
+                )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            var resetMapView by remember { mutableStateOf(false) }
 
-            //CreateNavBarPage()
+            FloatingActionButton(
+                onClick = {
+                    resetMapView = true
+                },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(horizontal = 20.dp, vertical = 100.dp),
+                containerColor = AquaGreen,
+                contentColor = Color.White
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Place,
+                    contentDescription = "Center",
+                    modifier = Modifier.size(28.dp)
+                )
+            }
 
-            // sistema button sheet
+            LaunchedEffect(resetMapView) { // dar zoom ao clicar aleatoriamente no mapa
+                cameraPositionState.animate(
+                    update = CameraUpdateFactory.newLatLngZoom(LatLng(UserCoordinates.getLatitude(), UserCoordinates.getLongitude()), 16.5f)
+                )
+
+                resetMapView = false
+            }
+
             if (showBottomSheet && selectedPlace != null) {
-                LaunchedEffect(Unit) { sheetState.expand() }
+                LaunchedEffect(Unit) {
+                    sheetState.expand()
+                }
+
+                LaunchedEffect(selectedPlace) {
+                    cameraPositionState.animate(
+                        update = CameraUpdateFactory.newLatLngZoom(LatLng(selectedPlace!!.latitude, selectedPlace!!.longitude), 16.5f)
+                    )
+                }
 
                 ModalBottomSheet(
                     onDismissRequest = { showBottomSheet = false },
@@ -283,16 +295,17 @@ fun AquaPointSheetContent(onClose: () -> Unit, place: AquaPoint?, navController:
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.9f)
+            .fillMaxHeight(0.75f)
             .padding(8.dp)
     ) {
-        CreatePointDetailButtonSheet(place, null, navController = navController)
+        CreatePointDetailButtonSheet(place, null, navController = navController, onClose)
     }
 }
 
 fun GetAquaPointDistance(place: AquaPoint): String {
-    val myPos = LatLng(38.78166399699406, -9.102570032326907)
+    val myPos = LatLng(UserCoordinates.getLatitude(), UserCoordinates.getLongitude())
     val markerPosicao = LatLng(place.latitude, place.longitude)
+    var finalString = ""
 
     // Calcular distância
     val results = FloatArray(1)
@@ -308,9 +321,13 @@ fun GetAquaPointDistance(place: AquaPoint): String {
     val speedKMH = 8.0 // velocidade média a pé
     val timeMin = (distanceKM / speedKMH) * 60
 
-    return if (timeMin < 1.0) {
-        "%.0f sec - %.2f km".format(timeMin * 60, distanceKM)
+    if (timeMin < 1.0) {
+        finalString = "%.0f sec - %.2f km".format(timeMin * 60, distanceKM)
+    } else if (timeMin > 59) {
+        finalString = "%.1f h - %.2f km".format(timeMin/60, distanceKM)
     } else {
-        "%.1f min - %.2f km".format(timeMin, distanceKM)
+        finalString = "%.1f min - %.2f km".format(timeMin, distanceKM)
     }
+
+    return finalString
 }
