@@ -1,5 +1,6 @@
 package pt.iade.ei.aquapoint.ui.components
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -286,7 +287,7 @@ fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController)
                     var flagColor by remember { mutableStateOf(DarkRed) }
                     var aqua_point_state_modified = R.string.aqua_point_state_modified
 
-                    if (place?.state_id == 2) {
+                    if (currentPlace?.state_id == 2) {
                         flagColor = DarkGreen
                     }
 
@@ -302,11 +303,11 @@ fun CreatePointDetail(place: AquaPoint?, id: Int?, navController: NavController)
                                 if (UserDataRepository.getUserId() != null) {
                                     var newState = 1
 
-                                    if (place?.state_id == 1) {
+                                    if (currentPlace?.state_id == 1) {
                                         newState = 2
                                     }
 
-                                    NetworkService.updatePointState(place?.id, newState) { response ->
+                                    NetworkService.updatePointState(currentPlace?.id, newState) { response ->
                                         AquaPointsRepository.updateAquaPoints() { pointsData ->
                                             AquaPointsRepository.setCache(pointsData)
 

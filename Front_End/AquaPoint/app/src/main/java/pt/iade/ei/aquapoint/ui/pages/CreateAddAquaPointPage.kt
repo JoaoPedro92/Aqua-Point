@@ -210,7 +210,7 @@ fun CreateAddAquaPointPage(navController: NavHostController) {
                     text = { Text(stringResource(R.string.aqua_point_type_animal)) },
                     leadingIcon = { Icon(Icons.Outlined.Pets, null) },
                     onClick = {
-                        selectedOption = 1
+                        selectedOption = 2
                         selectButtonTypeText = selectedText
                         expandedType = false
                     }
@@ -220,7 +220,7 @@ fun CreateAddAquaPointPage(navController: NavHostController) {
                     text = { Text(stringResource(R.string.aqua_point_type_both)) },
                     leadingIcon = { Icon(Icons.Outlined.DataSaverOff, null) },
                     onClick = {
-                        selectedOption = 2
+                        selectedOption = 3
                         selectButtonTypeText = selectedText
                         expandedType = false
                     }
