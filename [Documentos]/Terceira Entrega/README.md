@@ -419,7 +419,7 @@ O tópico a seguir apresenta alguns ecrãs que formam a estrutura da aplicação
 
 ## Diagrama de classes
 <p align="center">
-  <img src="https://i.imgur.com/Ns6Re1M.png" />
+  <img src="https://i.imgur.com/4yhtOIX.png" />
 </p>
 <p align="center">
   Figura 17 - Diagrama da classes
