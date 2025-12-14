@@ -42,11 +42,12 @@ Evandro Gaspar
 8. [Aqua Point](#aqua-point)
     1. [Guiões de teste da aplicação](#guiões-de-teste-da-aplicação)
 9. [Requisitos funcionais](#requisitos-funcionais)
-10. [Mockups e interfaces](#mockups-e-interfaces)
-11. [Base de dados](#bases-de-dados)
-12. [Diagrama de classes](#diagrama-de-classes)
-13. [Conclusão](#conclusão)
-14. [Referências bibliográficas](#referências-bibliográficas)
+10. [Requisitos implementados](#requisitos-implementados)
+11. [Mockups e interfaces](#mockups-e-interfaces)
+12. [Base de dados](#bases-de-dados)
+13. [Diagrama de classes](#diagrama-de-classes)
+14. [Conclusão](#conclusão)
+15. [Referências bibliográficas](#referências-bibliográficas)
 
 ## Introdução
 
@@ -156,7 +157,7 @@ Além de oferecer a funcionalidade base de localizar bebedouros, permite ainda g
 Nos tópicos seguintes, é apresentada a estrutura da _aplicação,_ desde a sua base de dados, parte visual e pequenas partes de código.
 
 ### Guiões de teste da aplicação
-- **Caso de Utilização 1**
+- **Caso de Utilização 1 – Encontrar o Bebedouro Mais Próximo**
 
     **Objetivo**: 
     Permitir que o utilizador encontre rapidamente o bebedouro mais próximo.
@@ -177,7 +178,7 @@ Nos tópicos seguintes, é apresentada a estrutura da _aplicação,_ desde a sua
     - A app abre o trajeto no mapa.
 
 
-- **Caso de Utilização 2**
+- **Caso de Utilização 2 – Dar Opinião Sobre um Bebedouro**
 
     **Objetivo**: 
     Permitir que o utilizador partilhe a sua opinião relativamente a um bebedouro
@@ -198,7 +199,7 @@ Nos tópicos seguintes, é apresentada a estrutura da _aplicação,_ desde a sua
     - O utilizador vê a sua opinião refletida na aplicação em tempo real.
 
 
-- **Caso de Utilização 3**
+- **Caso de Utilização 3 – Adicionar um Novo Bebedouro**
 
     **Objetivo**: 
     Permitir que os utilizadores ajudem a manter a base de dados atualizada.
@@ -218,7 +219,7 @@ Nos tópicos seguintes, é apresentada a estrutura da _aplicação,_ desde a sua
     - O bebedouro é adicionado ao mapa com base na localização atual do utilizador.
     - O utilizador vê as suas ações refletidas em tempo real.
 
-- **Caso de Utilização 4**
+- **Caso de Utilização 4 - Registo na Aplicação**
 
     **Objetivo**: 
     Fazer registo na aplicação.
@@ -233,7 +234,7 @@ Nos tópicos seguintes, é apresentada a estrutura da _aplicação,_ desde a sua
     - Clicar no botão de "Registar".
     - Preencher os campos com as suas informações.
 
-- **Caso de Utilização 5**
+- **Caso de Utilização 5 – Login na Aplicação**
 
     **Objetivo**: 
     Fazer login na aplicação.
@@ -313,6 +314,61 @@ Com base nos objetivos do sistema, foram definidos os seguintes requisitos funci
 - O sistema deve disponibilizar ecrãs de boas-vindas, login, registo, página inicial (_home_) e pesquisa.
   - Requisitos Não Funcionais
 
+## Requisitos implementados:
+Com a finalização deste projeto, pudemos descrever os seguintes requisitos 
+implementados: 
+
+**RF1 – Login**
+
+- O sistema permiti que o utilizador faça autenticação através de credenciais válidas. 
+- Informa o utilizador caso os dados introduzidos estejam incorretos.
+
+**RF2 – Registo**
+
+- O sistema possibilita o registo de novos utilizadores com dados obrigatórios (ex.: 
+nome, email, palavra-passe). 
+- Valida a unicidade do e-mail antes de concluir o registo. 
+
+**RF3 – Editar Informações Pessoais**
+
+- O utilizador consegue alterar os seus dados pessoais na conta. 
+- O sistema guarda e atualiza corretamente as alterações efetuadas. 
+
+**RF4 – Adicionar Bebedouros**
+
+- O utilizador pode inserir novos bebedouros no sistema, incluindo localização e 
+características relevantes. 
+- Os dados são validados depois de serem submetidos (nome, imagem e 
+localização). 
+
+**RF5 – Listagem de Bebedouros**
+
+- O sistema apresenta todos os bebedouros disponíveis num formato organizado. 
+- A listagem inclui informações essenciais, como localização e estado. 
+
+**RF6 – Adicionar Bebedouros aos Favoritos**
+
+- O utilizador consegue marcar qualquer bebedouro como favorito. 
+- O sistema mante a lista de favoritos associada à conta do utilizador.
+
+**RF7 – Marcar Bebedouros como avariados**
+
+- O utilizador pode indicar que um bebedouro apresenta avaria. 
+- O sistema atualiza o estado do bebedouro e refletir essa condição na listagem.
+
+**RF8 – Consultar o Estado dos Bebedouros**
+
+- O sistema permitir visualizar o estado atual de cada bebedouro (ativo, avariado, 
+em manutenção). 
+- As informações são apresentadas de forma clara e acessível através de uma 
+figurinha. 
+
+**RF9 – Filtrar Bebedouros por Nome**
+
+- O utilizador consegue pesquisar bebedouros pelo nome inserido na barra de 
+pesquisa. 
+- O sistema apresenta resultados correspondentes em tempo real.
+
 ## Mockups e interfaces
 O tópico a seguir apresenta alguns ecrãs que formam a estrutura da aplicação, organizada por meio de mockups que ilustram as suas funcionalidades:
 
@@ -347,7 +403,7 @@ O tópico a seguir apresenta alguns ecrãs que formam a estrutura da aplicação
 ## Bases de dados
 **Entidades e atributos da base de dados**
 <p align="center">
-  <img src="https://i.imgur.com/NvA2Elj.png" />
+  <img src="https://i.imgur.com/5ZGYxXK.png" />
 </p>
 <p align="center">
   Figura 15 - Entidades e atributos da base de dados
@@ -363,7 +419,7 @@ O tópico a seguir apresenta alguns ecrãs que formam a estrutura da aplicação
 
 ## Diagrama de classes
 <p align="center">
-  <img src="https://i.imgur.com/O6CDr3r.png" />
+  <img src="https://i.imgur.com/Ns6Re1M.png" />
 </p>
 <p align="center">
   Figura 17 - Diagrama da classes
@@ -371,11 +427,29 @@ O tópico a seguir apresenta alguns ecrãs que formam a estrutura da aplicação
 
 ## Conclusão
 
-O projeto **Aqua Point** encontra-se atualmente em fase de desenvolvimento, representando um desafio significativo no âmbito da engenharia informática e do desenvolvimento de aplicações móveis. Nesta primeira etapa é feito o planeamento e estruturação do projeto, delineando os seus fundamentos, objetivos e a abordagem técnica a ser adotada.
+O projeto **Aqua Point** encontra-se agora totalmente concluído com base o esperado, tendo 
+cumprido integralmente tudo o que foi definido na sua fase inicial de planeamento e 
+estruturação. Aquilo que foi inicialmente proposto incluindo os fundamentos, objetivos e a 
+abordagem técnica a adotar foi devidamente desenvolvido e implementado ao longo deste 
+trabalho.
 
-O principal objetivo a atingir com este trabalho é a criação de uma aplicação móvel funcional e intuitiva que permita aos utilizadores localizar bebedouros próximos, avaliar a sua condição e partilhar informações em tempo real. A aplicação visa resolver um problema quotidiano - a dificuldade em encontrar pontos de água potável funcionais e em condições de utilização.
+O principal objetivo estabelecido desde o início, a criação de uma aplicação móvel funcional 
+e intuitiva que permitisse aos utilizadores localizar bebedouros próximos, avaliar a sua 
+condição e partilhar informações em tempo real, foi atingido com sucesso. A aplicação 
+responde ao problema quotidiano identificado, facilitando a procura de pontos de água potável 
+em boas condições de utilização.
 
-Este relatório serve como um guia estratégico e um ponto de partida para o desenvolvimento do **Aqua Point**. Os próximos passos envolverão a execução prática deste planeamento, superando os desafios técnicos e conceptuais identificados, com o objetivo final de entregar uma aplicação de valor para a comunidade.
+Este relatório, que inicialmente serviu como guia estratégico e ponto de partida para o 
+desenvolvimento do **Aqua Point**, reflete agora todo o processo concluído. Os desafios 
+técnicos e conceptuais foram superados e resultaram numa aplicação completa, estável e de 
+valor para a comunidade. Tudo o que foi pedido e definido na fase inicial encontra-se 
+realizado, culminando num projeto sólido, funcional e alinhado com os objetivos propostos. 
+
+Embora o projeto esteja concluído, existem ainda oportunidades de evolução. Futuras 
+atualizações poderão melhorar a interface, reforçar os mecanismos de verificação do estado 
+dos bebedouros e introduzir funcionalidades adicionais, como notificações ou sistemas que 
+incentivem a participação dos utilizadores. Estas melhorias permitirão que o **Aqua Point**
+continue a crescer e a adaptar-se às necessidades da comunidade.
 
 ## Referências bibliográficas
 
