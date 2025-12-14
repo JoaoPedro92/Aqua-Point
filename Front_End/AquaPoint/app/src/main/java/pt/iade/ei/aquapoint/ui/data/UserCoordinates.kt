@@ -4,6 +4,8 @@ import android.util.Log
 import pt.iade.ei.aquapoint.ui.classes.UserData
 
 object UserCoordinates {
+    private var startLatitude: Double = 38.78166399699406 // usado para restaurar coordenadas facilmente
+    private var startLongitude: Double = -9.102570032326907 // usado para restaurar coordenadas facilmente
     private var latitude: Double = 38.78166399699406
     private var longitude: Double = -9.102570032326907
 
@@ -23,8 +25,16 @@ object UserCoordinates {
         longitude = long
     }
 
+    fun setStartLatitude(lat: Double) {
+        startLatitude = lat
+    }
+
+    fun setStartLongitude(long: Double) {
+        startLongitude = long
+    }
+
     fun restoreDefaults() {
-        latitude = 38.78166399699406
-        longitude = -9.102570032326907
+        latitude = startLatitude
+        longitude = startLongitude
     }
 }

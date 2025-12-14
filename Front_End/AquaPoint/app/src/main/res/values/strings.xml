@@ -38,7 +38,7 @@
     <string name="wrong_credentials">Email ou password incorretos...</string>
     <string name="login_success">Login efetuado com sucesso</string>
     <string name="logout_success">Logout efetuado com sucesso</string>
-    <string name="current_password_incorrect">Senha atual incorreta!</string>
+    <string name="current_password_incorrect">Password atual incorreta!</string>
     <string name="fill_fields">Por favor, preencha os campos!</string>
     <string name="failed_update_data">Falha ao atualizar os dados!</string>
     <string name="new_review_success">Review adicionada com sucesso</string>
@@ -58,4 +58,7 @@
     <string name="apply">Aplicar</string>
     <string name="clear">Limpar</string>
     <string name="nothing_to_show">Não temos dados para apresentar</string>
+    <string name="name_password_updated">Nome e password atualizados!</string>
+    <string name="name_updated">Nome atualizado!</string>
+    <string name="password_updated">Password atualizada!</string>
 </resources>

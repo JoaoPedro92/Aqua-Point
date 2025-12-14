@@ -53,6 +53,7 @@ import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.CachePolicy
 import coil.request.ImageRequest
+import org.mindrot.jbcrypt.BCrypt
 import pt.iade.ei.aquapoint.Screen
 import pt.iade.ei.aquapoint.data.UserCoordinates
 import pt.iade.ei.aquapoint.data.UserDataRepository
@@ -270,6 +271,10 @@ fun CreatePersonalArea(navController: NavHostController) {
         val fillFields = stringResource(R.string.fill_fields)
         val failedUpdateData = stringResource(R.string.failed_update_data)
 
+        val both_updated = stringResource(R.string.name_password_updated)
+        val name_updated = stringResource(R.string.name_updated)
+        val password_updated = stringResource(R.string.password_updated)
+
         Button(
             onClick = {
 
@@ -280,14 +285,14 @@ fun CreatePersonalArea(navController: NavHostController) {
                     val passwordChanged = newPassword.isNotEmpty()
 
                     when {
-                        passwordChanged && currentPassword != cachedPassword -> {
+                        passwordChanged && !BCrypt.checkpw(currentPassword, cachedPassword) -> {
                             Toast.makeText(context, currentPasswordIncorrect, Toast.LENGTH_LONG).show()
                         }
                         !nameChanged && !passwordChanged -> {
                             Toast.makeText(context, fillFields, Toast.LENGTH_LONG).show()
                         }
                         else -> {
-                            val passwordToUpdate = if (passwordChanged) newPassword else cachedPassword
+                            val passwordToUpdate = if (passwordChanged) BCrypt.hashpw(newPassword, BCrypt.gensalt()) else cachedPassword
 
                             UpdateUserData(
                                 id = user.id,
@@ -308,9 +313,9 @@ fun CreatePersonalArea(navController: NavHostController) {
                                     newPassword = ""
 
                                     val message = when {
-                                        nameChanged && passwordChanged -> "Nome e senha atualizados!"
-                                        nameChanged -> "Nome atualizado!"
-                                        passwordChanged -> "Senha atualizada!"
+                                        nameChanged && passwordChanged -> both_updated
+                                        nameChanged -> name_updated
+                                        passwordChanged -> password_updated
                                         else -> ""
                                     }
                                     if (message.isNotEmpty()) Toast.makeText(context, message, Toast.LENGTH_LONG).show()

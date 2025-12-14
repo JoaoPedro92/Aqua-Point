@@ -93,6 +93,9 @@ fun MapScreen(navController: NavHostController) {
 
                     UserCoordinates.setLatitude(latLng.latitude)
                     UserCoordinates.setLongitude(latLng.longitude)
+
+                    UserCoordinates.setStartLatitude(latLng.latitude)
+                    UserCoordinates.setStartLongitude(latLng.longitude)
                 }
             }
         }
